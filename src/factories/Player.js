@@ -4,9 +4,10 @@ class Player {
         this.turn = turn;
         this.shotsFired = 0;
         this.shotsReceived = 0;
-        this.shotsMissed = [];
-        this.shotsHit = ['a8', 'b8'];
-        this.allShotsFired = ['a1', 'b2', 'g5', 'j3', 'a10', 'b8'];
+        this.allMissedShots = [];
+        this.allHitShots = [];
+        this.allFiredShots = [];
+        this.timesTriedToShootEnemy = 0;
     }
 
     turnOver() {
@@ -17,15 +18,31 @@ class Player {
         this.turn = true;
     }
 
+    set shotFired(coordinate) {
+        this.allFiredShots.push(coordinate);
+    }
+
+    set shotHit(coordinate) {
+        this.allHitShots.push(coordinate);
+    }
+
+    set shotMissed(coordinate) {
+        this.allMissedShots.push(coordinate);
+    }
+
     shootTheEnemy() {
-        const lastShotFired = this.allShotsFired.slice(-1)[0];
-        const lastShotHit = this.shotsHit.slice(-1)[0];
-        const coordinate = lastShotFired === lastShotHit ? this.getCoordinate(lastShotFired) : this.getCoordinate();
-        for (let i = 0; i < this.allShotsFired.length; i++) {
-            if ( this.allShotsFired[i] === coordinate ) {
+        const lastShotFired = this.allFiredShots.slice(-1)[0];
+        const lastShotHit = this.allHitShots.slice(-1)[0];
+        // timesTriedToSHootEnemy is fail safe, if getCoordinate don't give valid coordinate with a hint in 10 tries,
+        // forget the hint and give random coordinate
+        let coordinate = lastShotFired === lastShotHit && this.timesTriedToShootEnemy < 10 ? this.getCoordinate(lastShotFired) : this.getCoordinate();
+        for (let i = 0; i < this.allFiredShots.length; i++) {
+            if ( this.allFiredShots[i] === coordinate ) {
+                this.timesTriedToShootEnemy++;
                 this.shootTheEnemy()
             }
         }
+        this.timesTriedToShootEnemy = 0;
         this.shotsFired++;
         return coordinate;
     }
@@ -42,43 +59,55 @@ class Player {
     }
 
     getCoordinateWithAHint(hint) {
-
         const lastShotArr = [hint.charAt(0), hint.slice(1)];
-        // First letter/num for coordinate from hint
-        const firstCharacter = getFirstCharacterFromHint(lastShotArr, this.shotsHit);
-        const coordinate = getRestOfTheCoordinate(firstCharacter, lastShotArr);
-        return coordinate;
-        //coordinate.push(firstCharacter)
-
-
+        // First character for coordinate from hint
+        const firstCharacter = getFirstCharacterFromHint(lastShotArr, this.allHitShots);
+        const randomNum = Math.floor(Math.random() * 2);
+        let missingCoordinate;
+        if ( isNumeric(firstCharacter) ) {
+            // first character is row/horizontal coordinate and we need to get vertical (alphabet) coordinate
+            missingCoordinate = getColumnCoordinate(firstCharacter, hint, randomNum);
+            return missingCoordinate + firstCharacter;
+        }
+        // first character is column/vertical, we need to get horizontal/row (number) coordinate
+        missingCoordinate = getRowCoordinate(firstCharacter, hint, randomNum);
+        return firstCharacter + missingCoordinate;
     }
-
 }
 
-function getRestOfTheCoordinate(character, hint) {
 
-
-    if ( isNumeric(character) ) {
-        // We need to get horizontal coordinate
-        const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-        const columnIndex = gridColumns.indexOf(hint[0]);
-        const randomNum = Math.floor(Math.random() * 2);
-        let index = 0;
-        if ( randomNum !== 0 ) {
-            index = columnIndex + 1;
-            if ( index > gridColumns.length ) {
-                index = columnIndex - 1;
-            }
-        } else {
-            index = columnIndex - 1;
-            if ( index < 0 ) {
-                index = columnIndex + 1
-            }
+function getRowCoordinate(character, hint, randomNum) {
+    let rowNumber = Number(hint.slice(1));
+    if ( randomNum !== 0 ) {
+        rowNumber--;
+        if ( rowNumber <= 0 ) {
+            rowNumber = 2;
         }
-        return gridColumns[index] + character;
+    } else {
+        rowNumber++;
+        if ( rowNumber > 10 ) {
+            rowNumber = 9;
+        }
     }
-    // we need to get vertical coordinate
-    return 'string'
+    return rowNumber;
+}
+
+function getColumnCoordinate(character, hint, randomNum) {
+    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const columnIndex = gridColumns.indexOf(hint[0]);
+    let index = 0;
+    if ( randomNum !== 0 ) {
+        index = columnIndex + 1;
+        if ( index > gridColumns.length ) {
+            index = columnIndex - 1;
+        }
+    } else {
+        index = columnIndex - 1;
+        if ( index < 0 ) {
+            index = columnIndex + 1
+        }
+    }
+    return gridColumns[index];
 }
 
 function getFirstCharacterFromHint(lastShotArr, shotsHit) {
@@ -111,7 +140,5 @@ function isNumeric(num) {
     return !isNaN(num)
 }
 
-const computer = new Player('com', false);
-computer.shootTheEnemy()
 
 export default Player;
