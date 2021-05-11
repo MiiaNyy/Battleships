@@ -1,4 +1,4 @@
-import Gameboard from "../src/factories/Gameboard";
+import Gameboard from "../src/factories/GameboardFactory";
 import shipTypes from "../src/game_helpers/shipTypes"
 
 
@@ -91,7 +91,7 @@ describe('Placing ship ', ()=>{
 
 })
 
-describe('Gameboard received attack', ()=>{
+describe('GameboardGrid received attack', ()=>{
     test('Two ships on board and neither got hit', ()=>{
         let y = new Gameboard();
         y.placeShip(shipTypes[0], 'a1', true)

@@ -1,4 +1,4 @@
-import Player from "../src/factories/Player";
+import Player from "../src/factories/PlayerFactory";
 
 describe('Player ', () => {
     const computer = new Player('computer', false)

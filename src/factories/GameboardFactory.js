@@ -1,4 +1,4 @@
-import Ship from "./Ship.js";
+import Ship from "./ShipFactory.js";
 
 class Gameboard {
     constructor() {

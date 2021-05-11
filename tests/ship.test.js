@@ -1,4 +1,4 @@
-import Ship from "../src/factories/Ship";
+import Ship from "../src/factories/ShipFactory";
 
 test('Ship name is destroyer', ()=>{
     const destroyer = new Ship('Destroyer', 4, 'a1');
