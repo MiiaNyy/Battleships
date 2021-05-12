@@ -1,7 +1,8 @@
 import Ship from "./ShipFactory.js";
 
 class Gameboard {
-    constructor() {
+    constructor(name) {
+        this.name = name;
         this.shipsCoordinates = [];
         this.ships = [];
         this.missedShots = [];

@@ -14,6 +14,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    font-family: 'Wallpoet', cursive;
 
 }
 
@@ -32,38 +33,91 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1 {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     margin-bottom: 0;
 }
 
-header {
-    margin: 2em auto;
-    padding: 1em;
-    background-color: #414959;
-    width: 90%;
-    max-width: 900px;
-    font-family: 'Wallpoet', cursive;
+h2, h3 {
+    letter-spacing: 1px;
     text-transform: uppercase;
     text-align: center;
 }
 
-.game-container {
+h2 {
+    font-size: 1.2rem;
+    color: #a5a5a5;
+}
+
+
+
+header {
+    margin: 1em auto 2em;
+    padding: 1em;
+    background-color: #414959;
     width: 90%;
-    max-width: 1300px;
-    margin: 0 auto;
-    border: 2px solid yellow;
+    max-width: 1000px;
+    text-transform: uppercase;
+    text-align: center;
 }
 
-.gameboard-container {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+/*GENERAL STYLES*/
+.flex {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+}
+
+
+
+
+.friendly-gameboard {
+
+}
+
+
+
+.game-info {
     width: 100%;
-    max-width: 400px;
-    min-height: 400px;
-    background-color: aliceblue;
+    max-width: 800px;
+    margin: 0 auto 3em;
+    padding: 1em 0;
+    border: 10px ridge #3f4238;
+    text-align: center;
+    background-color: #6b705c;
+    font-family: 'Special Elite', cursive;
 }
 
-.gameboard-cell {
-    border: 1px solid black;
+.game-info p {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.ship-position {
+    background-color: #878787;
+}
+
+
+.game-specs__container {
+    padding: 1em;
+    margin: 0;
+    border: 10px #585858 ridge;
+    font-size: 0.9rem;
+    background-color: #a5a5a5;
+}
+
+@media (min-width: 900px) {
+    .flex {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-around;
+    }
+
+
 }

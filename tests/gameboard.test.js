@@ -91,7 +91,7 @@ describe('Placing ship ', ()=>{
 
 })
 
-describe('GameboardGrid received attack', ()=>{
+describe('GameboardItem received attack', ()=>{
     test('Two ships on board and neither got hit', ()=>{
         let y = new Gameboard();
         y.placeShip(shipTypes[0], 'a1', true)

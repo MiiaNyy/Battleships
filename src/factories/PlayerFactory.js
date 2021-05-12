@@ -1,3 +1,5 @@
+import Gameboard from "./GameboardFactory";
+
 class Player {
     constructor(name, turn) {
         this.name = name;
@@ -8,6 +10,11 @@ class Player {
         this.allHitShots = [];
         this.allFiredShots = [];
         this.timesTriedToShootEnemy = 0;
+        this.gameboard = {};
+    }
+
+    set createGameboard(name) {
+        this.gameboard = new Gameboard(name);
     }
 
     turnOver() {
