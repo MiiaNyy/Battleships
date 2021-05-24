@@ -50,7 +50,7 @@ function GridCell(props) {
     const playerShips = playerGrid.shipsCoordinates;
     const enemyCell = playerGrid.name === 'Enemy';
     const shipPosition = isShipInThisPosition(playerShips, props.id);
-
+    console.log('hellogelllo')
     return <GameboardCell enemy={ enemyCell } shipPosition={ shipPosition } id={ props.id }/>
 }
 
