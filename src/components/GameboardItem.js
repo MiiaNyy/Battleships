@@ -67,6 +67,14 @@ function GridCell(props) {
 
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
             gameboard.receiveAttack(cellId);
+            props.setMessage(()=>gameboard.attackInfo[0]);
+            human.setShots(gameboard.attackInfo[1], cellId);
+            if ( gameboard.attackInfo[1] ) {
+                setHitMarker(() => '🔴')
+            } else {
+                setHitMarker(() => 'X')
+            }
+            // human.turnOver();
             props.setMessage(()=>gameboard.attackInfo.message);
             human.setShots(gameboard.attackInfo.shotHit, cellId);
             setHitMarker(() => {
@@ -77,6 +85,8 @@ function GridCell(props) {
         } else {
             console.log('it is enemies turn')
         }
+
+
     }
 
     return (
