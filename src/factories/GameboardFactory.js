@@ -8,6 +8,7 @@ class Gameboard {
         this.missedShots = [];
         this.sunkenShips = [];
         this.allShipHaveSunk = false;
+        this.attackInfo = [];
     }
 
     placeShip(obj, coordinate, axelIsVertical) {
@@ -27,6 +28,9 @@ class Gameboard {
     }
 
     receiveAttack(coordinate) {
+        const gotHitMessage = `Shot at ${ coordinate }.`
+        let info = [`${ gotHitMessage } Didn't hit any ship`, false];
+
         for (let i = 0; i < this.ships.length; i++) {
             const currentShip = this.ships[i];
             const shipGotHit = currentShip.checkIfHit(coordinate);
@@ -35,16 +39,16 @@ class Gameboard {
                     this.sunkenShips.push(currentShip);
                     if ( this.sunkenShips.length === this.ships.length ) {
                         this.allShipHaveSunk = true;
-                        return `Ship ${ currentShip.name } got hit, sunk and now all the ships are sunk`
+                        info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit, sunk and now all the ships are sunk`, true]
                     }
                     // later this statements have to change true/false and do something with states
-                    return `Ship ${ currentShip.name } got hit and sunk`
+                    info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit and sunk`, true]
                 }
-                return `Ship ${ currentShip.name } got hit`
+                info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit`, true]
             }
         }
         this.missedShots.push(coordinate);
-        return `Shot didn't hit any ship`
+        this.attackInfo = info;
     }
 }
 

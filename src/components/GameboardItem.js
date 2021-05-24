@@ -1,43 +1,48 @@
 import React, { useState } from 'react';
-import { GameboardCell, GameboardGrid } from "./Styles/game";
+import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
+
+import { Cell, GameboardGrid } from "./Styles/game";
 
 function GameboardItem(props) {
     const cellIds = getGridCellIds();
-    const player = props.player;
-    const playerGrid = player.gameboard;
+    const humanPlayer = props.humanPlayer;
+    const computerPlayer = props.enemyPlayer;
+    const playerGrid = props.playerGrid;
 
     return (
         <div className="flex">
-            <GameSpecs player={ props.player }/>
+            <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
             <div>
                 <h2>{ playerGrid.name } waters</h2>
                 <GameboardGrid>
                     { cellIds.map((cell)=>{
-                        return <GridCell key={ cell } playerGrid={ playerGrid } id={ cell }/>
+                        return <GridCell key={ cell } setMessage={ props.setGameMessage }
+                                         players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
+                                         id={ cell }/>
                     }) }
                 </GameboardGrid>
             </div>
         </div>
-
     )
 }
 
 function GameSpecs(props) {
-    const player = props.player;
-    const playerGrid = player.gameboard;
+    const player = props.humanPlayer;
+    const playerGrid = props.playerGrid;
 
     if ( playerGrid.name === 'Friendly' ) {
         return (
             <div className="game-specs__container">
                 <h3>Specs</h3>
-                <p className="row">Shots fired: <strong>{ player.shotsFired }</strong></p>
+                <p className="row">All shots fired: <strong>{ player.shotsFired }</strong></p>
                 <p className="row">Shots hit: <strong>{ player.allHitShots.length }</strong></p>
                 <p className="row">Shots missed: <strong>{ player.allMissedShots.length }</strong></p>
                 <p className="row">Shots received: <strong>{ player.shotsReceived }</strong></p>
                 <br/>
-                <p className="row">Ships
-                    remaining: <strong>{ (playerGrid.ships.length) - (playerGrid.sunkenShips.length) }</strong></p>
-                <p className="row">Sunken ships: <strong> { playerGrid.sunkenShips.length } </strong></p>
+                <h4>Friendly ships</h4>
+                <p className="row">Remaining: <strong>{ (playerGrid.ships.length) - (playerGrid.sunkenShips.length) }</strong>
+                </p>
+                <p className="row">Sunk: <strong> { playerGrid.sunkenShips.length } </strong></p>
             </div>
         )
     } else {
@@ -46,35 +51,42 @@ function GameSpecs(props) {
 }
 
 function GridCell(props) {
-    const playerGrid = props.playerGrid;
-    const playerShips = playerGrid.shipsCoordinates;
-    const enemyCell = playerGrid.name === 'Enemy';
-    const shipPosition = isShipInThisPosition(playerShips, props.id);
+    const [hitMarker, setHitMarker] = useState('');
 
-    return <GameboardCell enemy={ enemyCell } shipPosition={ shipPosition } id={ props.id }/>
-}
+    const gameboard = props.playerGrid;
+    const cellId = props.id;
+    const thisIsEnemyCell = gameboard.name === 'Enemy';
+    // If ships is in this position, color this cell different color
+    const shipPosition = isShipInThisPosition(gameboard.shipsCoordinates, cellId);
 
-function isShipInThisPosition(playerShips, cellId) {
-    for (let i = 0; i < playerShips.length; i++) {
-        for (let j = 0; j < playerShips[i].length; j++) {
-            let currentShip = playerShips[i];
-            if ( currentShip[j] === cellId ) {
-                return true;
+    function attackEnemy() {
+        const human = props.players[0];
+        // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
+        const shotIsValid = human.shotIsValid(cellId);
+
+        if ( thisIsEnemyCell && human.turn && shotIsValid ) {
+            gameboard.receiveAttack(cellId);
+            props.setMessage(()=>gameboard.attackInfo[0]);
+            human.setShots(gameboard.attackInfo[1], cellId);
+            if ( gameboard.attackInfo[1] ) {
+                setHitMarker(() => '🔴')
+            } else {
+                setHitMarker(() => 'X')
             }
+            // human.turnOver();
+        } else {
+            console.log('it is enemies turn')
         }
-    }
-    return false;
-}
 
-function getGridCellIds() {
-    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-    let cellIds = [];
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < gridColumns.length; j++) {
-            cellIds.push(gridColumns[j] + (i + 1));
-        }
+
     }
-    return cellIds;
+
+    return (
+        <Cell onClick={ ()=>attackEnemy() }
+              enemy={ thisIsEnemyCell } shipPosition={ shipPosition } id={ cellId }>
+            <p>{ hitMarker }</p>
+        </Cell>
+    )
 }
 
 

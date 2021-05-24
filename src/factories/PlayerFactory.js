@@ -10,11 +10,6 @@ class Player {
         this.allHitShots = [];
         this.allFiredShots = [];
         this.timesTriedToShootEnemy = 0;
-        this.gameboard = {};
-    }
-
-    set createGameboard(name) {
-        this.gameboard = new Gameboard(name);
     }
 
     turnOver() {
@@ -25,17 +20,29 @@ class Player {
         this.turn = true;
     }
 
-    set shotFired(coordinate) {
+    setShots(attackHit, coordinate) {
+        this.shotsFired++;
         this.allFiredShots.push(coordinate);
+        if ( attackHit) {
+            this.allHitShots.push(coordinate);
+
+        } else {
+            this.allMissedShots.push(coordinate);
+        }
     }
 
-    set shotHit(coordinate) {
-        this.allHitShots.push(coordinate);
+
+    // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
+    shotIsValid(coordinate) {
+        for (let i = 0; i < this.allFiredShots.length; i++) {
+            if ( this.allFiredShots[i] === coordinate ) {
+                return false
+            }
+        }
+        return true
     }
 
-    set shotMissed(coordinate) {
-        this.allMissedShots.push(coordinate);
-    }
+
 
     shootTheEnemy() {
         const lastShotFired = this.allFiredShots.slice(-1)[0];
