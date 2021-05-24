@@ -61,24 +61,22 @@ function GridCell(props) {
 
     function attackEnemy() {
         const human = props.players[0];
+        const computer = props.players[1];
         // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
         const shotIsValid = human.shotIsValid(cellId);
 
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
             gameboard.receiveAttack(cellId);
-            props.setMessage(()=>gameboard.attackInfo[0]);
-            human.setShots(gameboard.attackInfo[1], cellId);
-            if ( gameboard.attackInfo[1] ) {
-                setHitMarker(() => '🔴')
-            } else {
-                setHitMarker(() => 'X')
-            }
-            // human.turnOver();
+            props.setMessage(()=>gameboard.attackInfo.message);
+            human.setShots(gameboard.attackInfo.shotHit, cellId);
+            setHitMarker(() => {
+                return gameboard.attackInfo.shotHit ? '🔴' : 'X'
+            })
+            /*human.turnOver();
+            computer.startTurn();*/
         } else {
             console.log('it is enemies turn')
         }
-
-
     }
 
     return (

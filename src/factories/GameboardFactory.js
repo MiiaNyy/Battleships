@@ -8,7 +8,7 @@ class Gameboard {
         this.missedShots = [];
         this.sunkenShips = [];
         this.allShipHaveSunk = false;
-        this.attackInfo = [];
+        this.attackInfo = { message: '', shotHit: false};
     }
 
     placeShip(obj, coordinate, axelIsVertical) {
@@ -29,27 +29,36 @@ class Gameboard {
 
     receiveAttack(coordinate) {
         const gotHitMessage = `Shot at ${ coordinate }.`
-        let info = [`${ gotHitMessage } Didn't hit any ship`, false];
+        // Default values
+        let message = `${ gotHitMessage } Didn't hit any ship`;
+        this.attackInfo.shotHit = false;
 
         for (let i = 0; i < this.ships.length; i++) {
             const currentShip = this.ships[i];
             const shipGotHit = currentShip.checkIfHit(coordinate);
             if ( shipGotHit ) {
-                if ( currentShip.isSunk() ) {
-                    this.sunkenShips.push(currentShip);
-                    if ( this.sunkenShips.length === this.ships.length ) {
-                        this.allShipHaveSunk = true;
-                        info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit, sunk and now all the ships are sunk`, true]
-                    }
-                    // later this statements have to change true/false and do something with states
-                    info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit and sunk`, true]
-                }
-                info = [`${ gotHitMessage } Ship ${ currentShip.name } got hit`, true]
+                this.attackInfo.shotHit = true;
+                message = checkIfShipsSunk(currentShip, gotHitMessage)
+                break;
             }
         }
         this.missedShots.push(coordinate);
-        this.attackInfo = info;
+        this.attackInfo.message = message;
     }
+}
+
+// Message return always the last statement. Needs to be fixed!
+function checkIfShipsSunk(currentShip, gotHitMessage) {
+    if ( currentShip.isSunk() ) {
+        this.sunkenShips.push(currentShip);
+        if ( this.sunkenShips.length === this.ships.length ) {
+            this.allShipHaveSunk = true;
+            return `${ gotHitMessage } Ship ${ currentShip.name } got hit, sunk and now all the ships are sunk`;
+
+        }
+        return`${ gotHitMessage } Ship ${ currentShip.name } got hit and sunk`;
+    }
+    return `${ gotHitMessage } Ship ${ currentShip.name } got hit`;
 }
 
 function checkIfPositionIsEmpty(ships, coordinates) {
