@@ -18,7 +18,7 @@ function GameboardItem(props) {
                     { cellIds.map((cell)=>{
                         return <GridCell key={ cell } setMessage={ props.setGameMessage }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         id={ cell }/>
+                                         id={ cell } switchTurns={props.switchTurn}/>
                     }) }
                 </GameboardGrid>
             </div>
@@ -52,6 +52,7 @@ function GameSpecs(props) {
 
 function GridCell(props) {
     const [hitMarker, setHitMarker] = useState('');
+    const [hitPosition, setHitPosition] = useState(false);
 
     const gameboard = props.playerGrid;
     const cellId = props.id;
@@ -66,35 +67,52 @@ function GridCell(props) {
         const shotIsValid = human.shotIsValid(cellId);
 
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
-            gameboard.receiveAttack(cellId);
-            props.setMessage(()=>gameboard.attackInfo[0]);
-            human.setShots(gameboard.attackInfo[1], cellId);
-            if ( gameboard.attackInfo[1] ) {
-                setHitMarker(() => '🔴')
-            } else {
-                setHitMarker(() => 'X')
-            }
-            // human.turnOver();
-            props.setMessage(()=>gameboard.attackInfo.message);
-            human.setShots(gameboard.attackInfo.shotHit, cellId);
-            setHitMarker(() => {
-                return gameboard.attackInfo.shotHit ? '🔴' : 'X'
-            })
-            /*human.turnOver();
-            computer.startTurn();*/
+            attackIsValid(gameboard, human, props.setMessage, cellId, setHitPosition, setHitMarker)
+            props.switchTurns(true);
         } else {
-            console.log('it is enemies turn')
+            props.setMessage(()=>'Invalid shot, try again!');
         }
+    }
 
+    function computerAttack(computer, human) {
+        const thisIsHumanCell = gameboard.name === 'Friendly';
+        const coordinate = computer.shootTheEnemy();
+
+        console.log('coordinate is ' + coordinate + ' this is human cell ' + thisIsHumanCell);
+
+       /* // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
+        const shotIsValid = computer.shotIsValid(coordinate);
+        console.log('enemy has attacked player at ' + coordinate);
+        if ( shotIsValid && thisIsHumanCell ) {
+            human.receiveAttack(coordinate);
+            attackIsValid(gameboard, computer, props.setMessage, coordinate, setHitPosition, setHitMarker)
+            computer.turnOver();
+            human.startTurn();
+
+
+        } else {
+            props.setMessage(()=>'Invalid shot, try again!');
+        }*/
 
     }
 
+
     return (
         <Cell onClick={ ()=>attackEnemy() }
-              enemy={ thisIsEnemyCell } shipPosition={ shipPosition } id={ cellId }>
+              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } shipPosition={ shipPosition } id={ cellId }>
             <p>{ hitMarker }</p>
         </Cell>
     )
+}
+
+function attackIsValid(gameboard, player, setMessage, coordinate, setPosition, setMarker) {
+    gameboard.receiveAttack(coordinate);
+    setMessage(()=>gameboard.attackInfo.message);
+    player.setShots(gameboard.attackInfo.shotHit, coordinate);
+    setPosition(true);
+    setMarker(()=>{
+        return gameboard.attackInfo.shotHit ? '🔴' : 'X'
+    })
 }
 
 

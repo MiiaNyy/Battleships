@@ -1,5 +1,6 @@
 import Ship from "./ShipFactory.js";
 
+
 class Gameboard {
     constructor(name) {
         this.name = name;
@@ -8,7 +9,10 @@ class Gameboard {
         this.missedShots = [];
         this.sunkenShips = [];
         this.allShipHaveSunk = false;
-        this.attackInfo = { message: '', shotHit: false};
+        this.attackInfo = {
+            message: '',
+            shotHit: false
+        };
     }
 
     placeShip(obj, coordinate, axelIsVertical) {
@@ -28,38 +32,53 @@ class Gameboard {
     }
 
     receiveAttack(coordinate) {
-        const gotHitMessage = `Shot at ${ coordinate }.`
-        // Default values
-        let message = `${ gotHitMessage } Didn't hit any ship`;
-        this.attackInfo.shotHit = false;
-
+        let shipGotHit = false;
+        let shipThatGotHit;
         for (let i = 0; i < this.ships.length; i++) {
             const currentShip = this.ships[i];
-            const shipGotHit = currentShip.checkIfHit(coordinate);
+            shipGotHit = currentShip.checkIfHit(coordinate);
             if ( shipGotHit ) {
-                this.attackInfo.shotHit = true;
-                message = checkIfShipsSunk(currentShip, gotHitMessage)
-                break;
+                shipThatGotHit = currentShip;
+                break; // Jump out of loop
             }
         }
-        this.missedShots.push(coordinate);
-        this.attackInfo.message = message;
-    }
-}
-
-// Message return always the last statement. Needs to be fixed!
-function checkIfShipsSunk(currentShip, gotHitMessage) {
-    if ( currentShip.isSunk() ) {
-        this.sunkenShips.push(currentShip);
-        if ( this.sunkenShips.length === this.ships.length ) {
-            this.allShipHaveSunk = true;
-            return `${ gotHitMessage } Ship ${ currentShip.name } got hit, sunk and now all the ships are sunk`;
-
+        if ( shipGotHit ) {
+            this.attackInfo.shotHit = true;
+            const shipSunk = this.checkIfShipsSunk(shipThatGotHit);
+            this.attackInfo.message = this.getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate);
+        } else {
+            this.attackInfo.shotHit = false;
+            this.attackInfo.message = `Shot at ${ coordinate }. Didn't hit any ship`;
+            this.missedShots.push(coordinate);
         }
-        return`${ gotHitMessage } Ship ${ currentShip.name } got hit and sunk`;
     }
-    return `${ gotHitMessage } Ship ${ currentShip.name } got hit`;
+
+    checkIfShipsSunk(currentShip) {
+        if ( currentShip.isSunk() ) {
+            this.sunkenShips.push(currentShip);
+            if ( this.sunkenShips.length === this.ships.length ) {
+                this.allShipHaveSunk = true;
+            }
+            return true;
+        }
+        return false;
+    }
+    getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate) {
+        const gotHitMessage = `Shot at ${ coordinate }.`;
+        if ( shipSunk ) {
+            if ( this.allShipHaveSunk ) {
+                return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit, sunk and now all the ships are sunk`;
+            } else {
+                return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit and sunk`;
+            }
+        } else {
+            return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit`;
+        }
+    }
 }
+
+
+
 
 function checkIfPositionIsEmpty(ships, coordinates) {
     if ( ships.length > 0 ) {
@@ -108,6 +127,7 @@ function getHorizontalPosition(ship, xPosition, yPosition, index) {
         return gridColumns[nextColumnIndex] + yPosition;
     }
 }
+
 
 
 export default Gameboard;

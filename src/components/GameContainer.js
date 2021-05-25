@@ -6,8 +6,10 @@ import { GameContent } from "./Styles/game";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
-
     const [gameMessage, setGameMessage] = useState('Welcome to the battleship game');
+    const [computersTurn, setComputersTurn] = useState(false);
+
+
     const humanPlayer = props.humanPlayer[0];
     const enemyPlayer = props.enemyPlayer[0];
 
@@ -24,14 +26,30 @@ function GameContainer(props) {
         return ()=>clearTimeout(changeGameMessage);
     }, [gameMessage]);
 
+    useEffect(()=>{
+        if ( humanPlayer.turn ) {
+            humanPlayer.turnOver();
+            enemyPlayer.startTurn();
+            const coordinate = enemyPlayer.shootTheEnemy();
+            humanBoard.receiveAttack(coordinate);
+
+            console.log('enemy has attacked player at ' + coordinate);
+        }
+
+
+    }, [computersTurn])
+
+
     return (
         <GameContent>
             <div className="game-info">
                 <p>{ gameMessage }</p>
             </div>
             <div className="flex">
-                <GameboardItem setGameMessage={setGameMessage} playerGrid={humanBoard} humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
-                <GameboardItem setGameMessage={setGameMessage} playerGrid={enemyBoard} humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
+                <GameboardItem switchTurn={ setComputersTurn } setGameMessage={ setGameMessage }
+                               playerGrid={ humanBoard } humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
+                <GameboardItem switchTurn={ setComputersTurn } setGameMessage={ setGameMessage }
+                               playerGrid={ enemyBoard } humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
             </div>
         </GameContent>
     )
