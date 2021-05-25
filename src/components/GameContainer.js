@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GameboardItem from "./GameboardItem";
-import GameDescription from "./GameDescription";
+
+import attackIsValid from "./helpers/attackIsValid";
 
 import { GameContent } from "./Styles/game";
 
@@ -22,21 +23,37 @@ function GameContainer(props) {
             setGameMessage(()=>{
                 return humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
             })
-        }, 2000);
+        }, 500);
         return ()=>clearTimeout(changeGameMessage);
     }, [gameMessage]);
 
     useEffect(()=>{
         // Human player starts.
         if ( enemyPlayer.turn && humanPlayer.shotsFired > 0 ) {
-            const coordinate = enemyPlayer.shootTheEnemy();
-            humanBoard.receiveAttack(coordinate);
-            enemyPlayer.turnOver();
-            humanPlayer.startTurn();
-            setComputersTurn(false);
+            // Take 3 seconds before attacking human board
+            computerAttack()
         }
     }, [computersTurn])
 
+    function computerAttack() {
+        const computerTurn = setTimeout(()=>{
+            shootEnemy();
+            enemyPlayer.turnOver();
+            humanPlayer.startTurn();
+            setComputersTurn(false);
+
+        }, 500);
+        return ()=>clearTimeout(computerTurn);
+    }
+
+    function shootEnemy() {
+        enemyPlayer.shootTheEnemy();
+        const coordinate = enemyPlayer.shotCoordinate;
+        attackIsValid(humanBoard, enemyPlayer, setGameMessage, coordinate);
+        console.log('enemy player all shots fired ' + enemyPlayer.allFiredShots)
+        console.log('enemy player all shots hit ' + enemyPlayer.allHitShots);
+        console.log('shooting at ' + coordinate);
+    }
 
     return (
         <GameContent>

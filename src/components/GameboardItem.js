@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import attackIsValid from "./helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
 
 import { Cell, GameboardGrid } from "./Styles/game";
@@ -118,11 +119,7 @@ function isThisPositionHit(gameboard, coordinate) {
 }
 
 
-function attackIsValid(gameboard, player, setMessage, coordinate) {
-    gameboard.receiveAttack(coordinate);
-    setMessage(()=>gameboard.attackInfo.message);
-    player.setShots(gameboard.attackInfo.shotHit, coordinate);
-}
+
 
 
 export default GameboardItem;

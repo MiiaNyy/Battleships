@@ -50,7 +50,7 @@ class Gameboard {
             this.hitShots.push(coordinate);
         } else {
             this.attackInfo.shotHit = false;
-            this.attackInfo.message = `Shot at ${ coordinate }. Didn't hit any ship`;
+            this.attackInfo.message = `${ this.name === 'Friendly' ? 'Enemy' : 'You'} shot at ${ coordinate }. Didn't hit any ship`;
             this.missedShots.push(coordinate);
         }
     }
@@ -65,8 +65,10 @@ class Gameboard {
         }
         return false;
     }
+
     getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate) {
-        const gotHitMessage = `Shot at ${ coordinate }.`;
+        const playerName = this.name === 'Friendly' ? 'Enemy' : 'You';
+        const gotHitMessage = `${ playerName } shot at ${ coordinate }.`;
         if ( shipSunk ) {
             if ( this.allShipHaveSunk ) {
                 return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit, sunk and now all the ships are sunk`;
@@ -78,8 +80,6 @@ class Gameboard {
         }
     }
 }
-
-
 
 
 function checkIfPositionIsEmpty(ships, coordinates) {
@@ -129,7 +129,6 @@ function getHorizontalPosition(ship, xPosition, yPosition, index) {
         return gridColumns[nextColumnIndex] + yPosition;
     }
 }
-
 
 
 export default Gameboard;
