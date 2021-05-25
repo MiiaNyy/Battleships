@@ -27,16 +27,14 @@ function GameContainer(props) {
     }, [gameMessage]);
 
     useEffect(()=>{
-        if ( humanPlayer.turn ) {
-            humanPlayer.turnOver();
-            enemyPlayer.startTurn();
+        // Human player starts.
+        if ( enemyPlayer.turn && humanPlayer.shotsFired > 0 ) {
             const coordinate = enemyPlayer.shootTheEnemy();
             humanBoard.receiveAttack(coordinate);
-
-            console.log('enemy has attacked player at ' + coordinate);
+            enemyPlayer.turnOver();
+            humanPlayer.startTurn();
+            setComputersTurn(false);
         }
-
-
     }, [computersTurn])
 
 

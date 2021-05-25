@@ -18,7 +18,7 @@ function GameboardItem(props) {
                     { cellIds.map((cell)=>{
                         return <GridCell key={ cell } setMessage={ props.setGameMessage }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         id={ cell } switchTurns={props.switchTurn}/>
+                                         id={ cell } switchTurns={ props.switchTurn }/>
                     }) }
                 </GameboardGrid>
             </div>
@@ -51,14 +51,17 @@ function GameSpecs(props) {
 }
 
 function GridCell(props) {
-    const [hitMarker, setHitMarker] = useState('');
-    const [hitPosition, setHitPosition] = useState(false);
+    /*const [hitMarker, setHitMarker] = useState('');
+    const [hitPosition, setHitPosition] = useState(false);*/
 
     const gameboard = props.playerGrid;
     const cellId = props.id;
     const thisIsEnemyCell = gameboard.name === 'Enemy';
     // If ships is in this position, color this cell different color
     const shipPosition = isShipInThisPosition(gameboard.shipsCoordinates, cellId);
+    const [hitPosition, hitMarker] = isThisPositionHit(gameboard, cellId);
+    const sunkShipPosition = isThereSunkShipInThisPosition(gameboard, cellId);
+
 
     function attackEnemy() {
         const human = props.players[0];
@@ -67,52 +70,58 @@ function GridCell(props) {
         const shotIsValid = human.shotIsValid(cellId);
 
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
-            attackIsValid(gameboard, human, props.setMessage, cellId, setHitPosition, setHitMarker)
+            attackIsValid(gameboard, human, props.setMessage, cellId);
+            human.turnOver();
+            computer.startTurn()
             props.switchTurns(true);
         } else {
             props.setMessage(()=>'Invalid shot, try again!');
         }
     }
 
-    function computerAttack(computer, human) {
-        const thisIsHumanCell = gameboard.name === 'Friendly';
-        const coordinate = computer.shootTheEnemy();
-
-        console.log('coordinate is ' + coordinate + ' this is human cell ' + thisIsHumanCell);
-
-       /* // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
-        const shotIsValid = computer.shotIsValid(coordinate);
-        console.log('enemy has attacked player at ' + coordinate);
-        if ( shotIsValid && thisIsHumanCell ) {
-            human.receiveAttack(coordinate);
-            attackIsValid(gameboard, computer, props.setMessage, coordinate, setHitPosition, setHitMarker)
-            computer.turnOver();
-            human.startTurn();
-
-
-        } else {
-            props.setMessage(()=>'Invalid shot, try again!');
-        }*/
-
-    }
-
-
     return (
         <Cell onClick={ ()=>attackEnemy() }
-              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } shipPosition={ shipPosition } id={ cellId }>
+              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } shipPosition={ shipPosition }
+              shipSunk={ sunkShipPosition } id={ cellId }>
             <p>{ hitMarker }</p>
         </Cell>
     )
 }
 
-function attackIsValid(gameboard, player, setMessage, coordinate, setPosition, setMarker) {
+function isThereSunkShipInThisPosition(gameboard, coordinate) {
+    const sunkenShips = gameboard.sunkenShips;
+    for (let i = 0; i < sunkenShips.length; i++) {
+        for (let j = 0; j < sunkenShips[i].length; j++) {
+            let ship = sunkenShips[i];
+            for (let k = 0; k < ship.position.length; k++) {
+                if ( ship.position[k] === coordinate ) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
+function isThisPositionHit(gameboard, coordinate) {
+    for (let i = 0; i < gameboard.missedShots.length; i++) {
+        if ( gameboard.missedShots[i] === coordinate ) {
+            return [true, 'X']
+        }
+    }
+    for (let i = 0; i < gameboard.hitShots.length; i++) {
+        if ( gameboard.hitShots[i] === coordinate ) {
+            return [true, '🔴']
+        }
+    }
+    return [false, ''];
+}
+
+
+function attackIsValid(gameboard, player, setMessage, coordinate) {
     gameboard.receiveAttack(coordinate);
     setMessage(()=>gameboard.attackInfo.message);
     player.setShots(gameboard.attackInfo.shotHit, coordinate);
-    setPosition(true);
-    setMarker(()=>{
-        return gameboard.attackInfo.shotHit ? '🔴' : 'X'
-    })
 }
 
 

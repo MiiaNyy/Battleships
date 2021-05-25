@@ -30,8 +30,6 @@ class Player {
             this.allMissedShots.push(coordinate);
         }
     }
-
-
     // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
     shotIsValid(coordinate) {
         for (let i = 0; i < this.allFiredShots.length; i++) {

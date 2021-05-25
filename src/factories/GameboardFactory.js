@@ -7,6 +7,7 @@ class Gameboard {
         this.shipsCoordinates = [];
         this.ships = [];
         this.missedShots = [];
+        this.hitShots = [];
         this.sunkenShips = [];
         this.allShipHaveSunk = false;
         this.attackInfo = {
@@ -46,6 +47,7 @@ class Gameboard {
             this.attackInfo.shotHit = true;
             const shipSunk = this.checkIfShipsSunk(shipThatGotHit);
             this.attackInfo.message = this.getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate);
+            this.hitShots.push(coordinate);
         } else {
             this.attackInfo.shotHit = false;
             this.attackInfo.message = `Shot at ${ coordinate }. Didn't hit any ship`;
