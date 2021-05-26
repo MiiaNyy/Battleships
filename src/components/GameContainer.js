@@ -23,26 +23,25 @@ function GameContainer(props) {
             setGameMessage(()=>{
                 return humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
             })
-        }, 500);
+        }, 1000);
         return ()=>clearTimeout(changeGameMessage);
     }, [gameMessage]);
 
     useEffect(()=>{
-        // Human player starts.
+        // Human starts
         if ( enemyPlayer.turn && humanPlayer.shotsFired > 0 ) {
-            // Take 3 seconds before attacking human board
             computerAttack()
         }
     }, [computersTurn])
 
     function computerAttack() {
+        // Take 3 seconds before attacking human board
         const computerTurn = setTimeout(()=>{
             shootEnemy();
             enemyPlayer.turnOver();
             humanPlayer.startTurn();
             setComputersTurn(false);
-
-        }, 500);
+        }, 3000);
         return ()=>clearTimeout(computerTurn);
     }
 
@@ -50,9 +49,7 @@ function GameContainer(props) {
         enemyPlayer.shootTheEnemy();
         const coordinate = enemyPlayer.shotCoordinate;
         attackIsValid(humanBoard, enemyPlayer, setGameMessage, coordinate);
-        console.log('enemy player all shots fired ' + enemyPlayer.allFiredShots)
-        console.log('enemy player all shots hit ' + enemyPlayer.allHitShots);
-        console.log('shooting at ' + coordinate);
+        console.log('shot at ' + coordinate);
     }
 
     return (
