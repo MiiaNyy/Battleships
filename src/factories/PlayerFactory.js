@@ -45,15 +45,15 @@ class Player {
     }
 
     addCoordinateToHitList(coordinate) {
-        // If hit list is empty
-        if ( this.allHitShots.length === 0 ) {
+        // coordinate is someones already hit coordinates neighbor
+        const coordinateIsNeighbor = checkIfCoordinateIsNeighbor(coordinate, this.allHitShots);
+
+        if ( this.allHitShots.length === 0 || coordinateIsNeighbor ) {
             this.allHitShots.push({
                 coordinate,
                 neighborCoordinateFound: false,
                 neighbors: getCoordinatesNeighbors(coordinate)
             });
-        } else {
-
         }
     }
 
@@ -115,6 +115,29 @@ class Player {
     }
 }
 
+function checkIfCoordinateIsNeighbor(coordinate, allHitShots) {
+    if ( allHitShots.length === 0 ) {
+        return false
+    }
+    for (let i = 0; i < allHitShots.length; i++) {
+        let hitCoordinate = allHitShots[i];
+        let coordinateNeighbors = hitCoordinate.neighbors;
+        // If neighbor has not yet been found, continue
+        if ( !hitCoordinate.neighborCoordinateFound ) {
+            for (let j = 0; j < coordinateNeighbors.length; j++) {
+                let neighbor = coordinateNeighbors[j];
+                if ( !neighbor.tried && neighbor.mark === coordinate ) {
+                    neighbor.tried = true;
+                    hitCoordinate.neighborCoordinateFound = true;
+                    return true
+                }
+            }
+        }
+
+    }
+    return false;
+}
+
 function getCoordinatesNeighbors(coordinate) {
     // neighbors: [{mark: 'b1', tried: false}]}]
     const neighbors = [];
@@ -124,11 +147,11 @@ function getCoordinatesNeighbors(coordinate) {
     const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark);
     const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark);
 
-    horizontalNeighbors.forEach((element) => {
+    horizontalNeighbors.forEach((element)=>{
         neighbors.push({mark: element, tried: false})
     })
 
-    verticalNeighbors.forEach((element) => {
+    verticalNeighbors.forEach((element)=>{
         neighbors.push({mark: element, tried: false})
     })
 
