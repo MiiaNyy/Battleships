@@ -52,9 +52,6 @@ function GameSpecs(props) {
 }
 
 function GridCell(props) {
-    /*const [hitMarker, setHitMarker] = useState('');
-    const [hitPosition, setHitPosition] = useState(false);*/
-
     const gameboard = props.playerGrid;
     const cellId = props.id;
     const thisIsEnemyCell = gameboard.name === 'Enemy';
