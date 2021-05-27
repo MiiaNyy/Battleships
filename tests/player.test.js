@@ -40,13 +40,13 @@ describe('Shooting enemy: ', () => {
 
     test('Shooting enemy with coordinate that is not null', () => {
         computer.shootTheEnemy();
-        expect(computer.shotCoordinate).not.toBeNull();
+        expect(computer.latestShotCoordinate).not.toBeNull();
     })
 
     test('Shooting enemy with coordinate that is done using a hint', () => {
         computer.setShots(true, 'd2');
         computer.shootTheEnemy();
-        expect(computer.shotCoordinate).not.toBeNull();
+        expect(computer.latestShotCoordinate).not.toBeNull();
     })
 })
 

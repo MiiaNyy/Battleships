@@ -12,7 +12,7 @@ function App() {
     const computer = new Player('computer', false);
 
     const playerGameboard = new Gameboard('Friendly');
-    const enemyGameboard = new Gameboard('Enemy');
+    const computerGameboard = new Gameboard('Enemy');
 
     playerGameboard.placeShip(shipTypes[0], 'a4', true);
     playerGameboard.placeShip(shipTypes[1], 'e3', false);
@@ -20,11 +20,11 @@ function App() {
     playerGameboard.placeShip(shipTypes[3], 'd6', false);
     playerGameboard.placeShip(shipTypes[4], 'i10', true);
 
-    enemyGameboard.placeShip(shipTypes[0], 'a2', true);
-    enemyGameboard.placeShip(shipTypes[1], 'f4', false);
-    enemyGameboard.placeShip(shipTypes[2], 'g6', true);
-    enemyGameboard.placeShip(shipTypes[3], 'd7', false);
-    enemyGameboard.placeShip(shipTypes[4], 'i9', true);
+    computerGameboard.placeShip(shipTypes[0], 'a2', true);
+    computerGameboard.placeShip(shipTypes[1], 'f4', false);
+    computerGameboard.placeShip(shipTypes[2], 'g6', true);
+    computerGameboard.placeShip(shipTypes[3], 'd7', false);
+    computerGameboard.placeShip(shipTypes[4], 'i9', true);
 
 
     return (
@@ -33,7 +33,7 @@ function App() {
                 <h1>Battleships</h1>
                 <p>Place your own ships on the map and try to sink your opponents ships to win</p>
             </header>
-            <GameContainer enemyPlayer={ [computer, enemyGameboard] } humanPlayer={ [player, playerGameboard] }/>
+            <GameContainer computerPlayer={ [computer, computerGameboard] } humanPlayer={ [player, playerGameboard] }/>
         </div>
     )
 }

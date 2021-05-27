@@ -10,12 +10,11 @@ function GameContainer(props) {
     const [gameMessage, setGameMessage] = useState('Welcome to the battleship game');
     const [computersTurn, setComputersTurn] = useState(false);
 
-
     const humanPlayer = props.humanPlayer[0];
-    const enemyPlayer = props.enemyPlayer[0];
-
     const humanBoard = props.humanPlayer[1];
-    const enemyBoard = props.enemyPlayer[1];
+
+    const computer = props.computerPlayer[0];
+    const computerBoard = props.computerPlayer[1];
 
     // Whenever gameMessage changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
@@ -29,7 +28,7 @@ function GameContainer(props) {
 
     useEffect(()=>{
         // Human starts
-        if ( enemyPlayer.turn && humanPlayer.shotsFired > 0 ) {
+        if ( computer.turn && humanPlayer.shotsFired > 0 ) {
             computerAttack()
         }
     }, [computersTurn])
@@ -38,7 +37,7 @@ function GameContainer(props) {
         // Take 3 seconds before attacking human board
         const computerTurn = setTimeout(()=>{
             shootEnemy();
-            enemyPlayer.turnOver();
+            computer.turnOver();
             humanPlayer.startTurn();
             setComputersTurn(false);
         }, 3000);
@@ -46,9 +45,9 @@ function GameContainer(props) {
     }
 
     function shootEnemy() {
-        enemyPlayer.shootTheEnemy();
-        const coordinate = enemyPlayer.shotCoordinate;
-        attackIsValid(humanBoard, enemyPlayer, setGameMessage, coordinate);
+        computer.shootTheEnemy();
+        const coordinate = computer.latestShotCoordinate;
+        attackIsValid(humanBoard, computer, setGameMessage, coordinate);
         console.log('shot at ' + coordinate);
     }
 
@@ -59,9 +58,9 @@ function GameContainer(props) {
             </div>
             <div className="flex">
                 <GameboardItem switchTurn={ setComputersTurn } setGameMessage={ setGameMessage }
-                               playerGrid={ humanBoard } humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
+                               playerGrid={ humanBoard } humanPlayer={ humanPlayer } enemyPlayer={ computer }/>
                 <GameboardItem switchTurn={ setComputersTurn } setGameMessage={ setGameMessage }
-                               playerGrid={ enemyBoard } humanPlayer={ humanPlayer } enemyPlayer={ enemyPlayer }/>
+                               playerGrid={ computerBoard } humanPlayer={ humanPlayer } enemyPlayer={ computer }/>
             </div>
         </GameContent>
     )

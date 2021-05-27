@@ -1,9 +1,11 @@
-import {
+/*import {
     getFirstCharacterFromHint,
     getRowCoordinate,
     getColumnCoordinate,
     isNumeric
 } from "../game_helpers/playerFactoryHelpers"
+import shipTypes from "../game_helpers/shipTypes";*/
+
 
 class Player {
     constructor(name, turn) {
@@ -12,9 +14,12 @@ class Player {
         this.shotsFired = 0;
         this.shotsReceived = 0;
         this.allMissedShots = [];
+        // list of obj, that has hit coordinate, and that coordinate all its neighbor coordinates.
+        // Example: [{coordinate: 'a1', neighborCoordinateFound: false, neighbors: [{mark: 'b1', tried: false}]}]
         this.allHitShots = [];
+        this.enemysSunkenShips = [] // coordinates of enemy's sunken ships
         this.allFiredShots = [];
-        this.shotCoordinate = '';
+        this.latestShotCoordinate = '';
         this.timesTriedToShootEnemy = 0;
     }
 
@@ -26,16 +31,29 @@ class Player {
         this.turn = true;
     }
 
-    setShots(attackHit, coordinate) {
+    setShots(attackHit, shipThatGotHit, coordinate) {
         this.shotsFired++;
         this.allFiredShots.push(coordinate);
         if ( attackHit ) {
-            this.allHitShots.push(coordinate);
+            //this.allHitShots.push(coordinate);
+            this.addCoordinateToHitList(coordinate);
             console.log(this.name + ' player all shots fired ' + this.allFiredShots)
-            console.log(this.name + ' player all shots hit ' + this.allHitShots);
 
         } else {
             this.allMissedShots.push(coordinate);
+        }
+    }
+
+    addCoordinateToHitList(coordinate) {
+        // If hit list is empty
+        if ( this.allHitShots.length === 0 ) {
+            this.allHitShots.push({
+                coordinate,
+                neighborCoordinateFound: false,
+                neighbors: getCoordinatesNeighbors(coordinate)
+            });
+        } else {
+
         }
     }
 
@@ -69,7 +87,7 @@ class Player {
             console.log('shot at coordinate ' + coordinate)
             this.timesTriedToShootEnemy = 0;
             this.shotsFired++;
-            this.shotCoordinate = coordinate;
+            this.latestShotCoordinate = coordinate;
         }
     }
 
@@ -97,5 +115,67 @@ class Player {
     }
 }
 
+function getCoordinatesNeighbors(coordinate) {
+    // neighbors: [{mark: 'b1', tried: false}]}]
+    const neighbors = [];
+    const horizontalMark = coordinate[0];
+    const verticalMark = Number(coordinate.substring(1)); // Take string without the first letter (could be 1-10)
+
+    const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark);
+    const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark);
+
+    horizontalNeighbors.forEach((element) => {
+        neighbors.push({mark: element, tried: false})
+    })
+
+    verticalNeighbors.forEach((element) => {
+        neighbors.push({mark: element, tried: false})
+    })
+
+    return neighbors
+}
+
+function getHorizontalNeighbors(horizontalMark, verticalMark) {
+
+    const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const columnIndex = columns.indexOf(horizontalMark);
+    // if coordinate is a/j (start/end columns), there is only one horizontal neighbor
+    if ( columnIndex === 0 ) {
+        return [columns[columnIndex + 1] + verticalMark]
+    } else if ( columnIndex === (columns.length - 1) ) {
+        return [columns[columnIndex - 1] + verticalMark]
+    } else {
+        return [columns[columnIndex - 1] + verticalMark, columns[columnIndex + 1] + verticalMark]
+    }
+}
+
+function getVerticalNeighbors(horizontalMark, verticalMark) {
+    if ( verticalMark === 1 ) {
+        return [horizontalMark + 2]
+    } else if ( verticalMark === 10 ) {
+        return [horizontalMark + 9]
+    } else {
+        return [horizontalMark + (verticalMark + 1), horizontalMark + (verticalMark - 1)]
+    }
+}
+
+let x = new Player('x', true);
+
+x.addCoordinateToHitList('g8');
 
 export default Player;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -91,34 +91,56 @@ describe('Placing ship ', ()=>{
 
 })
 
-describe('GameboardItem received attack', ()=>{
-    test('Two ships on board and neither got hit', ()=>{
-        let y = new Gameboard();
-        y.placeShip(shipTypes[0], 'a1', true)
-        y.placeShip(shipTypes[1], 'b1', true)
-        expect(y.receiveAttack('c1')).toBe(`Shot didn't hit any ship`)
+
+describe('Gameboard received attack and attack info is that: ', ()=>{
+    const enemy = new Gameboard('enemy')
+    enemy.placeShip(shipTypes[0], 'a2', true);
+    enemy.placeShip(shipTypes[1], 'f4', false);
+    enemy.placeShip(shipTypes[2], 'g6', true);
+    enemy.placeShip(shipTypes[3], 'd7', false);
+    enemy.placeShip(shipTypes[4], 'i9', true);
+
+    test('ship named CARRIER got hit', ()=>{
+        enemy.receiveAttack('a2');
+        expect(enemy.latestHitShipName).toBe('Carrier')
+        expect(enemy.didLatestShotHit).toBe(true);
+
     })
 
-    test('Two ships on board and second one got hit', ()=>{
-        let y = new Gameboard();
-        y.placeShip(shipTypes[0], 'a1', true)
-        y.placeShip(shipTypes[1], 'b1', true)
-        expect(y.receiveAttack('b1')).toBe(`Ship Battleship got hit`)
+    test('ship named BATTLESHIP got hit', ()=>{
+        enemy.receiveAttack('f4');
+        expect(enemy.latestHitShipName).toBe('Battleship');
+
+        expect(enemy.didLatestShotHit).toBe(true);
     })
 
-    test('Two ships on board and second one got hit and sunk', ()=>{
-        let y = new Gameboard();
-        y.placeShip(shipTypes[0], 'a1', true)
-        y.placeShip(shipTypes[4], 'b1', true)
-        expect(y.allShipHaveSunk).toBe(false)
-        expect(y.receiveAttack('b1')).toBe(`Ship Patrol Boat got hit and sunk`)
+    test('No ships got hit, and attack message is correct', ()=>{
+        enemy.receiveAttack('j10');
+        expect(enemy.didLatestShotHit).toBe(false);
+        expect(enemy.latestAttackInfoMsg).toBe('You shot at j10. Didn\'t hit any ship');
+
     })
 
-    test('One ship on board and got hit and sunk. Now all ships are sunk', ()=>{
-        let y = new Gameboard();
-        y.placeShip(shipTypes[4], 'b1', true)
-        expect(y.receiveAttack('b1')).toBe(`Ship Patrol Boat got hit, sunk and now all the ships are sunk`)
+})
+
+
+describe('Checking shots that have been shot at gameboard', ()=>{
+    const enemy = new Gameboard('enemy')
+    test('There has been 3 shots. One hit and two missed', ()=>{
+        enemy.placeShip(shipTypes[0], 'a2', true);
+        enemy.receiveAttack('a2');
+        enemy.receiveAttack('h10');
+        enemy.receiveAttack('j2');
+        expect(enemy.missedShots.length).toBe(2);
+        expect(enemy.hitShots.length).toBe(1);
     })
 
+    test('There is no sunken ships on gameboard', ()=>{
+        enemy.placeShip(shipTypes[0], 'a2', true);
+        enemy.receiveAttack('a2');
+        enemy.receiveAttack('h10');
+        enemy.receiveAttack('j2');
+        expect(enemy.sunkenShips.length).toBe(0);
 
+    })
 })
