@@ -35,12 +35,19 @@ class Player {
         this.turn = true;
     }
 
-    setShots(attackHit, coordinate) {
+    setShots(attackHit, shipThatGotHit, coordinate) {
         this.shotsFired++;
         this.allFiredShots.push(coordinate);
         if ( attackHit ) {
-            this.addCoordinateToFoundShipsList(coordinate);
             this.allHitShots++;
+            if ( shipThatGotHit.sunk ) {
+                console.log('ship sunk and now changing sunk status')
+                this.changeFoundShipsStatusToSunk(shipThatGotHit.position);
+            } else {
+                this.addCoordinateToFoundShipsList(coordinate);
+            }
+
+
             console.log(this.name + ' player all shots fired ' + this.allFiredShots)
 
         } else {
@@ -61,45 +68,65 @@ class Player {
         }
     }
 
-    // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
-    shotIsValid(coordinate) {
-        for (let i = 0; i < this.allFiredShots.length; i++) {
-            if ( this.allFiredShots[i] === coordinate ) {
-                return false
+    // computer attack hit ship and now it is sunk. Find that ship on the foundShips arr and change its status to
+    // shipSunk:true. Computer doesn't use any of its coordinates when shooting enemy
+    changeFoundShipsStatusToSunk(sunkenShipsCoordinates) {
+        for (let i = 0; i < this.foundShips.length; i++) {
+            const ship = this.foundShips[i];
+            for (let j = 0; j < ship.coordinates; j++) {
+                const coordinate = ship.coordinates[j];
+                for (let k = 0; k < sunkenShipsCoordinates.length; k++) {
+                    const sunkCoordinate = sunkenShipsCoordinates[k];
+                    if ( coordinate === sunkCoordinate ) {
+                        ship.shipSunk = true;
+                    }
+                }
             }
         }
-        return true
     }
 
-    // Computer uses this method. Human player chooses coordinate by clicking the cell.
-    shootTheEnemy() {
-        let coordinate = getCoordinateFromHitNeighbors(this.foundShips);
 
-        if ( coordinate === undefined ) {
-            console.log('giving random coordinate')
-            coordinate = getRandomCoordinate();
-        }
-        /* let coordinate;
- coordinate = this.foundShips.length === 0 ? getRandomCoordinate() : getCoordinateFromHitNeighbors(this.foundShips);*/
-        // timesTriedToSHootEnemy is fail safe, if getCoordinate don't give valid coordinate with a hint in 10 tries,
-        ///let coordinate = lastShotFired === lastShotHit && this.timesTriedToShootEnemy < 10 ?
-        // this.getCoordinate(lastShotFired) : this.getCoordinate();
-
-
-        if ( !this.shotIsValid(coordinate) ) {
-            console.log('shot at coordinate ' + coordinate + ' was not valid')
-            this.timesTriedToShootEnemy++;
-            this.shootTheEnemy();
-        } else {
-            console.log('shot at coordinate ' + coordinate)
-            this.timesTriedToShootEnemy = 0;
-            this.shotsFired++;
-            this.latestShotCoordinate = coordinate;
+// loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
+shotIsValid(coordinate)
+{
+    for (let i = 0; i < this.allFiredShots.length; i++) {
+        if ( this.allFiredShots[i] === coordinate ) {
+            return false
         }
     }
+    return true
+}
 
+// Computer uses this method. Human player chooses coordinate by clicking the cell.
+shootTheEnemy()
+{
+    let coordinate = getCoordinateFromHitNeighbors(this.foundShips);
+
+    if ( coordinate === undefined ) {
+        console.log('giving random coordinate')
+        coordinate = getRandomCoordinate();
+    }
+    /* let coordinate;
+coordinate = this.foundShips.length === 0 ? getRandomCoordinate() : getCoordinateFromHitNeighbors(this.foundShips);*/
+    // timesTriedToSHootEnemy is fail safe, if getCoordinate don't give valid coordinate with a hint in 10 tries,
+    ///let coordinate = lastShotFired === lastShotHit && this.timesTriedToShootEnemy < 10 ?
+    // this.getCoordinate(lastShotFired) : this.getCoordinate();
+
+
+    if ( !this.shotIsValid(coordinate) ) {
+        console.log('shot at coordinate ' + coordinate + ' was not valid')
+        this.timesTriedToShootEnemy++;
+        this.shootTheEnemy();
+    } else {
+        console.log('shot at coordinate ' + coordinate)
+        this.timesTriedToShootEnemy = 0;
+        this.shotsFired++;
+        this.latestShotCoordinate = coordinate;
+    }
+}
 
 }
+
 
 function getCoordinateFromHitNeighbors(foundShips) {
 

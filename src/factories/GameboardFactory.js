@@ -18,6 +18,7 @@ class Gameboard {
             message: '',
             shotHit: false,
             shipThatGotHit: {},
+            attackSunkAShip: false,
         };
     }
 
@@ -32,6 +33,18 @@ class Gameboard {
     get didLatestShotHit() {
         return this.attackInfo.shotHit;
     }
+
+    get infoAboutShipThatGotHit() {
+        // return coordinates from last sunkenShip
+        if ( this.attackInfo.attackSunkAShip ) {
+            const sunkenShipsCoordinates = this.sunkenShips[this.sunkenShips.length - 1].position;
+            return {sunk: this.attackInfo.attackSunkAShip, position: sunkenShipsCoordinates};
+        } else {
+            return {sunk: this.attackInfo.attackSunkAShip}
+        }
+
+    }
+
 
     placeShip(obj, coordinate, axelIsVertical) {
         let newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
@@ -50,12 +63,17 @@ class Gameboard {
     }
 
     receiveAttack(coordinate) {
+        let shipSunk = false;
         let attackMessage;
-        let [didShipGotHit, nameOfShipThatGotHit] = checkIfAnyShipGotHit(this.ships, coordinate);
+        let [didShipGotHit, shipThatGotHit] = checkIfAnyShipGotHit(this.ships, coordinate);
 
         if ( didShipGotHit ) {
-            const shipSunk = this.checkIfShipsSunk(nameOfShipThatGotHit);
-            attackMessage = this.getShipGotHitMessage(shipSunk, nameOfShipThatGotHit, coordinate);
+            shipSunk = this.checkIfShipsSunk(shipThatGotHit);
+            if ( shipSunk ) {
+                this.sunkenShips.push(shipThatGotHit);
+
+            }
+            attackMessage = this.getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate);
             didShipGotHit = true;
             this.hitShots.push(coordinate);
         } else {
@@ -63,12 +81,13 @@ class Gameboard {
             attackMessage = `${ this.name === 'Friendly' ? 'Enemy' : 'You' } shot at ${ coordinate }. Didn't hit any ship`;
             this.missedShots.push(coordinate);
         }
-        this.setInfoAboutTheAttack(attackMessage, didShipGotHit, nameOfShipThatGotHit)
+        this.setInfoAboutTheAttack(attackMessage, didShipGotHit, shipThatGotHit, shipSunk)
     }
 
-    setInfoAboutTheAttack(message, shotDidHit, shipThatGotHit) {
+    setInfoAboutTheAttack(message, shotDidHit, shipThatGotHit, shipSunk) {
         this.attackInfo.message = message;
         this.attackInfo.shotHit = shotDidHit;
+        this.attackInfo.attackSunkAShip = shipSunk;
         if ( shotDidHit ) {
             this.attackInfo.shipThatGotHit = {name: shipThatGotHit.name}
         }
