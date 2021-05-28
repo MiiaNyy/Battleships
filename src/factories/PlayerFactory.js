@@ -4,8 +4,10 @@
     getColumnCoordinate,
     isNumeric
 } from "../game_helpers/playerFactoryHelpers"
-import shipTypes from "../game_helpers/shipTypes";*/
+import shipTypes from "../game_helpers/shipTypes";
 
+
+import { isNumeric } from "../game_helpers/playerFactoryHelpers";*/
 
 class Player {
     constructor(name, turn) {
@@ -14,10 +16,12 @@ class Player {
         this.shotsFired = 0;
         this.shotsReceived = 0;
         this.allMissedShots = [];
-        // list of obj, that has hit coordinate, and that coordinate all its neighbor coordinates.
-        // Example: [{coordinate: 'a1', neighborCoordinateFound: false, neighbors: [{mark: 'b1', tried: false}]}]
-        this.allHitShots = [];
-        this.enemysSunkenShips = [] // coordinates of enemy's sunken ships
+        this.allHitShots = 0;
+        // list of ship objects, that is created when hit happens. It creates id, arr of coordinates that has been
+        // found and list of possible neighbors
+        // e.g: [{coordinates: ['a1'], shipSunk: false, neighbors: [{mark: 'b1', tried: false}, {mark: 'a1', tried: false}]}]
+        this.foundShips = [];
+        //this.enemy'sSunkenShips = [] // coordinates of enemy's sunken ships
         this.allFiredShots = [];
         this.latestShotCoordinate = '';
         this.timesTriedToShootEnemy = 0;
@@ -31,12 +35,12 @@ class Player {
         this.turn = true;
     }
 
-    setShots(attackHit, shipThatGotHit, coordinate) {
+    setShots(attackHit, coordinate) {
         this.shotsFired++;
         this.allFiredShots.push(coordinate);
         if ( attackHit ) {
-            //this.allHitShots.push(coordinate);
-            this.addCoordinateToHitList(coordinate);
+            this.addCoordinateToFoundShipsList(coordinate);
+            this.allHitShots++;
             console.log(this.name + ' player all shots fired ' + this.allFiredShots)
 
         } else {
@@ -44,14 +48,14 @@ class Player {
         }
     }
 
-    addCoordinateToHitList(coordinate) {
-        // coordinate is someones already hit coordinates neighbor
-        const coordinateIsNeighbor = checkIfCoordinateIsNeighbor(coordinate, this.allHitShots);
-
-        if ( this.allHitShots.length === 0 || coordinateIsNeighbor ) {
-            this.allHitShots.push({
-                coordinate,
-                neighborCoordinateFound: false,
+    addCoordinateToFoundShipsList(coordinate) {
+        // check if coordinate is neighbor to older hit coordinate. If false, create new foundShips item
+        const foundShipsNeighbor = checkIfCoordinateHitShipsNeighbor(coordinate, this.foundShips);
+        if ( !foundShipsNeighbor ) {
+            this.foundShips.push({
+                coordinates: [coordinate],
+                shipSunk: false,
+                sharedMark: undefined,
                 neighbors: getCoordinatesNeighbors(coordinate)
             });
         }
@@ -69,16 +73,19 @@ class Player {
 
     // Computer uses this method. Human player chooses coordinate by clicking the cell.
     shootTheEnemy() {
-        const lastShotFired = this.allFiredShots.slice(-1)[0];
-        const lastShotHit = this.allHitShots.slice(-1)[0];
-        // timesTriedToSHootEnemy is fail safe, if getCoordinate don't give valid coordinate with a hint in 10 tries,
-        // forget the hint and give random coordinate
-        let coordinate = lastShotFired === lastShotHit && this.timesTriedToShootEnemy < 10 ? this.getCoordinate(lastShotFired) : this.getCoordinate();
+        let coordinate = getCoordinateFromHitNeighbors(this.foundShips);
 
-        if ( !isNaN(coordinate) ) {
-            console.error(coordinate + 'coordinate was nan')
-            //coordinate = this.getCoordinate();
+        if ( coordinate === undefined ) {
+            console.log('giving random coordinate')
+            coordinate = getRandomCoordinate();
         }
+        /* let coordinate;
+ coordinate = this.foundShips.length === 0 ? getRandomCoordinate() : getCoordinateFromHitNeighbors(this.foundShips);*/
+        // timesTriedToSHootEnemy is fail safe, if getCoordinate don't give valid coordinate with a hint in 10 tries,
+        ///let coordinate = lastShotFired === lastShotHit && this.timesTriedToShootEnemy < 10 ?
+        // this.getCoordinate(lastShotFired) : this.getCoordinate();
+
+
         if ( !this.shotIsValid(coordinate) ) {
             console.log('shot at coordinate ' + coordinate + ' was not valid')
             this.timesTriedToShootEnemy++;
@@ -91,58 +98,124 @@ class Player {
         }
     }
 
-    getCoordinate(hint) {
-        const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-        if ( hint ) {
-            console.log('inside get coordinate with hint');
-            return this.getCoordinateWithAHint(hint);
-        } else {
-            const columnIndex = Math.floor(Math.random() * 9);
-            const rowIndex = (Math.floor(Math.random() * 9)) + 1;
-            return gridColumns[columnIndex] + rowIndex;
-        }
-    }
 
-    getCoordinateWithAHint(hint) {
-        let firstCharacter = getFirstCharacterFromHint(hint, this.allHitShots);
-        if ( isNumeric(firstCharacter) ) {
-            // first character is row/horizontal coordinate and we need to get vertical (alphabet) coordinate
-            return getColumnCoordinate(hint) + firstCharacter;
-        } else {
-            // first character is column/vertical, we need to get horizontal/row (number) coordinate
-            return firstCharacter + getRowCoordinate(hint);
-        }
-    }
 }
 
-function checkIfCoordinateIsNeighbor(coordinate, allHitShots) {
-    if ( allHitShots.length === 0 ) {
-        return false
-    }
-    for (let i = 0; i < allHitShots.length; i++) {
-        let hitCoordinate = allHitShots[i];
-        let coordinateNeighbors = hitCoordinate.neighbors;
-        // If neighbor has not yet been found, continue
-        if ( !hitCoordinate.neighborCoordinateFound ) {
-            for (let j = 0; j < coordinateNeighbors.length; j++) {
-                let neighbor = coordinateNeighbors[j];
-                if ( !neighbor.tried && neighbor.mark === coordinate ) {
-                    neighbor.tried = true;
-                    hitCoordinate.neighborCoordinateFound = true;
-                    return true
-                }
+function getCoordinateFromHitNeighbors(foundShips) {
+
+    for (let i = 0; i < foundShips.length; i++) {
+        const neighborCoordinates = foundShips[i].neighbors; // Example:  neighbors:[{mark: 'b1', tried: false}]}
+        for (let j = 0; j < neighborCoordinates.length; j++) {
+            const neighbor = neighborCoordinates[j];
+            if ( !neighbor.tried ) {
+                console.log('giving coordinate from neighbor')
+                neighbor.tried = true;
+                return neighbor.mark
             }
         }
 
     }
+    return getRandomCoordinate();
+}
+
+function getRandomCoordinate() {
+    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const columnIndex = Math.floor(Math.random() * 9);
+    const rowIndex = (Math.floor(Math.random() * 9)) + 1;
+    return gridColumns[columnIndex] + rowIndex;
+
+}
+
+function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips) {
+
+    for (let i = 0; i < foundShips.length; i++) {
+        const ship = foundShips[i]; // Example: {coordinate: ['a1'], shipSunk: false, neighbors: [{mark:
+        // 'b1', tried: false}]}
+
+        const shipsNeighbors = ship.neighbors; // list of possible next coordinates where ship is
+        if ( !ship.shipSunk ) { // If ship is sunk, jump over this one
+            break;
+        } else {
+            for (let j = 0; j < shipsNeighbors.length; j++) {
+                let neighborCoordinate = shipsNeighbors[j];
+                if ( neighborCoordinate.mark === coordinate ) {
+                    ship.coordinates.push(coordinate); // add this coordinate to ship obj
+                    modifyShipsNeighborList(ship, coordinate, j, ship.neighbors);
+                    return true;
+                }
+            }
+        }
+    }
     return false;
 }
 
+function modifyShipsNeighborList(ship, coordinate, currentIndex, shipsNeighbors) {
+
+    shipsNeighbors.splice(currentIndex, 1); // remove this coordinate from possible neighbors
+    if ( ship.sharedMark === undefined ) { // check if ships direction has been found yet
+        ship.sharedMark = getShipsDirection(ship.coordinates);
+        // delete all of the neighbors that do not share the shared mark
+        removeRedundantNeighbors(shipsNeighbors, ship.sharedMark)
+    }
+    // add new possible neighbors to neighbors arr
+    const newNeighbor = getNewNeighborsWithSharedMark(coordinate, ship.sharedMark, ship.coordinates)
+    shipsNeighbors.push(newNeighbor);
+}
+
+function removeRedundantNeighbors(shipsNeighbors, sharedMark) {
+    for (let i = 0; i < shipsNeighbors.length; i++) { // all of the possible hit coordinates, near older hit coordinate
+        const currentNeighbor = shipsNeighbors[i].mark;
+        const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(currentNeighbor);
+        if ( horizontalMark !== sharedMark && verticalMark !== sharedMark ) {
+            shipsNeighbors.splice(i, 1);
+        }
+    }
+}
+
+
+function getNewNeighborsWithSharedMark(coordinate, sharedMark, shipsCoordinates) {
+    const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
+
+    let possibleNeighbors;
+    let neighbors = [];
+
+    if ( isNumeric(sharedMark) ) { // e.g sharedMark = 1/ sharedMark is verticalMark
+        possibleNeighbors = getHorizontalNeighbors(horizontalMark, sharedMark);
+    } else {
+        possibleNeighbors = getVerticalNeighbors(sharedMark, verticalMark);
+    }
+
+    for (let i = 0; i < shipsCoordinates.length; i++) { // all of the coordinates that already has been hit/found
+        for (let j = 0; j < possibleNeighbors.length; j++) {
+            if ( shipsCoordinates[i] !== possibleNeighbors[j] ) {
+                neighbors.push({mark: possibleNeighbors[j], tried: false})
+            }
+        }
+    }
+    return neighbors;
+}
+
+function getHorizontalAndVerticalMark(coordinate) {
+    return [coordinate[0], Number(coordinate.substring(1))];
+}
+
+function getShipsDirection(shipsCoordinates) {
+    const coordinateOne = shipsCoordinates[0];
+    const coordinateTwo = shipsCoordinates[1];
+
+    const coordinateOneHorizontal = coordinateOne[0]; // alphabet
+    const coordinateOneVertical = Number(coordinateOne.substring(1)); // number
+
+    const coordinateTwoHorizontal = coordinateTwo[0];
+    // if horizontal coordinates not the same, we can assume that vertical coordinate is same in both
+    return coordinateOneHorizontal === coordinateTwoHorizontal ? coordinateOneHorizontal : coordinateOneVertical;
+
+}
+
+
 function getCoordinatesNeighbors(coordinate) {
-    // neighbors: [{mark: 'b1', tried: false}]}]
-    const neighbors = [];
-    const horizontalMark = coordinate[0];
-    const verticalMark = Number(coordinate.substring(1)); // Take string without the first letter (could be 1-10)
+    const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
+    const neighbors = []; // Example neighbors: [{mark: 'b1', tried: false}]}]
 
     const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark);
     const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark);
@@ -159,7 +232,6 @@ function getCoordinatesNeighbors(coordinate) {
 }
 
 function getHorizontalNeighbors(horizontalMark, verticalMark) {
-
     const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     const columnIndex = columns.indexOf(horizontalMark);
     // if coordinate is a/j (start/end columns), there is only one horizontal neighbor
@@ -182,9 +254,11 @@ function getVerticalNeighbors(horizontalMark, verticalMark) {
     }
 }
 
-let x = new Player('x', true);
+function isNumeric(num) {
+    return !isNaN(num)
+}
 
-x.addCoordinateToHitList('g8');
+getNewNeighborsWithSharedMark('b1', '1', ['a1'])
 
 export default Player;
 

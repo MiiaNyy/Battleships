@@ -22,7 +22,7 @@ function GameContainer(props) {
             setGameMessage(()=>{
                 return humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
             })
-        }, 1000);
+        }, 500);
         return ()=>clearTimeout(changeGameMessage);
     }, [gameMessage]);
 
@@ -40,7 +40,7 @@ function GameContainer(props) {
             computer.turnOver();
             humanPlayer.startTurn();
             setComputersTurn(false);
-        }, 3000);
+        }, 500);
         return ()=>clearTimeout(computerTurn);
     }
 
@@ -48,7 +48,6 @@ function GameContainer(props) {
         computer.shootTheEnemy();
         const coordinate = computer.latestShotCoordinate;
         attackIsValid(humanBoard, computer, setGameMessage, coordinate);
-        console.log('shot at ' + coordinate);
     }
 
     return (
