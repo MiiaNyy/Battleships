@@ -35,7 +35,7 @@ function GameSpecs(props) {
         return (
             <div className="game-specs__container">
                 <h3>Specs</h3>
-                <p className="row">All shots fired: <strong>{ player.shotsFired }</strong></p>
+                <p className="row">All shots fired: <strong>{ player.allFiredShots.length }</strong></p>
                 <p className="row">Shots hit: <strong>{ player.allHitShots }</strong></p>
                 <p className="row">Shots missed: <strong>{ player.allMissedShots.length }</strong></p>
                 <p className="row">Shots received: <strong>{ player.shotsReceived }</strong></p>

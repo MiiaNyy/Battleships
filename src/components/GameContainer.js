@@ -28,7 +28,7 @@ function GameContainer(props) {
 
     useEffect(()=>{
         // Human starts
-        if ( computer.turn && humanPlayer.shotsFired > 0 ) {
+        if ( computer.turn && humanPlayer.allFiredShots.length > 0 ) {
             computerAttack()
         }
     }, [computersTurn])

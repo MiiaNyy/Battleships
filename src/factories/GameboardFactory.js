@@ -69,10 +69,6 @@ class Gameboard {
 
         if ( didShipGotHit ) {
             shipSunk = this.checkIfShipsSunk(shipThatGotHit);
-            if ( shipSunk ) {
-                this.sunkenShips.push(shipThatGotHit);
-
-            }
             attackMessage = this.getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate);
             didShipGotHit = true;
             this.hitShots.push(coordinate);
