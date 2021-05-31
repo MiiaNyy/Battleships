@@ -29,22 +29,18 @@ function GameContainer(props) {
     useEffect(()=>{
         // Human starts
         if ( computer.turn && humanPlayer.allFiredShots.length > 0 ) {
-            computerAttack()
+            // Take 3 seconds before attacking human board
+            const computerTurn = setTimeout(()=>{
+                computerShootsEnemy();
+                computer.turnOver();
+                humanPlayer.startTurn();
+                setComputersTurn(false);
+            }, 500);
+            return ()=>clearTimeout(computerTurn);
         }
     }, [computersTurn])
 
-    function computerAttack() {
-        // Take 3 seconds before attacking human board
-        const computerTurn = setTimeout(()=>{
-            shootEnemy();
-            computer.turnOver();
-            humanPlayer.startTurn();
-            setComputersTurn(false);
-        }, 500);
-        return ()=>clearTimeout(computerTurn);
-    }
-
-    function shootEnemy() {
+    function computerShootsEnemy() {
         computer.shootTheEnemy();
         const coordinate = computer.latestShotCoordinate;
         attackIsValid(humanBoard, computer, setGameMessage, coordinate);

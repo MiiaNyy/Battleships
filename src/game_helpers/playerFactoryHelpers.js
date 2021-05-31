@@ -1,81 +1,137 @@
-function getFirstCharacterFromHint(hint, allShotsHit) {
-    let character;
-    // If there is more than one hit, compare last and second to last hits for a another hint
-    if ( allShotsHit.length >= 2 ) {
-        console.log('comparing last hits')
-        character = compareLastHitsForHint(allShotsHit);
-    }
-    // If comparing last hits was unsuccessful, or less than 2 items in hit list, return first character at random
-    if ( !character || allShotsHit.length < 2 ) {
-        // second argument could be double digit, that's why cannot use .split when changing string to arr
-        let hintToArr = [hint.charAt(0), hint.substring(1)];
-        character = hintToArr[Math.floor(Math.random() * 2)];
-    }
-    console.log('character is ' + character)
-    return character;
-}
-
-function compareLastHitsForHint(allShotsThatHit) {
-    // Take second to last and last item from allShotsThatHit and change them to array
-    const nextToLastShotHit = allShotsThatHit.slice(-2)[0];
-    const lastShotHit = allShotsThatHit.slice(-1)[0];
-    for (let i = 0; i < lastShotHit.length; i++) {
-        if ( lastShotHit[i] === nextToLastShotHit[i] ) {
-            console.log('comparing last hits successful. hint is ' + lastShotHit[i])
-            return lastShotHit[i];
+// If there is older hits, check that neighbor coordinate for new coordinate
+function getCoordinateFromOlderHit(foundShips) {
+    for (let i = 0; i < foundShips.length; i++) {
+        const neighborCoordinates = foundShips[i].neighbors; // Example:  neighbors:[{mark: 'b1', tried: false}]}
+        if ( !foundShips[i].shipSunk ) { // if ship is not sunk
+            for (let j = 0; j < neighborCoordinates.length; j++) {
+                const neighbor = neighborCoordinates[j];
+                if ( !neighbor.tried ) {
+                    neighbor.tried = true;
+                    return neighbor.mark
+                }
+            }
         }
+
     }
 }
 
-function getRowCoordinate(hint) {
-    // Remove first character (alphabet) and change rest to numbers
-    let rowNumber = Number(hint.substring(1));
-    // We want number one bigger or one smaller than row number at hint.
-    if ( (Math.floor(Math.random() * 2)) !== 0 ) {
-        rowNumber--;
-        if ( rowNumber <= 0 ) {
-            rowNumber = 2;
-        }
-    } else {
-        rowNumber++;
-        if ( rowNumber > 10 ) {
-            rowNumber = 9;
-        }
-    }
-    return rowNumber;
-}
-
-function getColumnCoordinate(hint) {
+function getRandomCoordinate() {
     const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-    const columnIndex = gridColumns.indexOf(hint[0]);
-    let randomNum = Math.floor(Math.random() * 2);
-    let index;
-    // We need to get one index smaller/bigger index from columns than in hint at random.
-    // if random number is not 0 index is greater, if more than 0, index is smaller than column index
-    if ( randomNum !== 0 ) {
-        index = columnIndex + 1;
-        // Fail safe, if index is bigger than length give smaller index
-        if ( index >= gridColumns.length ) {
-            index = columnIndex - 1;
-        }
-    } else {
-        index = columnIndex - 1;
-        if ( index < 0 ) {
-            index = columnIndex + 1
-        }
-    }
-    console.log('index is ' + index)
-    return gridColumns[index];
+    const columnIndex = Math.floor(Math.random() * 9);
+    const rowIndex = (Math.floor(Math.random() * 9)) + 1;
+    return gridColumns[columnIndex] + rowIndex;
 }
 
+function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips) {
+    for (let i = 0; i < foundShips.length; i++) {
+        const ship = foundShips[i];
+        if ( !ship.shipSunk ) {
+            const shipsNeighbors = ship.neighbors; // list of possible next coordinates where ship is
+            for (let j = 0; j < shipsNeighbors.length; j++) {
+                let neighborCoordinate = shipsNeighbors[j];
+                if ( neighborCoordinate.mark === coordinate ) {
+                    ship.coordinates.push(coordinate); // add this coordinate to ship obj
+                    modifyShipsNeighborList(ship, coordinate, j, ship.neighbors);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function getCoordinatesNeighbors(coordinate) {
+    const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
+    const neighbors = []; // Example neighbors: [{mark: 'b1', tried: false}]}]
+
+    const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark);
+    const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark);
+
+    horizontalNeighbors.forEach((element)=>{
+        neighbors.push({mark: element, tried: false})
+    })
+
+    verticalNeighbors.forEach((element)=>{
+        neighbors.push({mark: element, tried: false})
+    })
+
+    return neighbors
+}
+
+function modifyShipsNeighborList(ship, coordinate, currentIndex, shipsNeighbors) {
+    if ( ship.sharedMark === undefined ) { // check if ships direction has been found yet
+        ship.sharedMark = getShipsDirection(ship.coordinates);
+        console.log('ships shared mark is ' + ship.sharedMark);
+        removeRedundantNeighbors(shipsNeighbors, ship.sharedMark) // delete all the neighbors that don't have sharedMark
+    }
+    // add new possible neighbors to neighbors arr
+    const newNeighbors = getNewNeighborsWithSharedMark(coordinate, ship.sharedMark, ship.coordinates);
+    newNeighbors.forEach((mark)=>shipsNeighbors.push({mark: mark, tried: false}))
+    shipsNeighbors.forEach((ship)=>console.log('ship neighbor coordinates are ' + ship.mark + ' tried: ' + ship.tried))
+}
+
+function removeRedundantNeighbors(shipsNeighbors, sharedMark) {
+    for (let i = shipsNeighbors.length - 1; i >= 0; i--) {
+        const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(shipsNeighbors[i].mark);
+        if ( horizontalMark !== sharedMark && verticalMark !== sharedMark ) {
+            console.log('removing redundant neighbor: ' + shipsNeighbors[i].mark)
+            shipsNeighbors.splice(i, 1);
+        }
+    }
+}
+
+function getNewNeighborsWithSharedMark(coordinate, sharedMark, shipsCoordinates) {
+    const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
+    const possibleNeighbors = isNumeric(sharedMark) ? getHorizontalNeighbors(horizontalMark, sharedMark) : getVerticalNeighbors(sharedMark, verticalMark);
+
+    // Remove coordinate if it's in shipsCoordinates and return other coordinates to neighbors
+    const neighbors = possibleNeighbors.filter(coordinate=>!shipsCoordinates.includes(coordinate));
+    return neighbors.filter((item, index)=>neighbors.indexOf(item) === index); // Removes any duplicates
+}
+
+function getShipsDirection(shipsCoordinates) {
+    const coordinateOneHorizontal = shipsCoordinates[0][0]; // alphabet
+    const coordinateOneVertical = Number(shipsCoordinates[0].substring(1)); // number
+    const coordinateTwoHorizontal = shipsCoordinates[1][0];
+    // if horizontal coordinates aren't the same, we can assume that vertical coordinate is same in both
+    return coordinateOneHorizontal === coordinateTwoHorizontal ? coordinateOneHorizontal : coordinateOneVertical;
+
+}
+
+function getHorizontalNeighbors(horizontalMark, verticalMark) {
+    const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const columnIndex = columns.indexOf(horizontalMark);
+    // if coordinate is a/j (start/end columns), there is only one horizontal neighbor
+    if ( columnIndex === 0 ) {
+        return [columns[columnIndex + 1] + verticalMark]
+    } else if ( columnIndex === (columns.length - 1) ) {
+        return [columns[columnIndex - 1] + verticalMark]
+    } else {
+        return [columns[columnIndex - 1] + verticalMark, columns[columnIndex + 1] + verticalMark]
+    }
+}
+
+function getVerticalNeighbors(horizontalMark, verticalMark) {
+    if ( verticalMark === 1 ) {
+        return [horizontalMark + 2]
+    } else if ( verticalMark === 10 ) {
+        return [horizontalMark + 9]
+    } else {
+        return [horizontalMark + (verticalMark + 1), horizontalMark + (verticalMark - 1)]
+    }
+}
+
+function getHorizontalAndVerticalMark(coordinate) {
+    return [coordinate[0], Number(coordinate.substring(1))];
+}
 
 function isNumeric(num) {
     return !isNaN(num)
 }
 
 export {
-    getFirstCharacterFromHint,
-    getRowCoordinate,
-    getColumnCoordinate,
-    isNumeric
+    getCoordinateFromOlderHit,
+    getRandomCoordinate,
+    checkIfCoordinateHitShipsNeighbor,
+    getCoordinatesNeighbors,
 }
