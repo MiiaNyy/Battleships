@@ -20,17 +20,56 @@ const GameboardGrid = styled.div`
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
   background-color: ${ props=>props.shipPosition ? "#878787" : props.shipSunk ? "red" : "inherit" };
-  cursor:  ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
+  cursor: ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
   text-align: center;
+
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;
     font-size: 1.3rem;
-}
+  }
+`;
+
+
+const MessageContainer = styled.div`
+  position: fixed;
+  width: 90%;
+  max-width: 650px;
+  padding: 1em 1em 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 10px ridge #3f4238;
+  background-color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+
+
+  & > h2 {
+    font-weight: 400;
+    text-align: center;
+    font-size: 2rem;
+    text-decoration: underline;
+    color: #414959;
+    margin: 0;
+    @media (min-width: 500px) {
+      font-size: 3rem;
+    }
+  }
+
+  & > p {
+    margin: 1em 0;
+    font-family: 'Special Elite', cursive;
+  }
+
+  & > button {
+    background-color: #6d7892;
+    margin: 1em 0;
+  }
 `;
 
 export {
     GameboardGrid,
     GameContent,
     Cell,
+    MessageContainer,
 }

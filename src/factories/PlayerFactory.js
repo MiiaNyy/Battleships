@@ -6,9 +6,9 @@ import {
 } from "../game_helpers/playerFactoryHelpers";
 
 class Player {
-    constructor(name, turn) {
+    constructor(name) {
         this.name = name;
-        this.turn = turn;
+        this.turn = false;
         this.shotsReceived = 0;
         this.allHitShots = 0;
         // array of ship objects, that is created when hit happens in the enemy board. Includes coordinates that have
@@ -25,6 +25,10 @@ class Player {
 
     startTurn() {
         this.turn = true;
+    }
+
+    firstShotFired() { // tells if first shot is fired
+        return this.allFiredShots.length > 0;
     }
 
     // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)

@@ -8,11 +8,13 @@ import shipTypes from "../game_helpers/shipTypes";
 
 function App() {
 
-    const player = new Player('player', true);
-    const computer = new Player('computer', false);
+    const player = new Player('player');
+    const computer = new Player('computer');
 
     const playerGameboard = new Gameboard('Friendly');
     const computerGameboard = new Gameboard('Enemy');
+
+    player.startTurn()
 
     playerGameboard.placeShip(shipTypes[0], 'a4', true);
     playerGameboard.placeShip(shipTypes[1], 'e3', false);
@@ -20,10 +22,10 @@ function App() {
     playerGameboard.placeShip(shipTypes[3], 'd6', false);
     playerGameboard.placeShip(shipTypes[4], 'i10', true);
 
-    computerGameboard.placeShip(shipTypes[0], 'a2', true);
-    computerGameboard.placeShip(shipTypes[1], 'f4', false);
-    computerGameboard.placeShip(shipTypes[2], 'g6', true);
-    computerGameboard.placeShip(shipTypes[3], 'd7', false);
+    /*    computerGameboard.placeShip(shipTypes[0], 'a2', true);
+        computerGameboard.placeShip(shipTypes[1], 'f4', false);
+        computerGameboard.placeShip(shipTypes[2], 'g6', true);
+        computerGameboard.placeShip(shipTypes[3], 'd7', false);*/
     computerGameboard.placeShip(shipTypes[4], 'i9', true);
 
 

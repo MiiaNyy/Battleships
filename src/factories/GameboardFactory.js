@@ -22,6 +22,10 @@ class Gameboard {
         };
     }
 
+    get gameOver() {
+        return this.allShipHaveSunk;
+    }
+
     get latestHitShipName() {
         return this.attackInfo.shipThatGotHit.name;
     }

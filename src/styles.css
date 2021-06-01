@@ -26,6 +26,17 @@ img {
 
 button {
     cursor: pointer;
+    font-family: 'Wallpoet', cursive;
+    font-size: 1rem;
+    border: 3px groove #3f4238;
+    padding: 0.5em 1em;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -74,12 +85,6 @@ header {
     justify-content: space-between;
 }
 
-
-
-
-.friendly-gameboard {
-
-}
 
 
 

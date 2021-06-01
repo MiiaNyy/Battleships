@@ -6,8 +6,8 @@ import { Cell, GameboardGrid } from "./Styles/game";
 
 function GameboardItem(props) {
     const cellIds = getGridCellIds();
-    const humanPlayer = props.humanPlayer;
-    const computerPlayer = props.enemyPlayer;
+    const humanPlayer = props.players[0];
+    const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
 
     return (
@@ -17,9 +17,13 @@ function GameboardItem(props) {
                 <h2>{ playerGrid.name } waters</h2>
                 <GameboardGrid>
                     { cellIds.map((cell)=>{
-                        return <GridCell key={ cell } setMessage={ props.setGameMessage }
+                        return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         id={ cell } switchTurns={ props.switchTurn }/>
+                                         gameOver={ props.gameOver }/>
+                        /*return <GridCell key={ cell } setMessage={ props.setGameMessage }
+                                         players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
+                                         id={ cell } switchTurns={ props.switchTurn }
+                                         gameOver={ props.gameOver }/>*/
                     }) }
                 </GameboardGrid>
             </div>
@@ -54,6 +58,13 @@ function GameSpecs(props) {
 function GridCell(props) {
     const gameboard = props.playerGrid;
     const cellId = props.id;
+
+    const setGameOver = props.gameOver[1];
+    const gameIsOver = props.gameOver[0];
+    const setGameDescription = props.gameHandlers[1];
+    const switchTurns = props.gameHandlers[0];
+
+
     const thisIsEnemyCell = gameboard.name === 'Enemy';
     // If ships is in this position, color this cell different color
     const shipPosition = isShipInThisPosition(gameboard.shipsCoordinates, cellId);
@@ -68,12 +79,14 @@ function GridCell(props) {
         const shotIsValid = human.shotIsValid(cellId);
 
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
-            attackIsValid(gameboard, human, props.setMessage, cellId);
-            human.turnOver();
-            computer.startTurn()
-            props.switchTurns(true);
+            attackIsValid(gameboard, human, cellId, setGameDescription, setGameOver);
+            if ( !gameIsOver ) {
+                human.turnOver();
+                computer.startTurn()
+                switchTurns(true);
+            }
         } else {
-            props.setMessage(()=>'Invalid shot, try again!');
+            setGameDescription(()=>'Invalid shot, try again!');
         }
     }
 
@@ -114,9 +127,6 @@ function isThisPositionHit(gameboard, coordinate) {
     }
     return [false, ''];
 }
-
-
-
 
 
 export default GameboardItem;
