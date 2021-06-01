@@ -60,7 +60,6 @@ h2 {
 }
 
 
-
 header {
     margin: 1em auto 2em;
     padding: 1em;
@@ -86,8 +85,6 @@ header {
 }
 
 
-
-
 .game-info {
     width: 100%;
     max-width: 800px;
@@ -108,14 +105,44 @@ header {
     background-color: #878787;
 }
 
-
-.game-specs__container {
-    padding: 1em;
-    margin: 0;
-    border: 10px #585858 ridge;
-    font-size: 0.9rem;
-    background-color: #a5a5a5;
+.ship__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    margin-bottom: 1em;
 }
+
+.ship__container p {
+    align-self: center;
+}
+
+
+
+/* Ship when user selecting ships position */
+
+.ship {
+    display: flex;
+}
+
+.ship__cell {
+    width: 35px;
+    height: 35px;
+    background-color: #494949; /* different color depending on ship? */
+    border: 1px solid black;
+}
+
+.select__grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    min-width: 350px;
+    height: 350px;
+    background-color: #cad9e5;
+}
+
+
+
+
 
 @media (min-width: 900px) {
     .flex {

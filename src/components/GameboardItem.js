@@ -2,7 +2,7 @@ import React from 'react';
 import attackIsValid from "./helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
 
-import { Cell, GameboardGrid } from "./Styles/game";
+import { Cell, GameboardGrid, Sidebar } from "./Styles/game";
 
 function GameboardItem(props) {
     const cellIds = getGridCellIds();
@@ -20,10 +20,6 @@ function GameboardItem(props) {
                         return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
                                          gameOver={ props.gameOver }/>
-                        /*return <GridCell key={ cell } setMessage={ props.setGameMessage }
-                                         players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         id={ cell } switchTurns={ props.switchTurn }
-                                         gameOver={ props.gameOver }/>*/
                     }) }
                 </GameboardGrid>
             </div>
@@ -37,7 +33,7 @@ function GameSpecs(props) {
 
     if ( playerGrid.name === 'Friendly' ) {
         return (
-            <div className="game-specs__container">
+            <Sidebar>
                 <h3>Specs</h3>
                 <p className="row">All shots fired: <strong>{ player.allFiredShots.length }</strong></p>
                 <p className="row">Shots hit: <strong>{ player.allHitShots }</strong></p>
@@ -48,7 +44,7 @@ function GameSpecs(props) {
                 <p className="row">Remaining: <strong>{ (playerGrid.ships.length) - (playerGrid.sunkenShips.length) }</strong>
                 </p>
                 <p className="row">Sunk: <strong> { playerGrid.sunkenShips.length } </strong></p>
-            </div>
+            </Sidebar>
         )
     } else {
         return <></>
@@ -63,7 +59,6 @@ function GridCell(props) {
     const gameIsOver = props.gameOver[0];
     const setGameDescription = props.gameHandlers[1];
     const switchTurns = props.gameHandlers[0];
-
 
     const thisIsEnemyCell = gameboard.name === 'Enemy';
     // If ships is in this position, color this cell different color

@@ -67,9 +67,20 @@ const MessageContainer = styled.div`
   }
 `;
 
+const Sidebar = styled.div`
+  padding: 1em;
+  margin: 0;
+  border: 10px #585858 ridge;
+  font-size: 0.9rem;
+  background-color: #a5a5a5;
+  width: 100%;
+  max-width: 350px;
+`;
+
 export {
     GameboardGrid,
     GameContent,
     Cell,
+    Sidebar,
     MessageContainer,
 }
