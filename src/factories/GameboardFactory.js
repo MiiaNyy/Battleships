@@ -9,6 +9,7 @@ class Gameboard {
     constructor(name) {
         this.name = name;
         this.shipsCoordinates = [];
+        this.latestShipPlaced = [];
         this.ships = [];
         this.missedShots = [];
         this.hitShots = [];
@@ -60,6 +61,7 @@ class Gameboard {
                 newShip.setPosition = coordinates;
                 this.shipsCoordinates.push(coordinates);
                 this.ships.push(newShip);
+                this.latestShipPlaced = coordinates;
                 return 'placing ship was successful'
             }
         }
