@@ -140,7 +140,14 @@ header {
     background-color: #cad9e5;
 }
 
+.btn-container {
+    text-align: center;
+    margin: 1.5em 0 2em;
+}
 
+.btn_secondary {
+    font-size: 0.9rem;
+}
 
 
 
