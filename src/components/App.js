@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import GameContainer from "./GameContainer";
 import Player from "../factories/PlayerFactory";
 import Gameboard from "../factories/GameboardFactory";
@@ -15,21 +15,41 @@ function App() {
     const playerGameboard = new Gameboard('Friendly');
     const computerGameboard = new Gameboard('Enemy');
 
-    player.startTurn()
+    const [gameHasStarted, setGameHasStarted] = useState(false);
 
+    player.startTurn();
+    computerGameboard.placeShip({
+        name: 'Carrier',
+        count: 1, // how many this type of ships can be on the board
+        length: 5
+    }, 'd5', true);
 
+    if ( gameHasStarted ) {
+        return (
+            <div>
+                <header>
+                    <h1>Battleships</h1>
+                    <p>Place your own ships on the map and try to sink your opponents ships to win</p>
+                </header>
+                <GameContainer computerPlayer={ [computer, computerGameboard] }
+                               humanPlayer={ [player, playerGameboard] }/>
 
-    return (
-        <div>
-            <header>
-                <h1>Battleships</h1>
-                <p>Place your own ships on the map and try to sink your opponents ships to win</p>
-            </header>
-            <SelectShipLocations computerPlayer={ [computer, computerGameboard] } humanPlayer={ [player, playerGameboard] }/>
-            {/*<GameContainer computerPlayer={ [computer, computerGameboard] } humanPlayer={ [player, playerGameboard] }/>*/}
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <header>
+                    <h1>Battleships</h1>
+                    <p>Place your own ships on the map and try to sink your opponents ships to win</p>
+                </header>
+                <SelectShipLocations setGameHasStarted={ setGameHasStarted }
+                                     computerPlayer={ [computer, computerGameboard] }
+                                     humanPlayer={ [player, playerGameboard] }/>
+            </div>
+        )
+    }
 
-        </div>
-    )
 }
 
 export default App;

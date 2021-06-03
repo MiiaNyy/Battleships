@@ -8,13 +8,14 @@ import { GameContent } from "./Styles/game";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
+
     const [gameDescription, setGameDescription] = useState('Welcome to the battleship game');
     const [computersTurn, setComputersTurn] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
     const humanPlayer = props.humanPlayer[0];
     const humanBoard = props.humanPlayer[1];
-
+    console.log('in gameContainer ' + humanBoard.ships);
     const computer = props.computerPlayer[0];
     const computerBoard = props.computerPlayer[1];
 
