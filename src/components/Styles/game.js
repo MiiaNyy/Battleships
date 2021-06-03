@@ -22,7 +22,7 @@ const Cell = styled.div`
   background-color: ${ props=>props.shipPosition ? "#878787" : props.shipSunk ? "red" : "inherit" };
   cursor: ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
   text-align: center;
-
+  
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;

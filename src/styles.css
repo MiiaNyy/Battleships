@@ -149,6 +149,13 @@ header {
     font-size: 0.9rem;
 }
 
+.drag-hover {
+    background-color: aquamarine !important;
+}
+
+.invisible {
+    visibility: hidden;
+}
 
 
 @media (min-width: 900px) {
