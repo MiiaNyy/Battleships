@@ -22,12 +22,6 @@ function GameContainer(props) {
     const [computersTurn, setComputersTurn] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
-    /*    const humanPlayer = props.humanPlayer[0];
-        const humanBoard = props.humanPlayer[1];
-
-        const computer = props.computerPlayer[0];
-        const computerBoard = props.computerPlayer[1];*/
-
     humanBoard = props.playersGameBoard;
 
     humanPlayer.startTurn();
@@ -43,7 +37,7 @@ function GameContainer(props) {
             setGameDescription(()=>{
                 return humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
             })
-        }, 500);
+        }, 2000);
         return ()=>clearTimeout(changeGameMessage);
     }, [gameDescription]);
 
@@ -56,7 +50,7 @@ function GameContainer(props) {
                 computer.turnOver();
                 humanPlayer.startTurn();
                 setComputersTurn(false);
-            }, 500);
+            }, 2500);
             return ()=>clearTimeout(computerTurn);
         }
     }, [computersTurn])
