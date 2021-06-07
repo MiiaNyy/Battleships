@@ -1,23 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
 import attackIsValid from "./helpers/attackIsValid";
 
 import { GameContent } from "./Styles/game";
+import Player from "../factories/PlayerFactory";
+import Gameboard from "../factories/GameboardFactory";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
+
 
     const [gameDescription, setGameDescription] = useState('Welcome to the battleship game');
     const [computersTurn, setComputersTurn] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
-    const humanPlayer = props.humanPlayer[0];
-    const humanBoard = props.humanPlayer[1];
-    console.log('in gameContainer ' + humanBoard.ships);
-    const computer = props.computerPlayer[0];
-    const computerBoard = props.computerPlayer[1];
+    /*    const humanPlayer = props.humanPlayer[0];
+        const humanBoard = props.humanPlayer[1];
+
+        const computer = props.computerPlayer[0];
+        const computerBoard = props.computerPlayer[1];*/
+
+    const humanPlayer = new Player('player');
+    const humanBoard = props.playersGameBoard;
+
+    const computer = new Player('computer');
+    const computerBoard = new Gameboard('Enemy');
+
+    humanPlayer.startTurn();
+    computerBoard.placeShip({
+        name: 'Battleship',
+        count: 1,
+        length: 4
+    }, 'h5', true)
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
@@ -49,23 +65,32 @@ function GameContainer(props) {
         attackIsValid(humanBoard, computer, coordinate, setGameDescription, setGameOver);
     }
 
-    return (
-        <>
-            <GameContent>
-                <div className="game-info">
-                    <p>{ gameDescription }</p>
-                </div>
-                <div className="flex">
-                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
-                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ computerBoard }
-                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+    if ( props.gameHasStarted ) {
+        console.log('in gameContainer ' + humanBoard.ships);
+        return (
+            <>
 
-                </div>
-            </GameContent>
-            <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
-        </>
-    )
+                <GameContent>
+                    <div className="game-info">
+                        <p>{ gameDescription }</p>
+                    </div>
+                    <div className="flex">
+                        <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
+                                       gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+                        <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] }
+                                       playerGrid={ computerBoard }
+                                       gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+
+                    </div>
+                </GameContent>
+                <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
+            </>
+        )
+    } else {
+        return <></>
+    }
+
+
 }
 
 export default GameContainer;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GameboardGrid, Cell, GameContent, Sidebar } from "./Styles/game";
@@ -6,18 +6,20 @@ import { getGridCellIds } from "./helpers/gameboardItemHelpers";
 import ShipMenu from "./ShipMenu";
 import shipTypes from "../game_helpers/shipTypes";
 import { BtnContainer, Button } from "./Styles/selectingShipsStyles";
-
+import Player from "../factories/PlayerFactory";
+import Gameboard from "../factories/GameboardFactory";
 
 let draggedItem;
 let newCloneNode;
+const humanBoard = new Gameboard('Friendly');
 
 function SelectShipLocations(props) {
     const cellIds = getGridCellIds();
-    const humanPlayer = props.humanPlayer[0];
-    const humanBoard = props.humanPlayer[1];
+    /*    const humanPlayer = props.humanPlayer[0];
+        const humanBoard = props.humanPlayer[1];
 
-    const computer = props.computerPlayer[0];
-    const computerBoard = props.computerPlayer[1];
+        const computer = props.computerPlayer[0];
+        const computerBoard = props.computerPlayer[1];*/
 
     const [ships, setShips] = useState(getNewShipTypesArr()); // arr of ship obj with ids
     const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
@@ -30,6 +32,7 @@ function SelectShipLocations(props) {
     function drop(e) {
         e.preventDefault();
         humanBoard.placeShip(draggedShip, e.target.id, shipsAxelVertical);
+        console.log('there is ' + humanBoard.ships.length + ' ships on board')
         const targetShipId = e.dataTransfer.getData("text");
 
         setShips((allShips)=>changeShipsCount(allShips, targetShipId));
@@ -39,56 +42,61 @@ function SelectShipLocations(props) {
     }
 
     return (
-        <GameContent>
-            <div className="flex">
+        <>
+            <GameContent>
                 <div className="flex">
+                    <div className="flex">
 
-                    <Sidebar>
-                        <h3>Select locations to your ships</h3>
+                        <Sidebar>
+                            <h3>Select locations to your ships</h3>
 
-                        <BtnContainer axel>
-                            <h4>Rotation: { axel }</h4>
-                            <Button small onClick={ ()=>setShipsAxelVertical((prev)=>!prev) }>
-                                Change rotation
-                            </Button>
-                        </BtnContainer>
+                            <BtnContainer axel>
+                                <h4>Rotation: { axel }</h4>
+                                <Button small onClick={ ()=>setShipsAxelVertical((prev)=>!prev) }>
+                                    Change rotation
+                                </Button>
+                            </BtnContainer>
 
-                        { ships.map((ship)=>{
-                            return <ShipContainer key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
-                                                  ship={ ship } setShips={ setShips }
-                                                  shipsAxelVertical={ shipsAxelVertical }/>
-                        }) }
+                            { ships.map((ship)=>{
+                                return <ShipContainer key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
+                                                      ship={ ship } setShips={ setShips }
+                                                      shipsAxelVertical={ shipsAxelVertical }/>
+                            }) }
 
-                    </Sidebar>
+                        </Sidebar>
 
 
-                    <div className="select__grid">
-                        { cellIds.map((cell)=>{
-                            const shipPosition = checkIfThisIsShipPosition(cell, allShipsCoordinates);
-                            return <Cell shipPosition={ shipPosition } key={ cell } id={ cell }
-                                         onDrop={ (e)=>drop(e) }
-                                         onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
-                                         onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
-                                         onDragLeave={ (e)=>handleDragLeave(e) }/>
-                        }) }
+                        <div className="select__grid">
+                            { cellIds.map((cell)=>{
+                                const shipPosition = checkIfThisIsShipPosition(cell, allShipsCoordinates);
+                                return <Cell shipPosition={ shipPosition } key={ cell } id={ cell }
+                                             onDrop={ (e)=>drop(e) }
+                                             onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
+                                             onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
+                                             onDragLeave={ (e)=>handleDragLeave(e) }/>
+                            }) }
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <BtnContainer>
-                <Button
-                    onClick={ ()=> {
-                        if (humanBoard.ships.length === 9) {
-                            props.setGameHasStarted(true);
-                            console.log(humanBoard.ships)
-                        }
-                    } }
-                    large active={ humanBoard.ships.length === 9 }>
-                    Start Game
-                </Button>
-            </BtnContainer>
+                <BtnContainer>
+                    <Button
+                        onClick={ ()=>{
+                            if ( humanBoard.ships.length === 9 ) {
+                                props.setPlayersGameboard(humanBoard);
+                                props.setGameHasStarted(true);
+                                console.log('in select ships location ' + humanBoard.ships)
+                            }
+                        } }
+                        large active={ humanBoard.ships.length === 9 }>
+                        Start Game
+                    </Button>
+                </BtnContainer>
 
-        </GameContent>
+            </GameContent>
+
+        </>
+
     );
 }
 
