@@ -8,6 +8,12 @@ import { GameContent } from "./Styles/game";
 import Player from "../factories/PlayerFactory";
 import Gameboard from "../factories/GameboardFactory";
 
+const humanPlayer = new Player('player');
+let humanBoard;
+
+const computer = new Player('computer');
+const computerBoard = new Gameboard('Enemy');
+
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
 
@@ -22,11 +28,7 @@ function GameContainer(props) {
         const computer = props.computerPlayer[0];
         const computerBoard = props.computerPlayer[1];*/
 
-    const humanPlayer = new Player('player');
-    const humanBoard = props.playersGameBoard;
-
-    const computer = new Player('computer');
-    const computerBoard = new Gameboard('Enemy');
+    humanBoard = props.playersGameBoard;
 
     humanPlayer.startTurn();
     computerBoard.placeShip({
@@ -65,30 +67,26 @@ function GameContainer(props) {
         attackIsValid(humanBoard, computer, coordinate, setGameDescription, setGameOver);
     }
 
-    if ( props.gameHasStarted ) {
-        console.log('in gameContainer ' + humanBoard.ships);
-        return (
-            <>
 
-                <GameContent>
-                    <div className="game-info">
-                        <p>{ gameDescription }</p>
-                    </div>
-                    <div className="flex">
-                        <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
-                                       gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-                        <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] }
-                                       playerGrid={ computerBoard }
-                                       gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+    return (
+        <>
 
-                    </div>
-                </GameContent>
-                <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
-            </>
-        )
-    } else {
-        return <></>
-    }
+            <GameContent>
+                <div className="game-info">
+                    <p>{ gameDescription }</p>
+                </div>
+                <div className="flex">
+                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
+                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] }
+                                   playerGrid={ computerBoard }
+                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+
+                </div>
+            </GameContent>
+            <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
+        </>
+    )
 
 
 }

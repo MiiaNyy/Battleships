@@ -3,8 +3,7 @@ import styled from 'styled-components'
 const GameContent = styled.main`
   width: 90%;
   max-width: 1400px;
-  margin: 0 auto 5em;
-  border: 2px solid yellow;
+  margin: ${props => props.positionShips ? '5em auto' : '0 auto 5em'} ;
 `;
 
 const GameboardGrid = styled.div`
@@ -19,7 +18,7 @@ const GameboardGrid = styled.div`
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
-  background-color: ${ props=>props.shipPosition ? "#878787" : props.shipSunk ? "red" : "inherit" };
+  background-color: ${ props=>props.shipPosition ? "#555b6a" : props.shipSunk ? "red" : "inherit" };
   cursor: ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
   text-align: center;
   
@@ -69,7 +68,7 @@ const MessageContainer = styled.div`
 
 const Sidebar = styled.div`
   padding: 1em;
-  margin: 0;
+  margin: 0 3em 0 0;
   border: 10px #585858 ridge;
   font-size: 0.9rem;
   background-color: #a5a5a5;
