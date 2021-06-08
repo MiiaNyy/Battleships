@@ -51,12 +51,28 @@ const ShipCell = styled.div`
 
 `;
 
-/*
-* #84a98c
-* #f07167
-* #555b6e
-* #468faf
-* #494949
-* */
+const PopUpMessage = styled.div`
+  width: 90%;
+  max-width: 325px;
+  position: fixed;
+  top: 30%;
+  right: 27%;
+  padding: 0.5em 0;
+  text-align: center;
+  border: 10px solid #ff0049;
+  background-color: rgb(255, 255, 255);
+  -webkit-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+  -moz-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+  box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+  transition: all 0.8s ease-in-out;
+  opacity: 0;
 
-export { BtnContainer, Button, ShipInfo, ShipCell }
+  & > p {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+`;
+
+export { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage, }

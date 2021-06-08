@@ -21,6 +21,7 @@ class Gameboard {
             shipThatGotHit: {},
             attackSunkAShip: false,
         };
+        this.placingShipSuccessful = true;
     }
 
     get gameOver() {
@@ -50,7 +51,6 @@ class Gameboard {
 
     }
 
-
     placeShip(obj, coordinate, axelIsVertical) {
         let newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
         let coordinates = getShipsPosition(newShip);
@@ -62,10 +62,14 @@ class Gameboard {
                 this.shipsCoordinates.push(coordinates);
                 this.ships.push(newShip);
                 this.latestShipPlaced = coordinates;
-                return 'placing ship was successful'
+                this.placingShipSuccessful = true;
+                console.log('placing ship was successful');
             }
+        }else {
+            this.placingShipSuccessful = false;
+            console.log('invalid position, try again') ;
         }
-        return 'invalid position, try again'
+
     }
 
     receiveAttack(coordinate) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { BtnContainer, Button, ShipInfo, ShipCell } from "./Styles/selectingShipsStyles";
+import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/selectingShipsStyles";
 import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/game";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
@@ -28,15 +28,28 @@ function SelectShipLocations(props) {
 
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
 
+    const [shipPlacingInvalid, setShipPlacingInvalid] = useState(false);
+    const animation = shipPlacingInvalid ? "invalid_position_animation" : "hidden";
+
     function dropShipOnBoard(e) {
         e.preventDefault();
         const targetShipId = e.dataTransfer.getData("text");
-
         humanBoard.placeShip(draggedShip, e.target.id, shipsAxelVertical);
-        setShips((allShips)=>changeShipsCount(allShips, targetShipId));
-        setCoordinatesWithShips((prev)=>{
-            return [...prev, humanBoard.latestShipPlaced]
-        });
+        if ( humanBoard.placingShipSuccessful ) {
+            setShips((allShips)=>changeShipsCount(allShips, targetShipId));
+            setCoordinatesWithShips((prev)=>{
+                return [...prev, humanBoard.latestShipPlaced]
+            });
+        } else {
+            setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
+            setTimeout(() => {
+                setShipPlacingInvalid(false);
+            }, 2500)
+            // remove drag hover classname from the document
+            document.querySelectorAll(".drag-hover").forEach(el=>el.classList.remove('drag-hover'));
+        }
+
+
     }
 
     return (
@@ -81,7 +94,13 @@ function SelectShipLocations(props) {
                     Start Game <i className="fas fa-arrow-right"/>
                 </Button>
             </BtnContainer>
+
+            <PopUpMessage className={ animation }>
+                <p>Invalid position, try again!</p>
+            </PopUpMessage>
+
         </GameContent>
+
     );
 }
 

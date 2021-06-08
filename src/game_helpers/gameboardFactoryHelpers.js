@@ -40,7 +40,7 @@ function getShipsPosition(ship) {
 }
 
 function getVerticalPosition(ship, xPosition, yPosition) {
-    if ( yPosition > 10 ) {
+    if ( yPosition > 10 ) { // there is 10 cells in column
         ship.positionIsValid = false;
     } else {
         return xPosition + yPosition;
