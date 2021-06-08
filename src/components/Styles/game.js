@@ -18,7 +18,7 @@ const GameboardGrid = styled.div`
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
-  background-color: ${ props=>props.shipPosition ? "#555b6a" : props.shipSunk ? "red" : "inherit" };
+  background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "inherit" };
   cursor: ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
   text-align: center;
   

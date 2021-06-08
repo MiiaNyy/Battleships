@@ -1,3 +1,5 @@
+
+
 function checkIfAnyShipGotHit(allShips, coordinate) {
     // if ship got hit, return true and that ship
     for (let i = 0; i < allShips.length; i++) {
@@ -34,14 +36,21 @@ function getShipsPosition(ship) {
     for (let i = 0; i < ship.length; i++) {
         let coordinate;
         coordinate = ship.axelIsVertical ? getVerticalPosition(ship, xPosition, (yPosition + i)) : getHorizontalPosition(ship, xPosition, yPosition, i);
-        shipPosition.push(coordinate)
+        if ( coordinate ) {
+            ship.positionIsValid();
+            shipPosition.push(coordinate);
+        } else {
+            ship.positionIsInvalid();
+            break;
+        }
+
     }
     return shipPosition;
 }
 
 function getVerticalPosition(ship, xPosition, yPosition) {
     if ( yPosition > 10 ) { // there is 10 cells in column
-        ship.positionIsValid = false;
+        ship.positionIsInvalid()
     } else {
         return xPosition + yPosition;
     }
@@ -52,12 +61,15 @@ function getHorizontalPosition(ship, xPosition, yPosition, index) {
     const startColumnIndex = gridColumns.indexOf(xPosition);
     let nextColumnIndex = startColumnIndex + index;
     if ( nextColumnIndex > gridColumns.length ) {
-        ship.positionIsValid = false;
+        ship.positionIsInvalid()
     } else {
         return gridColumns[nextColumnIndex] + yPosition;
     }
 }
+/*
+const x = new Ship('test', 3, 'j10', false);
 
+getShipsPosition(x);*/
 export {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,

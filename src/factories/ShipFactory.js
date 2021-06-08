@@ -13,8 +13,12 @@ class Ship {
         this.position = arr;
     }
 
-    set positionIsValid(bool) {
-        this.validPosition = bool;
+    positionIsValid() {
+        this.validPosition = true;
+    }
+
+    positionIsInvalid() {
+        this.validPosition = false;
     }
 
     checkIfHit(coordinate) {

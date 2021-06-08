@@ -59,7 +59,7 @@ const PopUpMessage = styled.div`
   right: 27%;
   padding: 0.5em 0;
   text-align: center;
-  border: 10px solid #ff0049;
+  border: 10px ridge red;
   background-color: rgb(255, 255, 255);
   -webkit-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   -moz-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
