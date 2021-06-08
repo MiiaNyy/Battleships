@@ -90,7 +90,7 @@ function SelectShipLocations(props) {
             </div>
 
             <BtnContainer>
-                <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length === 9 }>
+                <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length > 1 }>
                     Start Game <i className="fas fa-arrow-right"/>
                 </Button>
             </BtnContainer>
@@ -162,7 +162,7 @@ function handleDragLeave(e) {
 }
 
 function startTheGame(props) {
-    if ( humanBoard.ships.length === 9 ) {
+    if ( humanBoard.ships.length > 1 ) {
         props.setGameboard(humanBoard);
         props.setGameHasStarted(true);
     }

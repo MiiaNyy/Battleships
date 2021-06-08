@@ -2,11 +2,22 @@ import React, { useState } from 'react'
 import GameContainer from "./GameContainer";
 
 import SelectShipLocations from "./SelectShipLocations";
+import Gameboard from "../factories/GameboardFactory";
+import Player from "../factories/PlayerFactory";
+import { GameContent } from "./Styles/game";
+import { Button } from "./Styles/selectingShipsStyles";
 
 let playersGameboard;
+const computerGameboard = new Gameboard('Enemy');
+
+computerGameboard.placeAllShipsOnBoard();
 
 function App() {
     const [gameHasStarted, setGameHasStarted] = useState(false);
+
+    const player = new Player('player');
+    const computer = new Player('computer');
+
 
     return (
         <div>
@@ -16,19 +27,14 @@ function App() {
             </header>
             { !gameHasStarted ?
                 <SelectShipLocations setGameboard={ setPlayersGameBoard } setGameHasStarted={ setGameHasStarted }/> :
-                <GameContainer playersGameBoard={ playersGameboard } gameHasStarted={ gameHasStarted }/> }
+                <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                               gameHasStarted={ gameHasStarted }/> }
         </div>
     )
 
 }
 
 function setPlayersGameBoard(obj) {
-    console.log('inside App component, assigning player gameboard to ');
-    for (const key in obj) {
-        if ( obj.hasOwnProperty(key) ) {
-            console.log(`${ key }: ${ obj[key] }`);
-        }
-    }
     playersGameboard = obj;
 }
 

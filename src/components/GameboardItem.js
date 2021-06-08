@@ -60,6 +60,7 @@ function GridCell(props) {
     const setGameDescription = props.gameHandlers[1];
     const switchTurns = props.gameHandlers[0];
 
+
     const thisIsEnemyCell = gameboard.name === 'Enemy';
     // If ships is in this position, color this cell different color
     const shipPosition = isShipInThisPosition(gameboard.shipsCoordinates, cellId);

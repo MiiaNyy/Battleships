@@ -1,9 +1,12 @@
 import Ship from "./ShipFactory.js";
+import shipTypes from "../game_helpers/shipTypes";
 import {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
     getShipsPosition
 } from "../game_helpers/gameboardFactoryHelpers"
+import { getRandomCoordinate } from "../game_helpers/playerFactoryHelpers";
+
 
 class Gameboard {
     constructor(name) {
@@ -21,7 +24,7 @@ class Gameboard {
             shipThatGotHit: {},
             attackSunkAShip: false,
         };
-        this.placingShipSuccessful = true;
+        this.placingShipSuccessful = false;
     }
 
     get gameOver() {
@@ -52,8 +55,8 @@ class Gameboard {
     }
 
     placeShip(obj, coordinate, axelIsVertical) {
-        let newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
-        let coordinates = getShipsPosition(newShip);
+        const newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
+        const coordinates = getShipsPosition(newShip);
         if ( newShip.validPosition ) {
             // Checks if in that position is another ship
             const positionIsEmpty = checkIfPositionIsEmpty(this.ships, coordinates)
@@ -69,7 +72,18 @@ class Gameboard {
             this.placingShipSuccessful = false;
             console.log('invalid position, try again') ;
         }
-
+    }
+// computer uses this to place ships on its board
+    placeAllShipsOnBoard() {
+        for (let i = 0; i < shipTypes.length; i++) {
+            let shipCount = shipTypes[i].count;
+            for (let j = 0; j < shipCount; j++) {
+                while(!this.placingShipSuccessful) {
+                    this.placeShip(shipTypes[i], getRandomCoordinate(), true);
+                }
+                this.placingShipSuccessful = false;
+            }
+        }
     }
 
     receiveAttack(coordinate) {

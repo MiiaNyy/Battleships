@@ -1,3 +1,4 @@
+
 function attackIsValid(gameboard, player, coordinate, setMessage, setGameOver) {
     gameboard.receiveAttack(coordinate);
     setMessage(()=>gameboard.attackInfo.message);
