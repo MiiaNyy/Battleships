@@ -3,6 +3,7 @@ import attackIsValid from "./helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
 
 import { Cell, GameboardGrid, Sidebar } from "./Styles/game";
+import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
 
 function GameboardItem(props) {
     const cellIds = getGridCellIds();
@@ -82,7 +83,7 @@ function GridCell(props) {
                 switchTurns(true);
             }
         } else {
-            setGameDescription(()=>'Invalid shot, try again!');
+            setGameDescription((prev)=> addNewMessageToDescription(prev, 'Invalid shot, try again!') );
         }
     }
 

@@ -3,6 +3,7 @@ import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
 import attackIsValid from "./helpers/attackIsValid";
+import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
 
 import { GameContent } from "./Styles/game";
 import Player from "../factories/PlayerFactory";
@@ -13,7 +14,8 @@ import Gameboard from "../factories/GameboardFactory";
 function GameContainer(props) {
 
 
-    const [gameDescription, setGameDescription] = useState('Welcome to the battleship game');
+    //const [gameDescription, setGameDescription] = useState('Welcome to the battleship game');
+    const [gameDescription, setGameDescription] = useState([' ', ' ', ' ', 'Welcome to the battleship game']);
     const [computersTurn, setComputersTurn] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
@@ -21,7 +23,6 @@ function GameContainer(props) {
     const humanPlayer = props.player[0];
     const computer = props.enemy[0];
     const computerBoard = props.enemy[1];
-
 
 
     useEffect(()=>{
@@ -33,17 +34,17 @@ function GameContainer(props) {
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
-
         const changeGameMessage = setTimeout(()=>{
-            setGameDescription(()=>{
-                if ( humanPlayer.allFiredShots.length <= 0) {
-                    return 'Human player starts'
-                } else {
-                    return humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
-                }
-            })
+            if ( gameDescription[gameDescription.length - 1] === "It's players turn" || gameDescription[gameDescription.length - 1] === 'Human player starts' ) {
+                console.log('Not changing messages');
+            } else {
+                const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
+                setGameDescription((prev)=> addNewMessageToDescription(prev, newMessage))
+            }
+
         }, 1800);
         return ()=>clearTimeout(changeGameMessage);
+
 
     }, [gameDescription]);
 
@@ -67,13 +68,14 @@ function GameContainer(props) {
         attackIsValid(humanBoard, computer, coordinate, setGameDescription, setGameOver);
     }
 
-
     return (
         <>
 
             <GameContent>
                 <div className="game-info">
-                    <p>{ gameDescription }</p>
+                    { gameDescription.map((item)=>{
+                        return <p>{ item }</p>
+                    }) }
                 </div>
                 <div className="flex">
                     <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
@@ -90,5 +92,7 @@ function GameContainer(props) {
 
 
 }
+
+
 
 export default GameContainer;

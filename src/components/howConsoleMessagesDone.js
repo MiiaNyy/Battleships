@@ -17,7 +17,6 @@ function Console() {
                     newArr.shift();
                     newArr.push('testi' + count);
                     return newArr;
-
                 })
             }
             }>Add message</Button>
