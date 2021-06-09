@@ -43,6 +43,15 @@ function SelectShipLocations(props) {
             });
         } else {
             setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
+            document.querySelector('header').style.filter = "blur(2px) grayscale(20%)";
+            document.querySelector('.container').style.filter = "blur(2px) grayscale(20%)";
+            document.querySelector('.flex').style.filter = "blur(2px) grayscale(20%)";
+            setTimeout(() => {
+                document.querySelector('header').style.filter = "none";
+                document.querySelector('.container').style.filter = "none";
+                document.querySelector('.flex').style.filter = "none";
+            }, 1500)
+
             setTimeout(() => {
                 setShipPlacingInvalid(false);
             }, 2500)
@@ -55,7 +64,10 @@ function SelectShipLocations(props) {
 
     return (
         <GameContent positionShips>
+
+
             <div className="flex">
+
                 <div className="flex container">
 
                     <Sidebar>
@@ -79,6 +91,7 @@ function SelectShipLocations(props) {
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
                                 return <Cell shipPosition={ shipPosition } key={ cell } id={ cell }
+                                             dragAndDrop
                                              onDrop={ (e)=>dropShipOnBoard(e) }
                                              onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
                                              onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
@@ -97,7 +110,8 @@ function SelectShipLocations(props) {
             </BtnContainer>
 
             <PopUpMessage className={ animation }>
-                <p>Invalid position, try again!</p>
+                <p>Invalid position!</p>
+                <p>Please try again</p>
             </PopUpMessage>
 
         </GameContent>

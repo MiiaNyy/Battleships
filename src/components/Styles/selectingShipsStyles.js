@@ -55,20 +55,21 @@ const PopUpMessage = styled.div`
   width: 90%;
   max-width: 325px;
   position: fixed;
-  top: 30%;
+  top: 25%;
   right: 27%;
   padding: 0.5em 0;
   text-align: center;
-  border: 10px ridge red;
-  background-color: rgb(255, 255, 255);
+  border: 10px ridge #ce0000;
+  background-color: rgba(255, 255, 255, 0.88);
   -webkit-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   -moz-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   transition: all 0.8s ease-in-out;
   opacity: 0;
+  cursor: default;
 
   & > p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 0;

@@ -6,8 +6,6 @@ import attackIsValid from "./helpers/attackIsValid";
 import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
 
 import { GameContent } from "./Styles/game";
-import Player from "../factories/PlayerFactory";
-import Gameboard from "../factories/GameboardFactory";
 
 
 // Third screen. Before this all of the objects are made

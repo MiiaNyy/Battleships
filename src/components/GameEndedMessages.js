@@ -11,12 +11,10 @@ function GameEndedMessages(props) {
 
     if ( props.gameIsOver ) {
         return (
-            <MessageContainer>
+            <MessageContainer className="toggle-in">
                 <h2>{ header }</h2>
                 <p>{ message }</p>
                 <button onClick={ ()=>location.reload() }>Play again</button>
-
-
             </MessageContainer>
         );
     } else {
