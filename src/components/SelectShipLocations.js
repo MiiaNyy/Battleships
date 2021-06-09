@@ -64,12 +64,8 @@ function SelectShipLocations(props) {
 
     return (
         <GameContent positionShips>
-
-
             <div className="flex">
-
                 <div className="flex container">
-
                     <Sidebar>
                         <h3>Drag and drop to position your ships</h3>
                         <BtnContainer axel>
