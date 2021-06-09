@@ -66,16 +66,14 @@ class Gameboard {
                 this.ships.push(newShip);
                 this.latestShipPlaced = coordinates;
                 this.placingShipSuccessful = true;
-                console.log('placing ship was successful');
             }
         }else {
             this.placingShipSuccessful = false;
-            console.log('invalid position, try again') ;
         }
     }
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-        for (let i = 0; i < shipTypes.length; i++) {
+        for (let i = 3; i < 4; i++) {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {
                 while(!this.placingShipSuccessful) {
@@ -129,7 +127,7 @@ class Gameboard {
         const gotHitMessage = `${ playerName } shot at ${ coordinate }.`;
         if ( shipSunk ) {
             if ( this.allShipHaveSunk ) {
-                return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit, sunk and now all the ships are sunk`;
+                return `Ship ${ shipThatGotHit.name } sunk. Now all the ships are sunk`;
             } else {
                 return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit and sunk`;
             }

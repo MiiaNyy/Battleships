@@ -14,7 +14,9 @@ function GameEndedMessages(props) {
             <MessageContainer>
                 <h2>{ header }</h2>
                 <p>{ message }</p>
-                <button onClick={() => location.reload()}>Play again</button>
+                <button onClick={ ()=>location.reload() }>Play again</button>
+
+
             </MessageContainer>
         );
     } else {

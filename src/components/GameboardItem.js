@@ -1,9 +1,13 @@
 import React from 'react';
+
+import GameSpecs from "./GameSpecs";
+
 import attackIsValid from "./helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
-
-import { Cell, GameboardGrid, Sidebar } from "./Styles/game";
 import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
+
+import { Cell, GameboardGrid } from "./Styles/game";
+
 
 function GameboardItem(props) {
     const cellIds = getGridCellIds();
@@ -28,29 +32,7 @@ function GameboardItem(props) {
     )
 }
 
-function GameSpecs(props) {
-    const player = props.humanPlayer;
-    const playerGrid = props.playerGrid;
 
-    if ( playerGrid.name === 'Friendly' ) {
-        return (
-            <Sidebar>
-                <h3>Specs</h3>
-                <p className="row">All shots fired: <strong>{ player.allFiredShots.length }</strong></p>
-                <p className="row">Shots hit: <strong>{ player.allHitShots }</strong></p>
-                <p className="row">Shots missed: <strong>{ player.allMissedShots.length }</strong></p>
-                <p className="row">Shots received: <strong>{ player.shotsReceived }</strong></p>
-                <br/>
-                <h4>Friendly ships</h4>
-                <p className="row">Remaining: <strong>{ (playerGrid.ships.length) - (playerGrid.sunkenShips.length) }</strong>
-                </p>
-                <p className="row">Sunk: <strong> { playerGrid.sunkenShips.length } </strong></p>
-            </Sidebar>
-        )
-    } else {
-        return <></>
-    }
-}
 
 function GridCell(props) {
     const gameboard = props.playerGrid;
@@ -60,7 +42,6 @@ function GridCell(props) {
     const gameIsOver = props.gameOver[0];
     const setGameDescription = props.gameHandlers[1];
     const switchTurns = props.gameHandlers[0];
-
 
     const thisIsEnemyCell = gameboard.name === 'Enemy';
     // If ships is in this position, color this cell different color
@@ -82,7 +63,7 @@ function GridCell(props) {
                 computer.startTurn()
                 switchTurns(true);
             }
-        } else {
+        } else if (thisIsEnemyCell && !shotIsValid) {
             setGameDescription((prev)=> addNewMessageToDescription(prev, 'Invalid shot, try again!') );
         }
     }

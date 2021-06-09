@@ -35,11 +35,15 @@ function GameContainer(props) {
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
         const changeGameMessage = setTimeout(()=>{
-            if ( gameDescription[gameDescription.length - 1] === "It's players turn" || gameDescription[gameDescription.length - 1] === 'Human player starts' ) {
+            const latestMessage = gameDescription[gameDescription.length - 1];
+            const secondLatestMsg = gameDescription[gameDescription.length - 2];
+            if ( gameOver || latestMessage === "It's players turn" || latestMessage === "It's enemy's turn" || latestMessage === 'Human player starts' ) {
+                console.log('Not changing messages');
+            } else if ( latestMessage === 'Invalid shot, try again!' && secondLatestMsg === "It's players turn" ) {
                 console.log('Not changing messages');
             } else {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
-                setGameDescription((prev)=> addNewMessageToDescription(prev, newMessage))
+                setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
             }
 
         }, 1800);
@@ -73,13 +77,15 @@ function GameContainer(props) {
 
             <GameContent>
                 <div className="game-info">
-                    { gameDescription.map((item)=>{
-                        return <p>{ item }</p>
+                    { gameDescription.map((item, index)=>{
+                        const messageClass = index === 3 ? 'latest_msg' : '';
+                        return item === ' ' ? <br/> : <p className={ messageClass }>{ item }</p>;
                     }) }
                 </div>
                 <div className="flex">
                     <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+                    <hr className="divider"/>
                     <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] }
                                    playerGrid={ computerBoard }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
@@ -92,7 +98,6 @@ function GameContainer(props) {
 
 
 }
-
 
 
 export default GameContainer;

@@ -1,9 +1,31 @@
 import styled from 'styled-components'
 
+
+const Header = styled.header`
+  display: ${ props=>props.gameHasStarted ? 'flex' : 'block' };
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0.5em auto;
+  padding: 0.5em;
+  color: #808080;
+  background-color: rgba(0, 0, 0, 0.44);
+  text-transform: uppercase;
+  text-align: center;
+
+  & > p {
+    width: ${ props=>props.gameHasStarted ? '30%' : '100%' }; 
+    font-size: ${ props=>props.gameHasStarted ? '0.8rem' : '1rem' };
+    font-weight: bolder;
+  }
+`;
+
 const GameContent = styled.main`
   width: 90%;
-  max-width: 1400px;
-  margin: ${props => props.positionShips ? '5em auto' : '0 auto 5em'} ;
+  max-width: 1200px;
+  margin: ${ props=>props.positionShips ? '5em auto' : '0 auto 5em' };
 `;
 
 const GameboardGrid = styled.div`
@@ -21,7 +43,7 @@ const Cell = styled.div`
   background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "inherit" };
   cursor: ${ props=>props.hitPosition || props.shipSunk ? "not-allowed" : props.enemy ? "crosshair" : "initial" };
   text-align: center;
-  
+
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;
@@ -77,6 +99,7 @@ const Sidebar = styled.div`
 `;
 
 export {
+    Header,
     GameboardGrid,
     GameContent,
     Cell,

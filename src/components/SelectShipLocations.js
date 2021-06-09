@@ -14,6 +14,7 @@ import {
 } from "./helpers/selectingShipsHelpers";
 
 import Gameboard from "../factories/GameboardFactory";
+import GameEndedMessages from "./GameEndedMessages";
 
 let draggedItem;
 let newCloneNode;

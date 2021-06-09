@@ -4,9 +4,11 @@ import GameContainer from "./GameContainer";
 import SelectShipLocations from "./SelectShipLocations";
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
-import { GameContent } from "./Styles/game";
+import { GameContent, Header } from "./Styles/game";
 import { Button } from "./Styles/selectingShipsStyles";
+import GameEndedMessages from "./GameEndedMessages";
 
+//let playersGameboard = new Gameboard('Friendly');
 let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
@@ -21,10 +23,12 @@ function App() {
 
     return (
         <div>
-            <header>
+            <Header gameHasStarted={gameHasStarted}>
                 <h1>Battleships</h1>
                 <p>Place your own ships on the map and try to sink your opponents ships to win</p>
-            </header>
+            </Header>
+            {/*<GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                           gameHasStarted={ gameHasStarted }/>*/}
             { !gameHasStarted ?
                 <SelectShipLocations setGameboard={ setPlayersGameBoard } setGameHasStarted={ setGameHasStarted }/> :
                 <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }

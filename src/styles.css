@@ -18,6 +18,9 @@ body {
 
 }
 
+.filter-on {
+    filter: blur(2px);
+}
 
 img {
     display: block;
@@ -38,7 +41,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
+    letter-spacing: 1.5px;
     margin-bottom: 0;
 }
 
@@ -58,23 +62,6 @@ h3 {
     border-bottom: 2px solid black;
 }
 
-
-
-header {
-    margin: 1em auto 2em;
-    padding: 1em;
-    background-color: #5E626D;
-    border: 10px #464852 ridge;
-    color: #000000;
-    width: 90%;
-    max-width: 900px;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-header p {
-    font-weight: bolder;
-}
 
 /*GENERAL STYLES*/
 .flex {
@@ -102,18 +89,31 @@ header p {
 
 .game-info {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto 3em;
+    max-width: 600px;
+    min-height: 180px;
+    margin: 2em auto;
     padding: 1em 0;
-    border: 10px ridge #3f4238;
-    text-align: center;
-    background-color: #6b705c;
+    font-size: 1rem;
     font-family: 'Special Elite', cursive;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #9e9d9d;
+    background-color: rgba(45, 45, 45, 0.76);
+    border: 10px ridge #292b27;
+
 }
 
 .game-info p {
-    font-size: 1.3rem;
-    margin: 0;
+    margin-bottom: 0.5px;
+}
+
+.latest_msg {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding-top: 0.8em;
+    border-top: 2px solid black;
+    margin: 0 auto;
+    width: 90%;
 }
 
 /*.ship-position {
@@ -153,11 +153,16 @@ header p {
     opacity: 0;
 }
 
+.divider {
+    align-self: stretch;
+    margin-bottom: -50px;
+    background-color: white;
+}
+
 
 @media (min-width: 900px) {
     .flex {
         flex-direction: row;
-        align-items: center;
         justify-content: space-between;
     }
 
