@@ -41,10 +41,10 @@ const GameContent = styled.main`
 
 const GameboardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(10, 30px);
-  grid-template-rows: repeat(10, 30px);
+  grid-template-columns: repeat(10, 25px);
+  grid-template-rows: repeat(10, 25px);
   justify-content: center;
-  @media(min-width: 950px) {
+  @media(min-width: 1000px) {
     grid-template-columns: repeat(10, 35px);
     grid-template-rows: repeat(10, 35px);
     
@@ -107,20 +107,29 @@ const MessageContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  
   border: 10px #585858 ridge;
   font-size: 0.9rem;
   background-color: #a5a5a5;
-  width: 100%;
+  width: 90%;  
   padding: 1em;
   margin: 0 auto;
-  @media(min-width: 800px) {    
-    margin: 0 3em 0 0;    
+  @media(min-width: 1000px) {
+    margin: 0 3em 0 0;
     max-width: 350px;
   }
-  
-  
 `;
+
+const SideBarSpecs = styled(Sidebar)` 
+  position: absolute;
+  top: 60%;
+  max-width: 200px;
+  @media (min-width: 1000px) {
+    max-width: 350px;
+    width: 90%;
+    position: relative;
+  }
+`;
+
 
 const Console = styled.div`
   width: 100%;
@@ -158,4 +167,5 @@ export {
     MessageContainer,
     Console,
     Divider,
+    SideBarSpecs,
 }

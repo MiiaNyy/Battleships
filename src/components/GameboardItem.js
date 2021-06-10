@@ -16,7 +16,7 @@ function GameboardItem(props) {
     const playerGrid = props.playerGrid;
 
     return (
-        <div className="flex">
+        <div className="flex-second">
             <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
             <div>
                 <h2>{ playerGrid.name } waters</h2>

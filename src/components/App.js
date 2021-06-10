@@ -10,8 +10,8 @@ import { GameContent, Header, MessageContainer } from "./Styles/game";
 import { Button } from "./Styles/selectingShipsStyles";
 import GameEndedMessages from "./GameEndedMessages";
 
-//let playersGameboard = new Gameboard('Friendly');
-let playersGameboard;
+let playersGameboard = new Gameboard('Friendly');
+//let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 computerGameboard.placeAllShipsOnBoard();
@@ -36,12 +36,12 @@ function App() {
                     setInfoMessageOpen(()=>true)
                 } } className="info-btn far fa-question-circle"/>
             </div>
-            {/*<GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                           gameHasStarted={ gameHasStarted }/>*/ }
-            { !gameHasStarted ?
+            <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                           gameHasStarted={ gameHasStarted }/>
+            {/*{ !gameHasStarted ?
                 <SelectShipLocations setGameboard={ setPlayersGameBoard } setGameHasStarted={ setGameHasStarted }/> :
                 <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                               gameHasStarted={ gameHasStarted }/> }
+                               gameHasStarted={ gameHasStarted }/> }*/}
             { infoMessageOpen ?
                 <InfoMessage gameHasStarted={ gameHasStarted } setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
         </div>

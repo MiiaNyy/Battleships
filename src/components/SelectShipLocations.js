@@ -15,6 +15,7 @@ import {
 
 import Gameboard from "../factories/GameboardFactory";
 import GameEndedMessages from "./GameEndedMessages";
+import blurTheBackground from "./helpers/blurTheBackground";
 
 let draggedItem;
 let newCloneNode;
@@ -43,13 +44,9 @@ function SelectShipLocations(props) {
             });
         } else {
             setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
-            document.querySelector('header').style.filter = "blur(2px) grayscale(20%)";
-            document.querySelector('.container').style.filter = "blur(2px) grayscale(20%)";
-            document.querySelector('.flex').style.filter = "blur(2px) grayscale(20%)";
+            blurTheBackground(false, "blur(2px) grayscale(20%)")
             setTimeout(()=>{
-                document.querySelector('header').style.filter = "none";
-                document.querySelector('.container').style.filter = "none";
-                document.querySelector('.flex').style.filter = "none";
+                blurTheBackground(false, "none");
             }, 1500)
 
             setTimeout(()=>{
@@ -89,8 +86,7 @@ function SelectShipLocations(props) {
                         <GameboardGrid>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
-                                return <Cell shipPosition={ shipPosition } key={ cell } id={ cell }
-                                             dragAndDrop
+                                return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
                                              onDrop={ (e)=>dropShipOnBoard(e) }
                                              onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
                                              onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
