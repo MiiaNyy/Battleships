@@ -6,7 +6,7 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   gap: 3em;
-  width: 90%;
+  width: 95%;
   max-width: 1200px;
   margin: 1em auto 0.5em;
   padding: 0.5em;
@@ -18,30 +18,42 @@ const Header = styled.header`
 
   & > p {
     width: ${ props=>props.gameHasStarted ? '30%' : '100%' };
-    font-size: ${ props=>props.gameHasStarted ? '0.8rem' : '1rem' };
+    font-size: ${ props=>props.gameHasStarted ? '0.5rem' : '0.8rem' };
     font-weight: bolder;
+    @media(min-width: 500px) {
+      font-size: ${ props=>props.gameHasStarted ? '0.8rem' : '1rem' };
+    }
   }
+  
+  
 `;
 
 const GameContent = styled.main`
   width: 90%;
   max-width: 1200px;
-  margin: ${ props=>props.positionShips ? '2em auto' : '0 auto 5em' };
+  margin: 0 auto;
+  @media(min-width: 950px) {
+    margin: ${ props=>props.positionShips ? '2em auto' : '0 auto 5em' };
+  }
+  
+  
 `;
 
 const GameboardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  width: 100%;
-  min-width: 350px;
-  height: 350px;
-  background-color: #cad9e5;
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
+  justify-content: center;
+  @media(min-width: 950px) {
+    grid-template-columns: repeat(10, 35px);
+    grid-template-rows: repeat(10, 35px);
+    
+  }
 `;
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
-  background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "inherit" };
+  background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "#cad9e5" };
   cursor: ${ props=>(props.hitPosition && props.enemy) || (props.shipSunk && props.enemy) ? "not-allowed" : props.enemy ? "crosshair" : props.dragAndDrop ? 'default' : "not-allowed" };
   text-align: center;
 
@@ -57,14 +69,14 @@ const MessageContainer = styled.div`
   position: fixed;
   width: 90%;
   max-width: 650px;
-  padding: ${props => props.info ? '0 1em 0' : '1em 1em 0'} ;
+  padding: ${ props=>props.info ? '0 1em 0' : '1em 1em 0' };
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border: 10px ridge #3f4238;
-  background-color: ${props => props.info ? 'rgba(33,33,33,0.93)' : 'rgba(255, 255, 255, 0.92)'} ;
-  color: ${props => props.info ? '#a5a5a5' : 'initial'} ;
-  text-align: ${props => props.info ? 'left' : 'center'};
+  background-color: ${ props=>props.info ? 'rgba(33,33,33,0.93)' : 'rgba(255, 255, 255, 0.92)' };
+  color: ${ props=>props.info ? '#a5a5a5' : 'initial' };
+  text-align: ${ props=>props.info ? 'left' : 'center' };
 
 
   & > h2 {
@@ -82,7 +94,7 @@ const MessageContainer = styled.div`
   & > h3 {
     margin-top: -20px;
   }
-  
+
   & > p {
     margin: 1em 0;
     font-family: 'Special Elite', cursive;
@@ -95,14 +107,47 @@ const MessageContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  padding: 1em;
-  margin: 0 3em 0 0;
+  
   border: 10px #585858 ridge;
   font-size: 0.9rem;
   background-color: #a5a5a5;
   width: 100%;
-  max-width: 350px;
+  padding: 1em;
+  margin: 0 auto;
+  @media(min-width: 800px) {    
+    margin: 0 3em 0 0;    
+    max-width: 350px;
+  }
+  
+  
 `;
+
+const Console = styled.div`
+  width: 100%;
+  max-width: 600px;
+  min-height: 180px;
+  margin: 0 auto 3em;
+  padding: 1em 0;
+  font-size: 1rem;
+  font-family: 'Special Elite', cursive;
+  text-align: center;
+  letter-spacing: 1px;
+  color: #9e9d9d;
+  background-color: rgba(45, 45, 45, 0.76);
+  border: 10px ridge #292b27;
+
+  & > p {
+    margin-bottom: 0.5px;
+  }
+`;
+
+const Divider = styled.hr`
+  align-self: stretch;
+  margin-bottom: -50px;
+  background-color: white;
+`;
+
+
 
 export {
     Header,
@@ -111,4 +156,6 @@ export {
     Cell,
     Sidebar,
     MessageContainer,
+    Console,
+    Divider,
 }

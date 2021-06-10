@@ -5,9 +5,12 @@ const BtnContainer = styled.div`
   margin: ${ props=>props.axel ? "1.5em 0 2em" : "2.5em 0" };
 
   & > p {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bolder;
     letter-spacing: 1px;
+    @media(min-width: 800px) {
+      font-size: 1rem;
+    }
 
   }
 `;
@@ -16,38 +19,49 @@ const Button = styled.button`
   cursor: ${ props=>props.large && !props.active ? "initial" : "pointer" };
   border: ${ props=>props.large && !props.active ? "3px solid rgba(0,7,15,0.1)" : "3px groove #3f4238" };
   background-color: ${ props=>props.large && !props.active ? "rgba(0,7,15,0.1)" : "white" };
-  font-size: ${ props=>props.small ? "0.9rem" : props.large ? "1.2rem" : "initial" };
-
+  font-size: ${ props=>props.small ? "0.8rem" : props.large ? "1rem" : "initial" };
+  @media(min-width: 800px) {
+    font-size: ${ props=>props.small ? "0.9rem" : props.large ? "1.2rem" : "initial" };
+  }
   &:hover {
     transform: ${ props=>props.large && !props.active ? "none" : "scale(1.1)" };
     opacity: ${ props=>props.large && !props.active ? "1" : "0.8" };
   }
 `;
 
-const ShipInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 1em;
-  padding-top: 0.5em;
-  margin-bottom: 1em;  
-  
 
+const ShipInfo = styled.div`
+  margin: 0 0.5em 0.5em 0;
   & > p {
     font-family: 'Special Elite', cursive;
     font-weight: bolder;
     letter-spacing: 0.7px;
+    margin: 0;
     align-self: center;
+    font-size: 0.8rem;
+    @media (min-width: 800px) {
+      border-bottom: 1px solid black;
+    }
+  }
+  @media (min-width: 800px) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
     margin-bottom: 0;
-    border-bottom: 1px solid black;
   }
 `;
 
 const ShipCell = styled.div`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   cursor: grab;
-  background-color: #5e6574; 
+  background-color: #5e6574;
   border: 1px solid black;
+  margin: 0 auto;
+  @media(min-width: 950px) {
+    width: 35px;
+    height: 35px;
+  }
 
 `;
 

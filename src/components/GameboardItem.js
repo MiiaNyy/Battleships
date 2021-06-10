@@ -56,7 +56,10 @@ function GridCell(props) {
         // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
         const shotIsValid = human.shotIsValid(cellId);
 
+        console.log(!thisIsEnemyCell ? 'this is not enemy cell' : !human.turn ? 'it is not humans turn' : !shotIsValid ? 'shot is not valid' : 'blaa')
+
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
+            console.log('shot is valid')
             attackIsValid(gameboard, human, cellId, setGameDescription, setGameOver);
             if ( !gameIsOver ) {
                 human.turnOver();

@@ -46,13 +46,13 @@ function SelectShipLocations(props) {
             document.querySelector('header').style.filter = "blur(2px) grayscale(20%)";
             document.querySelector('.container').style.filter = "blur(2px) grayscale(20%)";
             document.querySelector('.flex').style.filter = "blur(2px) grayscale(20%)";
-            setTimeout(() => {
+            setTimeout(()=>{
                 document.querySelector('header').style.filter = "none";
                 document.querySelector('.container').style.filter = "none";
                 document.querySelector('.flex').style.filter = "none";
             }, 1500)
 
-            setTimeout(() => {
+            setTimeout(()=>{
                 setShipPlacingInvalid(false);
             }, 2500)
             // remove drag hover classname from the document
@@ -74,11 +74,14 @@ function SelectShipLocations(props) {
                                 Change rotation
                             </Button>
                         </BtnContainer>
-                        { ships.map((ship)=>{
-                            return <ShipContainer key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
-                                                  ship={ ship } setShips={ setShips }
-                                                  shipsAxelVertical={ shipsAxelVertical }/>
-                        }) }
+                        <div className="wrap">
+                            { ships.map((ship)=>{
+                                return <ShipContainer key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
+                                                      ship={ ship } setShips={ setShips }
+                                                      shipsAxelVertical={ shipsAxelVertical }/>
+                            }) }
+                        </div>
+
                     </Sidebar>
 
                     <div>
@@ -141,11 +144,11 @@ function ShipContainer(props) {
     return (
         <ShipInfo>
             <p>{ ship.name } x { ship.count }</p>
-            <div id={ props.id } draggable={ ship.count > 0 } className="wrap" onDragEnd={ ()=>stopDrag(ship) }
+            <div id={ props.id } draggable={ ship.count > 0 } className="ship-rotation" onDragEnd={ ()=>stopDrag(ship) }
                  onDragStart={ (e)=>startDrag(e, ship) }>
-                <div className="wrap inner">
+                <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{
-                        return <ShipCell ship={ ship.name } key={ index } id={ index }/>
+                        return <ShipCell ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
                     }) }
                 </div>
             </div>

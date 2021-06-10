@@ -22,7 +22,7 @@ function App() {
 
     const player = new Player('player');
     const computer = new Player('computer');
-
+    player.startTurn();
 
     return (
         <div>
@@ -95,14 +95,11 @@ function InfoMessage(props) {
             <div className="info-btn__container">
                 <i onClick={ ()=>{
                     blurTheBackground(props.gameHasStarted, "none");
-
                     setAnimation(()=>true)
                     setTimeout(()=>{
                         props.setInfoMessageOpen(()=>false);
                     }, 500)
-
-                } }
-                   className="close-info-btn info-btn fas fa-times"/>
+                } } className="close-info-btn info-btn fas fa-times"/>
             </div>
             <h3>Info</h3>
             <Messages/>

@@ -5,16 +5,13 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "./helpers/attackIsValid";
 import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
 
-import { GameContent } from "./Styles/game";
-
+import { GameContent, Console, Divider } from "./Styles/game";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
 
-
-    //const [gameDescription, setGameDescription] = useState('Welcome to the battleship game');
     const [gameDescription, setGameDescription] = useState([' ', ' ', ' ', 'Welcome to the battleship game']);
-    const [computersTurn, setComputersTurn] = useState(false);
+    const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
     const humanBoard = props.player[1];
@@ -22,47 +19,30 @@ function GameContainer(props) {
     const computer = props.enemy[0];
     const computerBoard = props.enemy[1];
 
-
-    useEffect(()=>{
-
-        setTimeout(()=>{
-            humanPlayer.startTurn();
-        }, 1500)
-    }, [])
-
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
         const changeGameMessage = setTimeout(()=>{
-            const latestMessage = gameDescription[gameDescription.length - 1];
-            const secondLatestMsg = gameDescription[gameDescription.length - 2];
-            if ( gameOver || latestMessage === "It's players turn" || latestMessage === "It's enemy's turn" || latestMessage === 'Human player starts' ) {
-                console.log('Not changing messages');
-            } else if ( latestMessage === 'Invalid shot, try again!' && secondLatestMsg === "It's players turn" ) {
-                console.log('Not changing messages');
-            } else {
+            const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
+            if ( newMessageIsNeeded ) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
                 setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
             }
-
         }, 1800);
         return ()=>clearTimeout(changeGameMessage);
-
-
     }, [gameDescription]);
 
     useEffect(()=>{
-        // Human starts
         if ( computer.turn && humanPlayer.firstShotFired && !gameOver ) {
             // Take 3 seconds before attacking human board
             const computerTurn = setTimeout(()=>{
                 computerShootsEnemy();
                 computer.turnOver();
                 humanPlayer.startTurn();
-                setComputersTurn(false);
+                setComputersTurnAttack(false);
             }, 3000);
             return ()=>clearTimeout(computerTurn);
         }
-    }, [computersTurn])
+    }, [computersTurnAttack])
 
     function computerShootsEnemy() {
         computer.shootTheEnemy();
@@ -74,17 +54,13 @@ function GameContainer(props) {
         <>
 
             <GameContent>
-                <div className="game-info">
-                    { gameDescription.map((item, index)=>{
-                        const messageClass = index === 3 ? 'latest_msg' : '';
-                        return item === ' ' ? <br/> : <p className={ messageClass }>{ item }</p>;
-                    }) }
-                </div>
+                <ConsoleMessages gameDescription={ gameDescription }/>
                 <div className="flex">
-                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] } playerGrid={ humanBoard }
+                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
+                                   playerGrid={ humanBoard }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-                    <hr className="divider"/>
-                    <GameboardItem gameHandlers={ [setComputersTurn, setGameDescription] }
+                    <Divider/>
+                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
                                    playerGrid={ computerBoard }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
@@ -93,9 +69,26 @@ function GameContainer(props) {
             <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
         </>
     )
-
-
 }
 
+function ConsoleMessages(props) {
+    return (
+        <Console>
+            { props.gameDescription.map((item, index)=>{
+                const messageClass = index === 3 ? 'latest_msg' : '';
+                return item === ' ' ? <br key={ index }/> :
+                    <p key={ index } className={ messageClass }>{ item }</p>;
+            }) }
+        </Console>
+    )
+}
+
+function checkIfNewMessageIsNeeded(gameDescription, gameOver) {
+    const latestMessage = gameDescription[gameDescription.length - 1];
+    const secondLatestMsg = gameDescription[gameDescription.length - 2];
+    if ( gameOver || latestMessage === "It's players turn" || latestMessage === "It's enemy's turn" || latestMessage === 'Human player starts' ) {
+        return false
+    } else return !(latestMessage === 'Invalid shot, try again!' && secondLatestMsg === "It's players turn");
+}
 
 export default GameContainer;
