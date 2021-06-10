@@ -33,7 +33,6 @@ function GameboardItem(props) {
 }
 
 
-
 function GridCell(props) {
     const gameboard = props.playerGrid;
     const cellId = props.id;
@@ -66,8 +65,8 @@ function GridCell(props) {
                 computer.startTurn()
                 switchTurns(true);
             }
-        } else if (thisIsEnemyCell && !shotIsValid) {
-            setGameDescription((prev)=> addNewMessageToDescription(prev, 'Invalid shot, try again!') );
+        } else if ( thisIsEnemyCell && !shotIsValid ) {
+            setGameDescription((prev)=>addNewMessageToDescription(prev, 'Invalid shot, try again!'));
         }
     }
 

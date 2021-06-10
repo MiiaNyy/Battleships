@@ -186,6 +186,25 @@ li {
 }
 
 
+@keyframes specsSlideDown {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(0%, 0%);
+        transform: translate(0%, 0%);
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: translate(0%, 90%);
+        transform: translate(0%, 90%);
+    }
+}
+
+.specs-slide-down {
+    animation: specksSlideDown 500ms;
+    opacity: 1;
+}
+
+
 .info-btn__container {
     width: 90%;
     max-width: 1200px;
@@ -214,8 +233,6 @@ li {
     color: #fd3333;
     transform: scale(1.2);
 }
-
-
 
 
 .row {
@@ -260,6 +277,7 @@ li {
     .row {
         font-size: 1rem;
     }
+
     .specs-btn {
         display: none;
     }

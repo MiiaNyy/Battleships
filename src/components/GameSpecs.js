@@ -6,6 +6,17 @@ function GameSpecs(props) {
     const player = props.humanPlayer;
     const playerGrid = props.playerGrid;
     const [specsIsOpen, setSpecsIsOpen] = useState(false);
+    const [specsAnimationOn, setSpecsAnimationOn] = useState(false);
+    const slideAnimationClass = specsAnimationOn ? 'specs-slide-down' : ' ';
+
+    function handleClick() {
+        setSpecsAnimationOn(()=>true)
+        setTimeout(()=>{
+            setSpecsAnimationOn(()=>false)
+            setSpecsIsOpen(()=>false)
+        }, 500)
+    }
+
 
     if ( playerGrid.name === 'Friendly' ) {
         if ( screen.width <= 1000 && !specsIsOpen ) {
@@ -14,8 +25,8 @@ function GameSpecs(props) {
             return (
                 <>
 
-                    <SideBarSpecs>
-                        { screen.width <= 1000 ? <i onClick={ ()=>setSpecsIsOpen(()=>false) }
+                    <SideBarSpecs className={ slideAnimationClass }>
+                        { screen.width <= 1000 ? <i onClick={ ()=>handleClick() }
                                                     className="close-info-btn info-btn fas fa-times"/> : <></> }
                         <h3>Specs</h3>
                         <div className="wrap-secondary">

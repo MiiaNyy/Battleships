@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 
 const Header = styled.header`
@@ -60,7 +60,10 @@ const Cell = styled.div`
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1rem;
+    @media(min-width: 1000px) {
+      font-size: 1.3rem;
+    }
   }
 `;
 
@@ -119,10 +122,37 @@ const Sidebar = styled.div`
   }
 `;
 
+const specsSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    -webkit-transform: translate(0%, 90%);
+    transform: translate(0%, 90%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(0%, 0%);
+    transform: translate(0%, 0%)
+  }
+`;
+
+const specsSlideDown = keyframes`
+  0% {
+    opacity: 1;
+    -webkit-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate(0%, 90%);
+    transform: translate(0%, 90%);
+  }
+`;
+
 const SideBarSpecs = styled(Sidebar)` 
   position: absolute;
-  top: 60%;
+  top: 80%;
   max-width: 200px;
+  animation: ${specsSlideUp} 2000ms ;
   @media (min-width: 1000px) {
     max-width: 350px;
     width: 90%;
