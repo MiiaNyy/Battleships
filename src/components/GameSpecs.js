@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { SideBarSpecs } from "./Styles/game";
-import blurTheBackground from "./helpers/blurTheBackground";
+import { SideBarSpecs } from "./Styles/gameArea";
+import blurTheBackground from "../game_helpers/blurTheBackground";
 
 function GameSpecs(props) {
     const player = props.humanPlayer;
     const playerGrid = props.playerGrid;
     const [specsIsOpen, setSpecsIsOpen] = useState(false);
     const [specsAnimationOn, setSpecsAnimationOn] = useState(false);
-    const slideAnimationClass = specsAnimationOn ? 'specs-slide-down' : ' ';
 
     function handleClick() {
         setSpecsAnimationOn(()=>true)
         setTimeout(()=>{
             setSpecsAnimationOn(()=>false)
             setSpecsIsOpen(()=>false)
-        }, 500)
+        }, 300)
     }
 
 
@@ -25,7 +24,7 @@ function GameSpecs(props) {
             return (
                 <>
 
-                    <SideBarSpecs className={ slideAnimationClass }>
+                    <SideBarSpecs slideDown={ specsAnimationOn }>
                         { screen.width <= 1000 ? <i onClick={ ()=>handleClick() }
                                                     className="close-info-btn info-btn fas fa-times"/> : <></> }
                         <h3>Specs</h3>

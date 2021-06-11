@@ -4,7 +4,7 @@ import {
     getRowCoordinate,
     getColumnCoordinate,
     isNumeric
-} from "../src/game_helpers/playerFactoryHelpers"
+} from "../src/factories/playerFactoryHelpers"
 
 describe('Players ', () => {
     const computer = new Player('computer', false)

@@ -2,11 +2,11 @@ import React from 'react';
 
 import GameSpecs from "./GameSpecs";
 
-import attackIsValid from "./helpers/attackIsValid";
+import attackIsValid from "../game_helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
-import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
+import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { Cell, GameboardGrid } from "./Styles/game";
+import { Cell, GameboardGrid } from "./Styles/general";
 
 
 function GameboardItem(props) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageContainer } from "./Styles/game";
+import { MessageContainer } from "./Styles/general";
 
 
 function GameEndedMessages(props) {

@@ -3,7 +3,7 @@ import {
     getRandomCoordinate,
     checkIfCoordinateHitShipsNeighbor,
     getCoordinatesNeighbors,
-} from "../game_helpers/playerFactoryHelpers";
+} from "./playerFactoryHelpers";
 
 class Player {
     constructor(name) {

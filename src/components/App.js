@@ -2,16 +2,15 @@ import React, { useState } from 'react'
 import GameContainer from "./GameContainer";
 
 import SelectShipLocations from "./SelectShipLocations";
-import blurTheBackground from "./helpers/blurTheBackground";
+import blurTheBackground from "../game_helpers/blurTheBackground";
 
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
-import { GameContent, Header, MessageContainer } from "./Styles/game";
-import { Button } from "./Styles/selectingShipsStyles";
-import GameEndedMessages from "./GameEndedMessages";
 
-let playersGameboard = new Gameboard('Friendly');
-//let playersGameboard;
+import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
+
+//let playersGameboard = new Gameboard('Friendly');
+let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 computerGameboard.placeAllShipsOnBoard();
@@ -24,28 +23,40 @@ function App() {
     const computer = new Player('computer');
     player.startTurn();
 
-    return (
-        <div>
-            <Header gameHasStarted={ gameHasStarted }>
-                <h1>Battleships</h1>
-                <p>Place your own ships on the map and try to sink your opponents ships to win</p>
-            </Header>
-            <div className="info-btn__container">
-                <i onClick={ ()=>{
-                    blurTheBackground(gameHasStarted, "blur(2px) grayscale(20%)")
-                    setInfoMessageOpen(()=>true)
-                } } className="info-btn far fa-question-circle"/>
+    if ( screen.width < 450 ) {
+        return (
+            <MessageContainer info>
+                <h3>Info</h3>
+                <p> Unfortunately, this app doesn't work on small screens.</p>
+                <p>Please rotate your device to horizontal view and refresh the page.</p>
+            </MessageContainer>
+        )
+    } else {
+        return (
+            <div>
+                <Header gameHasStarted={ gameHasStarted }>
+                    <h1>Battleships</h1>
+                    <p>Place your own ships on the map and try to sink your opponents ships to win</p>
+                </Header>
+                <InfoBtnContainer blurOn={ infoMessageOpen }>
+                    <i className="info-btn far fa-question-circle" onClick={ ()=>{
+                        blurTheBackground(gameHasStarted, "blur(2px) grayscale(20%)")
+                        setInfoMessageOpen(()=>true)
+                    } }/>
+                </InfoBtnContainer>
+                {/*<GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                           gameHasStarted={ gameHasStarted }/>*/ }
+                { !gameHasStarted ?
+                    <SelectShipLocations setGameboard={ setPlayersGameBoard }
+                                         setGameHasStarted={ setGameHasStarted }/> :
+                    <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                                   gameHasStarted={ gameHasStarted }/> }
+                { infoMessageOpen ?
+                    <InfoMessage gameHasStarted={ gameHasStarted } setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
             </div>
-            <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                           gameHasStarted={ gameHasStarted }/>
-            {/*{ !gameHasStarted ?
-                <SelectShipLocations setGameboard={ setPlayersGameBoard } setGameHasStarted={ setGameHasStarted }/> :
-                <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                               gameHasStarted={ gameHasStarted }/> }*/}
-            { infoMessageOpen ?
-                <InfoMessage gameHasStarted={ gameHasStarted } setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
-        </div>
-    )
+        )
+    }
+
 }
 
 function InfoMessage(props) {

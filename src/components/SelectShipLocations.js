@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/selectingShipsStyles";
-import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/game";
+import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
+import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/general";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
 import {
@@ -15,7 +15,7 @@ import {
 
 import Gameboard from "../factories/GameboardFactory";
 import GameEndedMessages from "./GameEndedMessages";
-import blurTheBackground from "./helpers/blurTheBackground";
+import blurTheBackground from "../game_helpers/blurTheBackground";
 
 let draggedItem;
 let newCloneNode;
@@ -55,8 +55,6 @@ function SelectShipLocations(props) {
             // remove drag hover classname from the document
             document.querySelectorAll(".drag-hover").forEach(el=>el.classList.remove('drag-hover'));
         }
-
-
     }
 
     return (
@@ -78,12 +76,11 @@ function SelectShipLocations(props) {
                                                       shipsAxelVertical={ shipsAxelVertical }/>
                             }) }
                         </div>
-
                     </Sidebar>
 
                     <div>
                         <h2>Drag your ships here</h2>
-                        <GameboardGrid>
+                        <GameboardGrid secondary>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
                                 return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
@@ -140,7 +137,7 @@ function ShipContainer(props) {
     return (
         <ShipInfo>
             <p>{ ship.name } x { ship.count }</p>
-            <div id={ props.id } draggable={ ship.count > 0 } className="ship-rotation" onDragEnd={ ()=>stopDrag(ship) }
+            <div id={ props.id } className="ship-rotation" draggable={ ship.count > 0 } onDragEnd={ ()=>stopDrag(ship) }
                  onDragStart={ (e)=>startDrag(e, ship) }>
                 <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{

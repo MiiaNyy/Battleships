@@ -4,8 +4,8 @@ import {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
     getShipsPosition
-} from "../game_helpers/gameboardFactoryHelpers"
-import { getRandomCoordinate } from "../game_helpers/playerFactoryHelpers";
+} from "./gameboardFactoryHelpers"
+import { getRandomCoordinate } from "./playerFactoryHelpers";
 
 
 class Gameboard {

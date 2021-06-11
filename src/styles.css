@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1 {
-    font-size: 2.7rem;
+    font-size: 2rem;
     letter-spacing: 1.5px;
     margin-bottom: 0;
 }
@@ -55,7 +55,7 @@ h2, h3 {
 }
 
 h2 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #a5a5a5;
 }
 
@@ -71,22 +71,43 @@ li {
     font-family: 'Special Elite', cursive;
 }
 
-/*GENERAL STYLES*/
+/* Latest message on the game description console */
+.latest_msg {
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding-top: 0.8em;
+    border-top: 2px solid black;
+    margin: 0 auto;
+    width: 90%;
+}
+
+/* when user places ships on the board, invalid message is hidden, until user tries to position ships to invalid positions */
+.hidden {
+    display: none;
+}
 
 .ship-rotation {
     display: flex;
     justify-content: center;
-
 }
+
+.drag-hover {
+    background-color: #83c5be !important;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+/*GENERAL STYLES*/
+
 
 .flex {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /*align-items: flex-end;*/
-    align-items: flex-start;
+    align-items: center;
     gap: 1em;
-    /*gap: 2em;*/
     transition: all 0.5s ease-in-out;
 }
 
@@ -101,30 +122,20 @@ li {
     transition: all 0.5s ease-in-out;
 }
 
-
-.latest_msg {
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding-top: 0.8em;
-    border-top: 2px solid black;
-    margin: 0 auto;
-    width: 90%;
+.row {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    font-size: 0.8rem;
 }
 
-/*.ship-position {
-    background-color: #878787;
-}*/
-
-
-.drag-hover {
-    background-color: #83c5be !important;
+.flex-second {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1em;
 }
 
-.invisible {
-    visibility: hidden;
-}
-
-
+/* ANIMATIONS */
 @keyframes slideDownAndUp {
     0% {
         opacity: 0;
@@ -186,31 +197,14 @@ li {
 }
 
 
-@keyframes specsSlideDown {
-    0% {
-        opacity: 1;
-        -webkit-transform: translate(0%, 0%);
-        transform: translate(0%, 0%);
-    }
-    100% {
-        opacity: 0;
-        -webkit-transform: translate(0%, 90%);
-        transform: translate(0%, 90%);
-    }
-}
-
-.specs-slide-down {
-    animation: specksSlideDown 500ms;
-    opacity: 1;
-}
-
-
-.info-btn__container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: right;
-    color: #393939;
+.specs-btn {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 1em;
+    border: 5px #585858 ridge;
+    background-color: #a5a5a5;
 }
 
 .info-btn {
@@ -235,32 +229,34 @@ li {
 }
 
 
-.row {
-    display: flex;
-    gap: 1em;
-    justify-content: space-between;
-    font-size: 0.8rem;
-}
+@media (min-width: 800px) {
+    h1 {
+        font-size: 3.5rem;
+    }
 
-.specs-btn {
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 0.9rem;
-    margin-bottom: 1em;
-    border: 5px #585858 ridge;
-    background-color: #a5a5a5;
-}
+    .latest_msg {
+        font-size: 1.1rem;
+        margin: 0 auto;
 
-.flex-second {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 1em;
-}
+    }
 
+    .flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .ship-rotation {
+        margin-bottom: 0.5em;
+    }
+
+}
 
 @media (min-width: 1000px) {
-
+    .flex-second {
+        flex-direction: row;
+        gap: 1em;
+    }
 
     h2 {
         font-size: 1.3rem;
@@ -284,21 +280,4 @@ li {
 
 }
 
-@media (min-width: 800px) {
-    h1 {
-        font-size: 3.5rem;
-    }
 
-
-    .flex {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .ship-rotation {
-        margin-bottom: 0.5em;
-    }
-
-
-}

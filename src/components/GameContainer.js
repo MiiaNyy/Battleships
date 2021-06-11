@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
-import attackIsValid from "./helpers/attackIsValid";
-import addNewMessageToDescription from "./helpers/addNewMessageToDescription";
+import attackIsValid from "../game_helpers/attackIsValid";
+import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent, Console, Divider } from "./Styles/game";
+import { GameContent } from "./Styles/general";
+import {Console, Divider} from "./Styles/gameArea"
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
