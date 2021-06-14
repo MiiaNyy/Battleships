@@ -255,8 +255,6 @@ li {
 }
 
 
-
-
 .col__item p, .col__item li {
     font-size: 0.9rem;
     letter-spacing: 1px;
@@ -272,15 +270,14 @@ li {
 }
 
 
-
 .col__header p {
     font-family: 'Wallpoet', cursive;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: center;
     text-transform: uppercase;
     font-weight: bolder;
     letter-spacing: 1px;
-
+    text-decoration: underline;
 }
 
 .col__item {
@@ -317,6 +314,10 @@ li {
 @media (min-width: 900px) {
     .selecting_levels {
         display: flex;
+    }
+
+    .col__header p {
+        font-size: 1.1rem;
     }
 
     .col {
