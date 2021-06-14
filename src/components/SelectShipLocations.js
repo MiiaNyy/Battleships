@@ -4,6 +4,8 @@ import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles
 import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/general";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
+import isTouchScreen from "../game_helpers/isTouchScreen";
+
 import {
     changeShipsCount,
     getNewShipTypesArr,
@@ -80,7 +82,8 @@ function SelectShipLocations(props) {
             <div className="flex">
                 <div className="flex container">
                     <Sidebar>
-                        <h3>Drag and drop to position your ships</h3>
+                        <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
+                            ' and drop to position your ships' }</h3>
                         <BtnContainer axel>
                             <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
                             <Button small onClick={ ()=>setShipsAxelVertical((prev)=>!prev) }>
@@ -96,8 +99,8 @@ function SelectShipLocations(props) {
                         </div>
                     </Sidebar>
 
-                    <div>
-                        <h2>Drag your ships here</h2>
+                    <div style={{alignSelf: "center"}}>
+                        <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
                         <GameboardGrid secondary>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
@@ -144,6 +147,7 @@ function ShipContainer(props) {
         newCloneNode.style.position = "absolute";
         newCloneNode.style.top = "0px";
         newCloneNode.style.left = "-200px";
+        newCloneNode.style.border = "none";
 
         const cloneXPosition = props.shipsAxelVertical ? getClonesXPosition(ship.length) : 15;
 
@@ -158,7 +162,7 @@ function ShipContainer(props) {
         <ShipInfo>
             <p>{ ship.name } x { ship.count }</p>
             <div id={ props.id } className="ship-rotation" draggable={ ship.count > 0 } onDragEnd={ ()=>stopDrag(ship) }
-                 onDragStart={ (e)=>startDrag(e, ship) } onClick={ (e)=>handleClickOnTouchScreens(e, ship) }>
+                 onDragStart={ (e)=>startDrag(e, ship) } onClick={ (e)=>selectShipOnTouchScreens(e, ship) }>
                 <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{
                         return <ShipCell ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
@@ -170,24 +174,19 @@ function ShipContainer(props) {
 }
 
 
-function handleClickOnTouchScreens(e, ship) {
+function selectShipOnTouchScreens(e, ship) {
     if ( isTouchScreen() ) {
         const clickedElement = e.target.parentNode;
         if ( clickedElement.classList[1] === 'inner' ) {
-            console.log('inner found');
             clickedShip = [clickedElement, ship];
             document.querySelectorAll(".ship-rotation").forEach(el=>el.style.border = '2px solid #a5a5a5');
             clickedElement.style.border = '2px solid yellow';
-            //clickedElement.classList.add('ship-selected');
         }
     } else {
         console.log('normal screen')
     }
 }
 
-function isTouchScreen() {
-    return window.matchMedia('(hover: none)').matches;
-}
 
 function stopDrag(ship) {
     newCloneNode.style.display = 'none';

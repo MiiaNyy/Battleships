@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import GameContainer from "./GameContainer";
 
 import SelectShipLocations from "./SelectShipLocations";
+import GameLevel from "./GameLevel";
+
 import blurTheBackground from "../game_helpers/blurTheBackground";
 
 import Gameboard from "../factories/GameboardFactory";
@@ -46,11 +48,13 @@ function App() {
                 </InfoBtnContainer>
                 {/*<GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
                            gameHasStarted={ gameHasStarted }/>*/ }
-                { !gameHasStarted ?
+                {/*{ !gameHasStarted ?
                     <SelectShipLocations setGameboard={ setPlayersGameBoard }
                                          setGameHasStarted={ setGameHasStarted }/> :
                     <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                                   gameHasStarted={ gameHasStarted }/> }
+                                   gameHasStarted={ gameHasStarted }/> }*/}
+
+                <GameLevel/>
                 { infoMessageOpen ?
                     <InfoMessage gameHasStarted={ gameHasStarted } setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
             </div>
@@ -58,6 +62,9 @@ function App() {
     }
 
 }
+
+
+
 
 function InfoMessage(props) {
 

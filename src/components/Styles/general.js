@@ -119,7 +119,7 @@ const Sidebar = styled.div`
   padding: 1em;
   margin: 0 auto;
   @media (min-width: 800px) {
-    margin: 0 3em 0 0;
+    margin: 0;
     max-width: 350px;
   }
 `;
