@@ -89,6 +89,9 @@ li {
 .ship-rotation {
     display: flex;
     justify-content: center;
+    padding: 2px;
+    border: 2px solid #a5a5a5;
+    transition: border 0.2s ease-in-out;
 }
 
 .drag-hover {
@@ -229,6 +232,11 @@ li {
 }
 
 
+/*.ship-selected {
+    padding: 2px;
+    border: 2px solid yellow !important;
+}*/
+
 @media (min-width: 800px) {
     h1 {
         font-size: 3.5rem;
@@ -255,6 +263,7 @@ li {
 @media (min-width: 1000px) {
     .flex-second {
         flex-direction: row;
+        align-items: center;
         gap: 1em;
     }
 

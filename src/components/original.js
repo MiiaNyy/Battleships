@@ -1,3 +1,4 @@
+/*
 import React, { useState } from 'react';
 
 import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
@@ -17,8 +18,7 @@ import Gameboard from "../factories/GameboardFactory";
 import GameEndedMessages from "./GameEndedMessages";
 import blurTheBackground from "../game_helpers/blurTheBackground";
 
-let clickedShip = []; // touch screens uses this, when position ships on board
-let draggedItem; // normal mouse screens uses this when ships are draggable
+let draggedItem;
 let newCloneNode;
 const humanBoard = new Gameboard('Friendly');
 
@@ -37,14 +37,9 @@ function SelectShipLocations(props) {
     function dropShipOnBoard(e) {
         e.preventDefault();
         const targetShipId = e.dataTransfer.getData("text");
-        placeShipOnBoard(draggedShip, e, targetShipId)
-    }
-
-    function placeShipOnBoard(currentShip, e, shipId) {
-        humanBoard.placeShip(currentShip, e.target.id, shipsAxelVertical);
-
+        humanBoard.placeShip(draggedShip, e.target.id, shipsAxelVertical);
         if ( humanBoard.placingShipSuccessful ) {
-            setShips((allShips)=>changeShipsCount(allShips, shipId));
+            setShips((allShips)=>changeShipsCount(allShips, targetShipId));
             setCoordinatesWithShips((prev)=>{
                 return [...prev, humanBoard.latestShipPlaced]
             });
@@ -62,18 +57,6 @@ function SelectShipLocations(props) {
             document.querySelectorAll(".drag-hover").forEach(el=>el.classList.remove('drag-hover'));
         }
     }
-
-    function placeShipOnTouchScreens(e) {
-        if ( clickedShip.length > 0 ) {
-            const [clickedElement, ship] = clickedShip;
-            document.querySelectorAll(".ship-rotation").forEach(el=>el.style.border = '2px solid #a5a5a5');
-            placeShipOnBoard(ship, e, ship.id);
-            if ( humanBoard.placingShipSuccessful && ship.count <= 1 ) {
-                clickedElement.classList.add('invisible');
-            }
-        }
-    }
-
 
     return (
         <GameContent positionShips>
@@ -105,8 +88,7 @@ function SelectShipLocations(props) {
                                              onDrop={ (e)=>dropShipOnBoard(e) }
                                              onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
                                              onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
-                                             onDragLeave={ (e)=>handleDragLeave(e) }
-                                             onClick={ (e)=>placeShipOnTouchScreens(e) }/>
+                                             onDragLeave={ (e)=>handleDragLeave(e) }/>
                             }) }
                         </GameboardGrid>
                     </div>
@@ -129,7 +111,6 @@ function SelectShipLocations(props) {
 
     );
 }
-
 
 function ShipContainer(props) {
     const ship = props.ship;
@@ -158,7 +139,7 @@ function ShipContainer(props) {
         <ShipInfo>
             <p>{ ship.name } x { ship.count }</p>
             <div id={ props.id } className="ship-rotation" draggable={ ship.count > 0 } onDragEnd={ ()=>stopDrag(ship) }
-                 onDragStart={ (e)=>startDrag(e, ship) } onClick={ (e)=>handleClickOnTouchScreens(e, ship) }>
+                 onDragStart={ (e)=>startDrag(e, ship) } onTouchStart={(re)=> pickup(e) }>
                 <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{
                         return <ShipCell ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
@@ -167,52 +148,32 @@ function ShipContainer(props) {
             </div>
         </ShipInfo>
     )
-}
 
 
-function handleClickOnTouchScreens(e, ship) {
-    if ( isTouchScreen() ) {
-        const clickedElement = e.target.parentNode;
-        if ( clickedElement.classList[1] === 'inner' ) {
-            console.log('inner found');
-            clickedShip = [clickedElement, ship];
-            document.querySelectorAll(".ship-rotation").forEach(el=>el.style.border = '2px solid #a5a5a5');
-            clickedElement.style.border = '2px solid yellow';
-            //clickedElement.classList.add('ship-selected');
+    function stopDrag(ship) {
+        newCloneNode.style.display = 'none';
+        newCloneNode.remove();
+
+        if ( ship.count === 0 ) {
+            draggedItem.classList.add('invisible');
         }
-    } else {
-        console.log('normal screen')
     }
-}
 
-function isTouchScreen() {
-    return window.matchMedia('(hover: none)').matches;
-}
-
-function stopDrag(ship) {
-    newCloneNode.style.display = 'none';
-    newCloneNode.remove();
-
-    if ( ship.count === 0 ) {
-        draggedItem.classList.add('invisible');
+    function handleDragEnter(e, shipPosition) {
+        if ( !shipPosition ) { // add hover effect if this is not ship position
+            e.target.classList.add('drag-hover');
+        }
     }
-}
 
-function handleDragEnter(e, shipPosition) {
-    if ( !shipPosition ) { // add hover effect if this is not ship position
-        e.target.classList.add('drag-hover');
+    function handleDragLeave(e) {
+        e.target.classList.remove('drag-hover'); // remove hover effect
     }
-}
 
-function handleDragLeave(e) {
-    e.target.classList.remove('drag-hover'); // remove hover effect
-}
-
-function startTheGame(props) {
-    if ( humanBoard.ships.length > 1 ) {
-        props.setGameboard(humanBoard);
-        props.setGameHasStarted(true);
+    function startTheGame(props) {
+        if ( humanBoard.ships.length > 1 ) {
+            props.setGameboard(humanBoard);
+            props.setGameHasStarted(true);
+        }
     }
-}
 
-export default SelectShipLocations;
+    export default SelectShipLocations;*/
