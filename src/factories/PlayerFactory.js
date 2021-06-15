@@ -9,6 +9,7 @@ class Player {
     constructor(name) {
         this.name = name;
         this.turn = false;
+        this.gameLevel = '';
         this.shotsReceived = 0;
         this.allHitShots = 0;
         // array of ship objects, that is created when hit happens in the enemy board. Includes coordinates that have
@@ -17,6 +18,10 @@ class Player {
         this.allFiredShots = []; // coordinates of all of the fired shots to enemy gameboard
         this.allMissedShots = [];
         this.latestShotCoordinate = '';
+    }
+
+    set setGameLevel(level) {
+        this.gameLevel = level;
     }
 
     turnOver() {
@@ -74,7 +79,7 @@ class Player {
 
     // check if coordinate is neighbor to older hit coordinate. If false, create new foundShips item
     addCoordinateToFoundShipsArr(coordinate) {
-        const foundShipsNeighbor = checkIfCoordinateHitShipsNeighbor(coordinate, this.foundShips);
+        const foundShipsNeighbor = checkIfCoordinateHitShipsNeighbor(coordinate, this.foundShips, this.gameLevel);
         if ( !foundShipsNeighbor ) {
             this.foundShips.push({
                 coordinates: [coordinate],

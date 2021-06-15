@@ -1,3 +1,11 @@
+//import {getRightAmountOfColumns} from "./gameboardFactoryHelpers";
+function getRightAmountOfColumns(level) {
+    const columnsPacific = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const columnsAtlantic = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    const columnsMediterranean = ['a', 'b', 'c', 'd', 'e'];
+
+    return level === 'mediterranean' ? columnsMediterranean : level === 'atlantic' ? columnsAtlantic : columnsPacific;
+}
 // If there is older hits, check that neighbor coordinate for new coordinate
 function getCoordinateFromOlderHit(foundShips) {
     for (let i = 0; i < foundShips.length; i++) {
@@ -11,18 +19,19 @@ function getCoordinateFromOlderHit(foundShips) {
                 }
             }
         }
-
     }
 }
 
-function getRandomCoordinate() {
-    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-    const columnIndex = Math.floor(Math.random() * 9);
-    const rowIndex = (Math.floor(Math.random() * 9)) + 1;
+function getRandomCoordinate(gameLevel) {
+    const gridColumns = getRightAmountOfColumns(gameLevel);
+    const gridRows = (gridColumns.length - 1);
+
+    const columnIndex = Math.floor(Math.random() * (gridColumns.length - 1));
+    const rowIndex = (Math.floor(Math.random() * gridRows)) + 1;
     return gridColumns[columnIndex] + rowIndex;
 }
 
-function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips) {
+function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips, gameLevel) {
     for (let i = 0; i < foundShips.length; i++) {
         const ship = foundShips[i];
         if ( !ship.shipSunk ) {
@@ -31,7 +40,7 @@ function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips) {
                 let neighborCoordinate = shipsNeighbors[j];
                 if ( neighborCoordinate.mark === coordinate ) {
                     ship.coordinates.push(coordinate); // add this coordinate to ship obj
-                    modifyShipsNeighborList(ship, coordinate, j, ship.neighbors);
+                    modifyShipsNeighborList(ship, coordinate, j, ship.neighbors, gameLevel);
                     return true;
                 }
             }
@@ -58,14 +67,14 @@ function getCoordinatesNeighbors(coordinate) {
     return neighbors
 }
 
-function modifyShipsNeighborList(ship, coordinate, currentIndex, shipsNeighbors) {
+function modifyShipsNeighborList(ship, coordinate, currentIndex, shipsNeighbors, gameLevel) {
     if ( ship.sharedMark === undefined ) { // check if ships direction has been found yet
         ship.sharedMark = getShipsDirection(ship.coordinates);
         console.log('ships shared mark is ' + ship.sharedMark);
         removeRedundantNeighbors(shipsNeighbors, ship.sharedMark) // delete all the neighbors that don't have sharedMark
     }
     // add new possible neighbors to neighbors arr
-    const newNeighbors = getNewNeighborsWithSharedMark(coordinate, ship.sharedMark, ship.coordinates);
+    const newNeighbors = getNewNeighborsWithSharedMark(coordinate, ship.sharedMark, ship.coordinates, gameLevel);
     newNeighbors.forEach((mark)=>shipsNeighbors.push({mark: mark, tried: false}))
     shipsNeighbors.forEach((ship)=>console.log('ship neighbor coordinates are ' + ship.mark + ' tried: ' + ship.tried))
 }
@@ -80,9 +89,9 @@ function removeRedundantNeighbors(shipsNeighbors, sharedMark) {
     }
 }
 
-function getNewNeighborsWithSharedMark(coordinate, sharedMark, shipsCoordinates) {
+function getNewNeighborsWithSharedMark(coordinate, sharedMark, shipsCoordinates, gameLevel) {
     const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
-    const possibleNeighbors = isNumeric(sharedMark) ? getHorizontalNeighbors(horizontalMark, sharedMark) : getVerticalNeighbors(sharedMark, verticalMark);
+    const possibleNeighbors = isNumeric(sharedMark) ? getHorizontalNeighbors(horizontalMark, sharedMark, gameLevel) : getVerticalNeighbors(sharedMark, verticalMark, gameLevel);
 
     // Remove coordinate if it's in shipsCoordinates and return other coordinates to neighbors
     const neighbors = possibleNeighbors.filter(coordinate=>!shipsCoordinates.includes(coordinate));
@@ -98,8 +107,8 @@ function getShipsDirection(shipsCoordinates) {
 
 }
 
-function getHorizontalNeighbors(horizontalMark, verticalMark) {
-    const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+function getHorizontalNeighbors(horizontalMark, verticalMark, gameLevel) {
+    const columns = getRightAmountOfColumns(gameLevel)
     const columnIndex = columns.indexOf(horizontalMark);
     // if coordinate is a/j (start/end columns), there is only one horizontal neighbor
     if ( columnIndex === 0 ) {
@@ -111,11 +120,12 @@ function getHorizontalNeighbors(horizontalMark, verticalMark) {
     }
 }
 
-function getVerticalNeighbors(horizontalMark, verticalMark) {
+function getVerticalNeighbors(horizontalMark, verticalMark, gameLevel) {
+    const gridRows = getRightAmountOfColumns(gameLevel).length
     if ( verticalMark === 1 ) {
         return [horizontalMark + 2]
-    } else if ( verticalMark === 10 ) {
-        return [horizontalMark + 9]
+    } else if ( verticalMark === gridRows ) {
+        return [horizontalMark + (gridRows - 1)]
     } else {
         return [horizontalMark + (verticalMark + 1), horizontalMark + (verticalMark - 1)]
     }

@@ -1,4 +1,5 @@
-
+import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
+import getRightAmountOfGridCells from "../game_helpers/getRightAmountOfGridCells";
 
 function checkIfAnyShipGotHit(allShips, coordinate) {
     // if ship got hit, return true and that ship
@@ -28,14 +29,14 @@ function checkIfPositionIsEmpty(ships, coordinates) {
     return true
 }
 
-function getShipsPosition(ship) {
+function getShipsPosition(ship, gameLevel) {
     const xPosition = ship.startPosition.slice(0, 1);
     const yPosition = Number(ship.startPosition.slice(1));
 
     let shipPosition = [];
     for (let i = 0; i < ship.length; i++) {
         let coordinate;
-        coordinate = ship.axelIsVertical ? getVerticalPosition(ship, xPosition, (yPosition + i)) : getHorizontalPosition(ship, xPosition, yPosition, i);
+        coordinate = ship.axelIsVertical ? getVerticalPosition(gameLevel, ship, xPosition, (yPosition + i)) : getHorizontalPosition(gameLevel, ship, xPosition, yPosition, i);
         if ( coordinate ) {
             ship.positionIsValid();
             shipPosition.push(coordinate);
@@ -48,16 +49,17 @@ function getShipsPosition(ship) {
     return shipPosition;
 }
 
-function getVerticalPosition(ship, xPosition, yPosition) {
-    if ( yPosition > 10 ) { // there is 10 cells in column
+function getVerticalPosition(gameLevel, ship, xPosition, yPosition) {
+    const rowAmount = getRightAmountOfGridCells(gameLevel).length;
+    if ( yPosition > rowAmount ) { // depending on which level, row amount is different
         ship.positionIsInvalid()
     } else {
         return xPosition + yPosition;
     }
 }
 
-function getHorizontalPosition(ship, xPosition, yPosition, index) {
-    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+function getHorizontalPosition(gameLevel, ship, xPosition, yPosition, index) {
+    const gridColumns = getRightAmountOfGridCells(gameLevel)
     const startColumnIndex = gridColumns.indexOf(xPosition);
     let nextColumnIndex = startColumnIndex + index;
     if ( nextColumnIndex > gridColumns.length ) {
@@ -66,6 +68,8 @@ function getHorizontalPosition(ship, xPosition, yPosition, index) {
         return gridColumns[nextColumnIndex] + yPosition;
     }
 }
+
+
 /*
 const x = new Ship('test', 3, 'j10', false);
 

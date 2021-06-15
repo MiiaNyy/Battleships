@@ -18,15 +18,18 @@ import {
 import Gameboard from "../factories/GameboardFactory";
 import GameEndedMessages from "./GameEndedMessages";
 import blurTheBackground from "../game_helpers/blurTheBackground";
+import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
 
 let clickedShip = []; // touch screens uses this, when position ships on board
 let draggedItem; // normal mouse screens uses this when ships are draggable
 let newCloneNode;
 const humanBoard = new Gameboard('Friendly');
 
-function SelectShipLocations(props) {
-    const cellIds = getGridCellIds();
-    const [ships, setShips] = useState(getNewShipTypesArr()); // arr of ship obj with ids on the drag/info container
+function PositionShips(props) {
+    const gridSize = props.gameLevel === 'mediterranean' ? 5 : props.gameLevel === 'atlantic' ? 7 : 10;
+    const cellIds = getGridCellIds(props.gameLevel);
+    const [ships, setShips] = useState(getNewShipTypesArr(props.gameLevel)); // arr of ship obj with ids on the
+    // drag/info container
     const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
 
     const [coordinatesWithShip, setCoordinatesWithShips] = useState([]); //coordinates that has ship in it
@@ -101,7 +104,7 @@ function SelectShipLocations(props) {
 
                     <div style={{alignSelf: "center"}}>
                         <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
-                        <GameboardGrid secondary>
+                        <GameboardGrid size={gridSize} secondary>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
                                 return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
@@ -214,4 +217,4 @@ function startTheGame(props) {
     }
 }
 
-export default SelectShipLocations;
+export default PositionShips;

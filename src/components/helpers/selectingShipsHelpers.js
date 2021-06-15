@@ -1,4 +1,4 @@
-import shipTypes from "../../game_helpers/shipTypes";
+import { pacific, atlantic, mediterranean } from "../../game_helpers/shipTypes";
 import { v4 as uuidv4 } from "uuid";
 
 function changeShipsCount(allShips, id) {
@@ -17,7 +17,8 @@ function changeShipsCount(allShips, id) {
 }
 
 // make new array from shipTypes and add every ship obj a id
-function getNewShipTypesArr() {
+function getNewShipTypesArr(gameLevel) {
+    const shipTypes = gameLevel === 'mediterranean' ? mediterranean : gameLevel === 'atlantic' ? atlantic : pacific;
     return shipTypes.map((ship)=>Object.assign({}, ship, {id: uuidv4()}));
 }
 

@@ -81,6 +81,11 @@ li {
     width: 90%;
 }
 
+
+.subtitle {
+    font-size: 1.3rem;
+}
+
 /* when user places ships on the board, invalid message is hidden, until user tries to position ships to invalid positions */
 .hidden {
     display: none;
@@ -233,14 +238,6 @@ li {
 
 
 /* SELECTING LEVEL */
-.selecting_levels {
-    padding: 1em;
-    color: #9e9d9d;
-    background-color: rgba(45, 45, 45, 0.76);
-    border: 10px ridge #292b27;
-}
-
-
 .col {
     width: 100%;
     padding: 0 1em;
@@ -254,37 +251,15 @@ li {
     border-top: 2px solid #9e9d9d;
 }
 
-
-.col__item p, .col__item li {
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-.col__item p {
-    text-transform: uppercase;
-}
-
 .col__btn {
     text-align: center;
     align-self: stretch;
 }
 
 
-.col__header p {
-    font-family: 'Wallpoet', cursive;
-    font-size: 1rem;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: bolder;
-    letter-spacing: 1px;
-    text-decoration: underline;
-}
 
-.col__item {
-    width: 90%;
-    max-width: 200px;
-    margin: 0 auto;
-}
+
+
 
 
 @media (min-width: 800px) {
@@ -312,13 +287,6 @@ li {
 }
 
 @media (min-width: 900px) {
-    .selecting_levels {
-        display: flex;
-    }
-
-    .col__header p {
-        font-size: 1.1rem;
-    }
 
     .col {
         display: flex;

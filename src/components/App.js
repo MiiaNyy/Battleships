@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GameContainer from "./GameContainer";
 
-import SelectShipLocations from "./SelectShipLocations";
+import PositionShips from "./PositionShips";
 import GameLevel from "./GameLevel";
 
 import blurTheBackground from "../game_helpers/blurTheBackground";
@@ -15,15 +15,41 @@ import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
-computerGameboard.placeAllShipsOnBoard();
 
 function App() {
     const [gameHasStarted, setGameHasStarted] = useState(false);
     const [infoMessageOpen, setInfoMessageOpen] = useState(false);
 
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
+
+    useEffect(()=>{
+        if ( levelSelected ) {
+            computerGameboard.setGameLevel = gameLevelIs;
+            computerGameboard.placeAllShipsOnBoard();
+
+            player.setGameLevel = gameLevelIs;
+            computer.setGameLevel = gameLevelIs;
+        }
+    }, [levelSelected])
+
     const player = new Player('player');
     const computer = new Player('computer');
+
     player.startTurn();
+
+
+    function Content(props) {
+        if ( !levelSelected ) {
+            return <GameLevel setLevelSelected={ setLevelSelected } setGameLevelTo={ setGameLevelTo }/>
+        } else if ( levelSelected && !gameHasStarted ) {
+            return <PositionShips setGameboard={ setPlayersGameBoard } gameLevel={gameLevelIs}
+                                  setGameHasStarted={ setGameHasStarted }/>
+        } else if ( levelSelected && gameHasStarted ) {
+            return <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
+                                  gameHasStarted={ gameHasStarted }/>
+        }
+    }
 
     if ( screen.width < 450 ) {
         return (
@@ -46,15 +72,7 @@ function App() {
                         setInfoMessageOpen(()=>true)
                     } }/>
                 </InfoBtnContainer>
-                {/*<GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                           gameHasStarted={ gameHasStarted }/>*/ }
-                {/*{ !gameHasStarted ?
-                    <SelectShipLocations setGameboard={ setPlayersGameBoard }
-                                         setGameHasStarted={ setGameHasStarted }/> :
-                    <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                                   gameHasStarted={ gameHasStarted }/> }*/}
-
-                <GameLevel/>
+                <Content/>
                 { infoMessageOpen ?
                     <InfoMessage gameHasStarted={ gameHasStarted } setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
             </div>
@@ -62,7 +80,6 @@ function App() {
     }
 
 }
-
 
 
 

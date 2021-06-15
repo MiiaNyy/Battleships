@@ -1,5 +1,5 @@
 import Ship from "./ShipFactory.js";
-import shipTypes from "../game_helpers/shipTypes";
+import { pacific, atlantic, mediterranean } from "../game_helpers/shipTypes";
 import {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
@@ -11,6 +11,7 @@ import { getRandomCoordinate } from "./playerFactoryHelpers";
 class Gameboard {
     constructor(name) {
         this.name = name;
+        this.battlefield = ''
         this.shipsCoordinates = [];
         this.latestShipPlaced = [];
         this.ships = [];
@@ -26,6 +27,15 @@ class Gameboard {
         };
         this.placingShipSuccessful = false;
     }
+
+    set setGameLevel(level) {
+        this.battlefield = level;
+    }
+
+    get gameLevel() {
+        return this.battlefield;
+    }
+
 
     get gameOver() {
         return this.allShipHaveSunk;
@@ -67,16 +77,20 @@ class Gameboard {
                 this.latestShipPlaced = coordinates;
                 this.placingShipSuccessful = true;
             }
-        }else {
+        } else {
             this.placingShipSuccessful = false;
         }
     }
+
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-        for (let i = 3; i < 4; i++) {
+
+        const shipTypes = this.battlefield === 'mediterranean' ? mediterranean : this.battlefield === 'atlantic' ? atlantic : pacific;
+
+        for (let i = 0; i < shipTypes.length; i++) {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {
-                while(!this.placingShipSuccessful) {
+                while (!this.placingShipSuccessful) {
                     this.placeShip(shipTypes[i], getRandomCoordinate(), true);
                 }
                 this.placingShipSuccessful = false;

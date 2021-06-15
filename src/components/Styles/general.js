@@ -36,19 +36,37 @@ const GameContent = styled.main`
 
 const GameboardGrid = styled.div`
   display: grid;
-  grid-template-columns: ${props => props.secondary ? 'repeat(10, 25px)' : 'repeat(10, 20px)'};
-  grid-template-rows: ${props => props.secondary ? 'repeat(10, 25px)' : 'repeat(10, 20px)'};
+  grid-template-columns: ${ props=> getGridSize(props) };
+  grid-template-rows: ${ props=> getGridSize(props) };
   justify-content: center;
   @media (min-width: 700px) {
-    grid-template-columns: repeat(10, 30px);
-    grid-template-rows: repeat(10, 30px);
+    grid-template-columns:  ${ props=> getGridSize(props, 700) };
+    grid-template-rows:  ${ props=> getGridSize(props, 700) };
   }
   @media (min-width: 1000px) {
-    grid-template-columns: repeat(10, 35px);
-    grid-template-rows: repeat(10, 35px);
+    grid-template-columns:  ${ props=> getGridSize(props, 1000) };
+    grid-template-rows:  ${ props=> getGridSize(props, 1000) };
   }
-  
+
 `;
+
+function getGridSize(props, media) {
+    const size = props.size;
+    if ( media ) {
+        if ( media === 1000 ) {
+            return `repeat(${ size }, 35px)`
+        } else if ( media === 700 ) {
+            return `repeat(${ size }, 30px)`
+        }
+
+    }
+    else if ( props.secondary ) {
+        return `repeat(${ size }, 25px)`
+    } else {
+        return `repeat(${ size }, 20px)`
+    }
+
+}
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
@@ -130,7 +148,7 @@ const InfoBtnContainer = styled.div`
   margin: 0 auto;
   text-align: right;
   color: #393939;
-  filter: ${props => props.blurOn ? 'blur(2px) grayscale(20%)' : 'none'};
+  filter: ${ props=>props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
   transition: all 0.5s ease-in-out;
 `;
 
