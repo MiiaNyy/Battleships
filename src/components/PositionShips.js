@@ -103,7 +103,7 @@ function PositionShips(props) {
                         </BtnContainer>
                         <div className="wrap">
                             { ships.map((ship)=>{
-                                return <ShipContainer key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
+                                return <ShipContainer size={gridSize} key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
                                                       ship={ ship } setShips={ setShips }
                                                       shipsAxelVertical={ shipsAxelVertical }/>
                             }) }
@@ -112,7 +112,7 @@ function PositionShips(props) {
 
                     <div style={{alignSelf: "center"}}>
                         <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
-                        <GameboardGrid size={gridSize} secondary>
+                        <GameboardGrid size={gridSize}>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
                                 return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
@@ -176,7 +176,7 @@ function ShipContainer(props) {
                  onDragStart={ (e)=>startDrag(e, ship) } onClick={ (e)=>selectShipOnTouchScreens(e, ship) }>
                 <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{
-                        return <ShipCell ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
+                        return <ShipCell size={ props.size} ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
                     }) }
                 </div>
             </div>

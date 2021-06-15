@@ -36,35 +36,39 @@ const GameContent = styled.main`
 
 const GameboardGrid = styled.div`
   display: grid;
-  grid-template-columns: ${ props=> getGridSize(props) };
-  grid-template-rows: ${ props=> getGridSize(props) };
+  grid-template-columns: ${ props=>getGridSize(props) };
+  grid-template-rows: ${ props=>getGridSize(props) };
   justify-content: center;
   @media (min-width: 700px) {
-    grid-template-columns:  ${ props=> getGridSize(props, 700) };
-    grid-template-rows:  ${ props=> getGridSize(props, 700) };
+    grid-template-columns:  ${ props=>getGridSize(props, 700) };
+    grid-template-rows:  ${ props=>getGridSize(props, 700) };
   }
   @media (min-width: 1000px) {
-    grid-template-columns:  ${ props=> getGridSize(props, 1000) };
-    grid-template-rows:  ${ props=> getGridSize(props, 1000) };
+    grid-template-columns:  ${ props=>getGridSize(props, 1000) };
+    grid-template-rows:  ${ props=>getGridSize(props, 1000) };
   }
 
 `;
 
 function getGridSize(props, media) {
     const size = props.size;
-    if ( media ) {
-        switch (media) {
-            case 1000:
+    switch (size) {
+        case (5):
+            return `repeat(${ size }, 35px)`
+        case(7):
+            if ( media === 700 || media === 1000 ) {
+                return `repeat(${ size }, 35px)` // larger screens
+            } else {
+                return `repeat(${ size }, 30px)` // smaller screens
+            }
+        case(10):
+            if ( media === 1000 ) {
                 return `repeat(${ size }, 35px)`
-            case 700:
+            } else if ( media === 700 ) {
                 return `repeat(${ size }, 30px)`
-        }
-
-    }
-    else if ( props.secondary ) {
-        return `repeat(${ size }, 25px)`
-    } else {
-        return `repeat(${ size }, 20px)`
+            } else {
+                return `repeat(${ size }, 25px)`
+            }
     }
 
 }

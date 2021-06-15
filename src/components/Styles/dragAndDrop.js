@@ -52,22 +52,45 @@ const ShipInfo = styled.div`
 `;
 
 const ShipCell = styled.div`
-  width: 25px;
-  height: 25px;
+  width: ${ props => getCellSize(props)};
+  height: ${ props => getCellSize(props)};
   cursor: grab;
   background-color: #5e6574;
   border: 1px solid black;
   margin: 0 auto;
   @media (min-width: 700px) {
-    width: 30px;
-    height: 30px;   
+    width: ${ props => getCellSize(props, 700)};
+    height: ${ props => getCellSize(props, 700)};   
   }
   @media (min-width: 1000px) {
-    width: 35px;
-    height: 35px;
+    width: ${ props => getCellSize(props, 1000)};
+    height: ${ props => getCellSize(props, 1000)};
   }
 
 `;
+
+function getCellSize(props, media) {
+    const gridSize = props.size;
+    switch (gridSize) {
+        case (5):
+            return `35px`
+        case(7):
+            if ( media === 700 || media === 1000 ) {
+                return `35px` // larger screens
+            } else {
+                return `30px` // smaller screens
+            }
+        case(10):
+            if ( media === 1000 ) {
+                return `35px`
+            } else if ( media === 700 ) {
+                return `30px`
+            } else {
+                return `25px`
+            }
+    }
+
+}
 
 const PopUpMessage = styled.div`
   width: 90%;

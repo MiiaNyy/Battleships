@@ -66,7 +66,7 @@ const SideBarSpecs = styled(Sidebar)`
   animation-name: ${ props=>props.slideDown ? specsSlideDown : specsSlideUp };
   animation-duration: 500ms;
   @media (min-width: 900px) {
-    max-width: 350px;
+    max-width: 250px;
     width: 90%;
     position: static;
   }
