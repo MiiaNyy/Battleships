@@ -7,6 +7,8 @@ import {
 } from "./gameboardFactoryHelpers"
 import { getRandomCoordinate } from "./playerFactoryHelpers";
 
+import getRightAmountOfGridCells from "../game_helpers/gridSize";
+
 
 class Gameboard {
     constructor(name) {
@@ -66,7 +68,7 @@ class Gameboard {
 
     placeShip(obj, coordinate, axelIsVertical) {
         const newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
-        const coordinates = getShipsPosition(newShip);
+        const coordinates = getShipsPosition(newShip, this.battlefield);
         if ( newShip.validPosition ) {
             // Checks if in that position is another ship
             const positionIsEmpty = checkIfPositionIsEmpty(this.ships, coordinates)
@@ -91,7 +93,7 @@ class Gameboard {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {
                 while (!this.placingShipSuccessful) {
-                    this.placeShip(shipTypes[i], getRandomCoordinate(), true);
+                    this.placeShip(shipTypes[i], getRandomCoordinate(this.battlefield), true);
                 }
                 this.placingShipSuccessful = false;
             }
@@ -151,5 +153,12 @@ class Gameboard {
     }
 }
 
+/*let x = new Gameboard('x');
+x.setGameLevel = 'mediterranean';
+x.placeShip({
+    name: 'Submarine',
+    count: 2,
+    length: 2
+}, 'a1', true)*/
 
 export default Gameboard;

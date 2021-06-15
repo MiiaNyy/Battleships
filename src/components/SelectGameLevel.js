@@ -3,7 +3,7 @@ import { GameContent } from "./Styles/general";
 import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
 
 
-function GameLevel(props) {
+function SelectGameLevel(props) {
 
     function setLevel(level) {
         props.setGameLevelTo(()=>level);
@@ -74,4 +74,4 @@ function GameLevel(props) {
     );
 }
 
-export default GameLevel;
+export default SelectGameLevel;

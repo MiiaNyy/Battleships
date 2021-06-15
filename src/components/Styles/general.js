@@ -53,10 +53,11 @@ const GameboardGrid = styled.div`
 function getGridSize(props, media) {
     const size = props.size;
     if ( media ) {
-        if ( media === 1000 ) {
-            return `repeat(${ size }, 35px)`
-        } else if ( media === 700 ) {
-            return `repeat(${ size }, 30px)`
+        switch (media) {
+            case 1000:
+                return `repeat(${ size }, 35px)`
+            case 700:
+                return `repeat(${ size }, 30px)`
         }
 
     }

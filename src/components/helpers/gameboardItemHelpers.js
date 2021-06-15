@@ -1,4 +1,4 @@
-import getRightAmountOfGridCells from "../../game_helpers/getRightAmountOfGridCells";
+import { getRightAmountOfGridCells } from "../../game_helpers/gridSize";
 
 function isShipInThisPosition(playerShips, cellId) {
     for (let i = 0; i < playerShips.length; i++) {

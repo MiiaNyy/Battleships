@@ -1,5 +1,6 @@
 import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
-import getRightAmountOfGridCells from "../game_helpers/getRightAmountOfGridCells";
+import { getRightAmountOfGridCells } from "../game_helpers/gridSize";
+
 
 function checkIfAnyShipGotHit(allShips, coordinate) {
     // if ship got hit, return true and that ship
@@ -51,6 +52,7 @@ function getShipsPosition(ship, gameLevel) {
 
 function getVerticalPosition(gameLevel, ship, xPosition, yPosition) {
     const rowAmount = getRightAmountOfGridCells(gameLevel).length;
+    console.log('inside vertica position. game level is ' + gameLevel + ' and rowamount is ' + rowAmount)
     if ( yPosition > rowAmount ) { // depending on which level, row amount is different
         ship.positionIsInvalid()
     } else {

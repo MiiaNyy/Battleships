@@ -6,4 +6,8 @@ function getRightAmountOfGridCells(level) {
     return level === 'mediterranean' ? columnsMediterranean : level === 'atlantic' ? columnsAtlantic : columnsPacific;
 }
 
-export default getRightAmountOfGridCells;
+function getGridSize(level) {
+    return level === 'mediterranean' ? 5 : level === 'atlantic' ? 7 : 10;
+}
+
+export { getRightAmountOfGridCells, getGridSize };

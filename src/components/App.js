@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import GameContainer from "./GameContainer";
 
 import PositionShips from "./PositionShips";
-import GameLevel from "./GameLevel";
+import SelectGameLevel from "./SelectGameLevel";
 
 import blurTheBackground from "../game_helpers/blurTheBackground";
 
@@ -39,15 +39,15 @@ function App() {
     player.startTurn();
 
 
-    function Content(props) {
+    function Content() {
         if ( !levelSelected ) {
-            return <GameLevel setLevelSelected={ setLevelSelected } setGameLevelTo={ setGameLevelTo }/>
+            return <SelectGameLevel setLevelSelected={ setLevelSelected } setGameLevelTo={ setGameLevelTo }/>
         } else if ( levelSelected && !gameHasStarted ) {
             return <PositionShips setGameboard={ setPlayersGameBoard } gameLevel={gameLevelIs}
                                   setGameHasStarted={ setGameHasStarted }/>
         } else if ( levelSelected && gameHasStarted ) {
             return <GameContainer player={ [player, playersGameboard] } enemy={ [computer, computerGameboard] }
-                                  gameHasStarted={ gameHasStarted }/>
+                                  gameHasStarted={ gameHasStarted } gameLevel={gameLevelIs}/>
         }
     }
 

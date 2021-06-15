@@ -58,11 +58,11 @@ function GameContainer(props) {
                 <ConsoleMessages gameDescription={ gameDescription }/>
                 <div className="flex">
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
-                                   playerGrid={ humanBoard }
+                                   playerGrid={ humanBoard } gameLevel={props.gameLevel}
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
                     <Divider/>
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
-                                   playerGrid={ computerBoard }
+                                   playerGrid={ computerBoard } gameLevel={props.gameLevel}
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
                 </div>

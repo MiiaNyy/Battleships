@@ -5,6 +5,7 @@ import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/general";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
 import isTouchScreen from "../game_helpers/isTouchScreen";
+import {getGridSize} from "../game_helpers/gridSize";
 
 import {
     changeShipsCount,
@@ -16,18 +17,24 @@ import {
 } from "./helpers/selectingShipsHelpers";
 
 import Gameboard from "../factories/GameboardFactory";
-import GameEndedMessages from "./GameEndedMessages";
+
 import blurTheBackground from "../game_helpers/blurTheBackground";
-import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
 
 let clickedShip = []; // touch screens uses this, when position ships on board
 let draggedItem; // normal mouse screens uses this when ships are draggable
 let newCloneNode;
 const humanBoard = new Gameboard('Friendly');
 
+
+
+
 function PositionShips(props) {
-    const gridSize = props.gameLevel === 'mediterranean' ? 5 : props.gameLevel === 'atlantic' ? 7 : 10;
+
+    humanBoard.setGameLevel = props.gameLevel;
+
+    const gridSize = getGridSize(props.gameLevel);
     const cellIds = getGridCellIds(props.gameLevel);
+
     const [ships, setShips] = useState(getNewShipTypesArr(props.gameLevel)); // arr of ship obj with ids on the
     // drag/info container
     const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
@@ -37,12 +44,13 @@ function PositionShips(props) {
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
 
     const [shipPlacingInvalid, setShipPlacingInvalid] = useState(false);
+
     const animation = shipPlacingInvalid ? "invalid_position_animation" : "hidden";
 
     function dropShipOnBoard(e) {
         e.preventDefault();
         const targetShipId = e.dataTransfer.getData("text");
-        placeShipOnBoard(draggedShip, e, targetShipId)
+        placeShipOnBoard(draggedShip, e, targetShipId);
     }
 
     function placeShipOnBoard(currentShip, e, shipId) {

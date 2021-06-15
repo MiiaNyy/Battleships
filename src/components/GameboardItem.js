@@ -7,10 +7,14 @@ import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHel
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
 import { Cell, GameboardGrid } from "./Styles/general";
+import { getGridSize } from "../game_helpers/gridSize";
 
 
 function GameboardItem(props) {
-    const cellIds = getGridCellIds();
+    const cellIds = getGridCellIds(props.gameLevel);
+    const gridSize = getGridSize(props.gameLevel);
+
+
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
@@ -20,7 +24,7 @@ function GameboardItem(props) {
             <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
             <div>
                 <h2>{ playerGrid.name } waters</h2>
-                <GameboardGrid>
+                <GameboardGrid size={gridSize}>
                     { cellIds.map((cell)=>{
                         return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
