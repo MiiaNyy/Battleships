@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
-import { Cell, GameboardGrid, GameContent, Sidebar } from "./Styles/general";
+import { Cell, GameboardGrid, GameContent, Sidebar, Flex } from "./Styles/general";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
 import isTouchScreen from "../game_helpers/isTouchScreen";
-import {getGridSize} from "../game_helpers/gridSize";
+import { getGridSize } from "../game_helpers/gridSize";
 
 import {
     changeShipsCount,
@@ -18,14 +18,11 @@ import {
 
 import Gameboard from "../factories/GameboardFactory";
 
-import blurTheBackground from "../game_helpers/blurTheBackground";
 
 let clickedShip = []; // touch screens uses this, when position ships on board
 let draggedItem; // normal mouse screens uses this when ships are draggable
 let newCloneNode;
 const humanBoard = new Gameboard('Friendly');
-
-
 
 
 function PositionShips(props) {
@@ -63,11 +60,6 @@ function PositionShips(props) {
             });
         } else {
             setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
-            blurTheBackground(false, "blur(2px) grayscale(20%)")
-            setTimeout(()=>{
-                blurTheBackground(false, "none");
-            }, 1500)
-
             setTimeout(()=>{
                 setShipPlacingInvalid(false);
             }, 2500)
@@ -89,9 +81,9 @@ function PositionShips(props) {
 
 
     return (
-        <GameContent positionShips>
-            <div className="flex">
-                <div className="flex container">
+        <GameContent blurOn={ props.blurOn } positionShips>
+            <Flex blurOn={ shipPlacingInvalid }>
+                <Flex className="container">
                     <Sidebar>
                         <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
                             ' and drop to position your ships' }</h3>
@@ -103,16 +95,17 @@ function PositionShips(props) {
                         </BtnContainer>
                         <div className="wrap">
                             { ships.map((ship)=>{
-                                return <ShipContainer size={gridSize} key={ ship.id } id={ ship.id } setDraggedShip={ setDraggedShip }
+                                return <ShipContainer size={ gridSize } key={ ship.id } id={ ship.id }
+                                                      setDraggedShip={ setDraggedShip }
                                                       ship={ ship } setShips={ setShips }
                                                       shipsAxelVertical={ shipsAxelVertical }/>
                             }) }
                         </div>
                     </Sidebar>
 
-                    <div style={{alignSelf: "center"}}>
+                    <div style={ {alignSelf: "center"} }>
                         <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
-                        <GameboardGrid size={gridSize}>
+                        <GameboardGrid size={ gridSize }>
                             { cellIds.map((cell)=>{
                                 const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
                                 return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
@@ -125,8 +118,8 @@ function PositionShips(props) {
                         </GameboardGrid>
                     </div>
 
-                </div>
-            </div>
+                </Flex>
+            </Flex>
 
             <BtnContainer>
                 <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length > 1 }>
@@ -176,7 +169,8 @@ function ShipContainer(props) {
                  onDragStart={ (e)=>startDrag(e, ship) } onClick={ (e)=>selectShipOnTouchScreens(e, ship) }>
                 <div className="ship-rotation inner">
                     { shipCells.map((cell, index)=>{
-                        return <ShipCell size={ props.size} ship={ ship.name } key={ index } id={ `ship-cell${ index }` }/>
+                        return <ShipCell size={ props.size } ship={ ship.name } key={ index }
+                                         id={ `ship-cell${ index }` }/>
                     }) }
                 </div>
             </div>

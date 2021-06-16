@@ -13,6 +13,7 @@ const Header = styled.header`
   background-color: rgba(0, 0, 0, 0.44);
   text-transform: uppercase;
   text-align: center;
+  filter: ${ props=>props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
   transition: all 0.5s ease-in-out;
 
   & > p {
@@ -29,6 +30,8 @@ const GameContent = styled.main`
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  transition: all 0.5s ease-in-out;
+  filter: ${ props=>props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
   @media (min-width: 950px) {
     margin: ${ props=>props.positionShips ? '2em auto' : '0 auto 5em' };
   }
@@ -157,6 +160,37 @@ const InfoBtnContainer = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
+const Flex = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1em;
+  transition: all 0.3s ease-in-out;
+  filter: ${ props=>props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
+  @media (min-width: 800px) {
+    display: flex;
+    flex-direction: row;
+  }
+  @media (min-width: 900px) {
+    align-items: end;
+    margin: ${ props=>props.gridSize === 5 ? '0 auto' : 'initial'};
+    width: ${ props=>props.gridSize === 5 ? '80%' : '100%'};
+  }
+`;
+
+const FlexSecondary = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1em;
+  @media (min-width: 900px) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2em;
+    justify-content: space-between;    
+  }
+`;
+
 export {
     Header,
     GameboardGrid,
@@ -165,4 +199,6 @@ export {
     Sidebar,
     MessageContainer,
     InfoBtnContainer,
+    Flex,
+    FlexSecondary
 }

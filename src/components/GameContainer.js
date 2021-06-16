@@ -5,8 +5,9 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent } from "./Styles/general";
-import {Console, Divider} from "./Styles/gameArea"
+import { GameContent, Flex } from "./Styles/general";
+import { Console, Divider } from "./Styles/gameArea"
+import { getGridSize } from "../game_helpers/gridSize";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
@@ -54,18 +55,18 @@ function GameContainer(props) {
     return (
         <>
 
-            <GameContent>
+            <GameContent blurOn={ props.blurOn }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
-                <div className="flex">
+                <Flex gridSize={ getGridSize(props.gameLevel) }>
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
-                                   playerGrid={ humanBoard } gameLevel={props.gameLevel}
+                                   playerGrid={ humanBoard } gameLevel={ props.gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
                     <Divider/>
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
-                                   playerGrid={ computerBoard } gameLevel={props.gameLevel}
+                                   playerGrid={ computerBoard } gameLevel={ props.gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
-                </div>
+                </Flex>
             </GameContent>
             <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
         </>

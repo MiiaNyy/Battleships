@@ -86,16 +86,10 @@ li {
     font-size: 1.3rem;
 }
 
+/* WHEN SPECIFIC STATE, ADD ONE OF THESE CLASSES */
 /* when user places ships on the board, invalid message is hidden, until user tries to position ships to invalid positions */
 .hidden {
     display: none;
-}
-
-.ship-rotation {
-    display: flex;
-    justify-content: center;
-    border: 2px solid #a5a5a5;
-    transition: border 0.2s ease-in-out;
 }
 
 .drag-hover {
@@ -106,18 +100,19 @@ li {
     visibility: hidden;
 }
 
-/*GENERAL STYLES*/
 
 
-.flex {
+
+.ship-rotation {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    /*align-items: center;*/
-    align-items: end;
-    gap: 1em;
-    transition: all 0.5s ease-in-out;
+    justify-content: center;
+    border: 2px solid #a5a5a5;
+    transition: border 0.2s ease-in-out;
 }
+
+
+
+/*GENERAL STYLES*/
 
 .wrap {
     text-align: center;
@@ -135,12 +130,6 @@ li {
     gap: 1em;
     justify-content: space-between;
     font-size: 0.8rem;
-}
-
-.flex-second {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 1em;
 }
 
 /* ANIMATIONS */
@@ -204,7 +193,8 @@ li {
     opacity: 0;
 }
 
-
+/* BUTTONS */
+/* smallest screens, show this button, instead of specs container */
 .specs-btn {
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -215,6 +205,7 @@ li {
     background-color: #a5a5a5;
 }
 
+/* question mark buttons and mpop up message cross buttons */
 .info-btn {
     font-size: 2rem;
     cursor: pointer;
@@ -261,7 +252,6 @@ li {
 
 
 
-
 @media (min-width: 800px) {
     h1 {
         font-size: 3.5rem;
@@ -270,19 +260,11 @@ li {
     .latest_msg {
         font-size: 1.1rem;
         margin: 0 auto;
-
-    }
-
-    .flex {
-        display: flex;
-        flex-direction: row;
     }
 
     .ship-rotation {
         margin-bottom: 0.5em;
     }
-
-
 }
 
 @media (min-width: 900px) {
@@ -300,27 +282,12 @@ li {
         border-top: none;
     }
 
-
     .specs-btn {
         display: none;
-    }
-
-    .flex {
-        align-items: center;
-    }
-
-    .flex-second {
-        flex-direction: row;
-        align-items: center;
-        gap: 2em;
-        width: 100%;
-        justify-content: space-evenly;
     }
 }
 
 @media (min-width: 1000px) {
-
-
     h2 {
         font-size: 1.1rem;
     }
@@ -336,8 +303,6 @@ li {
     .row {
         font-size: 1rem;
     }
-
-
 }
 
 

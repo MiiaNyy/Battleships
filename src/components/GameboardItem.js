@@ -6,7 +6,7 @@ import attackIsValid from "../game_helpers/attackIsValid";
 import { getGridCellIds, isShipInThisPosition } from "./helpers/gameboardItemHelpers";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { Cell, GameboardGrid } from "./Styles/general";
+import { Cell, GameboardGrid, FlexSecondary } from "./Styles/general";
 import { getGridSize } from "../game_helpers/gridSize";
 
 
@@ -18,13 +18,13 @@ function GameboardItem(props) {
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
-
+    console.log('grid size is ' + gridSize)
     return (
-        <div className="flex-second">
+        <FlexSecondary size={ gridSize }>
             <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
-            <div>
+            <div style={{width: '100%'}}>
                 <h2>{ playerGrid.name } waters</h2>
-                <GameboardGrid size={gridSize}>
+                <GameboardGrid size={ gridSize }>
                     { cellIds.map((cell)=>{
                         return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
@@ -32,7 +32,7 @@ function GameboardItem(props) {
                     }) }
                 </GameboardGrid>
             </div>
-        </div>
+        </FlexSecondary>
     )
 }
 

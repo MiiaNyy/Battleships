@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SideBarSpecs } from "./Styles/gameArea";
-import blurTheBackground from "../game_helpers/blurTheBackground";
 
 function GameSpecs(props) {
     const player = props.humanPlayer;
