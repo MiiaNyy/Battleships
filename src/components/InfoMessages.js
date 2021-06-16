@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { MessageContainer } from "./Styles/general";
+import useOutsideClick from "../game_helpers/useOutsideClick";
 
 
 function InfoMessages(props) {
     const [animationOn, setAnimation] = useState(false);
     const classes = animationOn ? 'toggle-off' : 'toggle-in';
+    const ref = useRef();
+
+    function closeMessageContainer() {
+        setAnimation(()=>true)
+        setTimeout(()=>{
+            props.setInfoMessageOpen(()=>false);
+        }, 500)
+    }
+
+    useOutsideClick(ref, ()=>{
+        closeMessageContainer();
+    });
 
     return (
-        <MessageContainer info className={ classes }>
+        <MessageContainer ref={ ref } info className={ classes }>
             <div className="info-btn__container">
-                <i onClick={ ()=>{
-                    setAnimation(()=>true)
-                    setTimeout(()=>{
-                        props.setInfoMessageOpen(()=>false);
-                    }, 500)
-                } } className="close-info-btn info-btn fas fa-times"/>
+                <i onClick={ ()=>closeMessageContainer() } className="close-info-btn info-btn fas fa-times"/>
             </div>
             <h3>Info</h3>
             <Messages gameHasStarted={ props.gameHasStarted } levelSelected={ props.levelSelected }/>

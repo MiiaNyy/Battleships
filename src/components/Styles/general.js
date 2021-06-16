@@ -31,7 +31,7 @@ const GameContent = styled.main`
   max-width: 1200px;
   margin: 0 auto;
   transition: all 0.5s ease-in-out;
-  filter: ${ props=>props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
+  filter: ${ props=>props.blurOn || props.gameIsOver ? 'blur(2px) grayscale(20%)' : 'none' };
   @media (min-width: 950px) {
     margin: ${ props=>props.positionShips ? '2em auto' : '0 auto 5em' };
   }
@@ -174,8 +174,8 @@ const Flex = styled.div`
   }
   @media (min-width: 900px) {
     align-items: end;
-    margin: ${ props=>props.gridSize === 5 ? '0 auto' : 'initial'};
-    width: ${ props=>props.gridSize === 5 ? '80%' : '100%'};
+    margin: ${ props=>props.gridSize === 5 ? '0 auto' : 'initial' };
+    width: ${ props=>props.gridSize === 5 ? '80%' : '100%' };
   }
 `;
 
@@ -187,7 +187,7 @@ const FlexSecondary = styled.div`
     flex-direction: row;
     align-items: flex-start;
     gap: 2em;
-    justify-content: space-between;    
+    justify-content: space-between;
   }
 `;
 

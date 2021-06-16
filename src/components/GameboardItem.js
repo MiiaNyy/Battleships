@@ -18,7 +18,6 @@ function GameboardItem(props) {
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
-    console.log('grid size is ' + gridSize)
     return (
         <FlexSecondary size={ gridSize }>
             <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
@@ -59,10 +58,8 @@ function GridCell(props) {
         // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
         const shotIsValid = human.shotIsValid(cellId);
 
-        console.log(!thisIsEnemyCell ? 'this is not enemy cell' : !human.turn ? 'it is not humans turn' : !shotIsValid ? 'shot is not valid' : 'blaa')
-
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
-            console.log('shot is valid')
+
             attackIsValid(gameboard, human, cellId, setGameDescription, setGameOver);
             if ( !gameIsOver ) {
                 human.turnOver();
@@ -101,12 +98,12 @@ function isThereSunkShipInThisPosition(gameboard, coordinate) {
 function isThisPositionHit(gameboard, coordinate) {
     for (let i = 0; i < gameboard.missedShots.length; i++) {
         if ( gameboard.missedShots[i] === coordinate ) {
-            return [true, 'X']
+            return [true, '🌊']
         }
     }
     for (let i = 0; i < gameboard.hitShots.length; i++) {
         if ( gameboard.hitShots[i] === coordinate ) {
-            return [true, '🔴']
+            return [true, '💥']
         }
     }
     return [false, ''];

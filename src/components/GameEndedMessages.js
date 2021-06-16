@@ -10,6 +10,9 @@ function GameEndedMessages(props) {
         ' all of your ships. Game is over!';
 
     if ( props.gameIsOver ) {
+        document.querySelector('header').style.filter = 'blur(2px) grayscale(20%)';
+        document.querySelector('.info-btn').style.filter = 'blur(2px) grayscale(20%)';
+
         return (
             <MessageContainer className="toggle-in">
                 <h2>{ header }</h2>

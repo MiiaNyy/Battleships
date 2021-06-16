@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import GameContainer from "./GameContainer";
+import React, { useEffect, useState, useRef } from 'react'
 
+import GameContainer from "./GameContainer";
 import PositionShips from "./PositionShips";
 import SelectGameLevel from "./SelectGameLevel";
 import InfoMessages from "./InfoMessages";
+
+import useOutsideClick from "../game_helpers/useOutsideClick";
 
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
-//let playersGameboard = new Gameboard('Friendly');
-let playersGameboard;
+let playersGameboard = new Gameboard('Friendly');
+//let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(false);
+    const [gameHasStarted, setGameHasStarted] = useState(true);
     const [infoMessageOpen, setInfoMessageOpen] = useState(false);
 
-    const [levelSelected, setLevelSelected] = useState(false);
-    const [gameLevelIs, setGameLevelTo] = useState('');
+    const [levelSelected, setLevelSelected] = useState(true);
+    const [gameLevelIs, setGameLevelTo] = useState('mediterranean');
+
+
 
     useEffect(()=>{
         if ( levelSelected ) {

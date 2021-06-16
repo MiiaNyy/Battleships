@@ -145,10 +145,10 @@ class Gameboard {
             if ( this.allShipHaveSunk ) {
                 return `Ship ${ shipThatGotHit.name } sunk. Now all the ships are sunk`;
             } else {
-                return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit and sunk`;
+                return `${ gotHitMessage } ${ shipThatGotHit.name } got hit and sunk`;
             }
         } else {
-            return `${ gotHitMessage } Ship ${ shipThatGotHit.name } got hit`;
+            return `${ gotHitMessage } ${ shipThatGotHit.name } got hit`;
         }
     }
 }
