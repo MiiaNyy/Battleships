@@ -5,9 +5,10 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent, Flex } from "./Styles/general";
+import { GameContent, Flex, InfoBtnContainer } from "./Styles/general";
 import { Console, Divider } from "./Styles/gameArea"
 import { getGridSize } from "../game_helpers/gridSize";
+import InfoMessages from "./InfoMessages";
 
 const testi = [' ', ' ', ' ', 'Welcome to the battleship game'];
 
@@ -17,6 +18,7 @@ function GameContainer(props) {
     const [gameDescription, setGameDescription] = useState(testi);
     const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [infoOpen, setInfoOpen] = useState(false);
 
     const humanBoard = props.player[1];
     const humanPlayer = props.player[0];
@@ -25,7 +27,7 @@ function GameContainer(props) {
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
-        if ( !props.blurOn  ) {
+        if ( !props.blurOn ) {
             const changeGameMessage = setTimeout(()=>{
                 const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
                 if ( newMessageIsNeeded ) {
@@ -59,7 +61,9 @@ function GameContainer(props) {
 
     return (
         <>
-
+            <InfoBtnContainer blurOn={ infoOpen }>
+                <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoOpen(()=>true) }/>
+            </InfoBtnContainer>
             <GameContent gameIsOver={ gameOver } blurOn={ props.blurOn }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
                 <Flex gridSize={ getGridSize(props.gameLevel) }>
@@ -74,6 +78,18 @@ function GameContainer(props) {
                 </Flex>
             </GameContent>
             <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
+            { infoOpen ?
+                <InfoMessages setInfoMessageOpen={ setInfoOpen }>
+                    <ul>
+                        <li>You can shoot the enemy by clicking enemy's board.</li>
+                        <li>Try to find all of enemy's ships and sunk them before enemy finds yours.</li>
+                        <li>In the console, above gameboards, you find latest developments in the game</li>
+                        <li>Specs tells you how many shots you have fired to the enemy board, how many shot has hit or
+                            missed
+                            and how many have you received.
+                        </li>
+                    </ul>
+                </InfoMessages> : <></> }
         </>
     )
 }

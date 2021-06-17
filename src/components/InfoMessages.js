@@ -3,7 +3,7 @@ import { MessageContainer } from "./Styles/general";
 import useOutsideClick from "../game_helpers/useOutsideClick";
 
 
-function InfoMessages(props) {
+function InfoMessages({setInfoMessageOpen, children}) {
     const [animationOn, setAnimation] = useState(false);
     const classes = animationOn ? 'toggle-off' : 'toggle-in';
     const ref = useRef();
@@ -11,7 +11,7 @@ function InfoMessages(props) {
     function closeMessageContainer() {
         setAnimation(()=>true)
         setTimeout(()=>{
-            props.setInfoMessageOpen(()=>false);
+            setInfoMessageOpen(()=>false);
         }, 500)
     }
 
@@ -25,12 +25,13 @@ function InfoMessages(props) {
                 <i onClick={ ()=>closeMessageContainer() } className="close-info-btn info-btn fas fa-times"/>
             </div>
             <h3>Info</h3>
-            <Messages gameHasStarted={ props.gameHasStarted } levelSelected={ props.levelSelected }/>
+            {/*<Messages gameHasStarted={ props.gameHasStarted } levelSelected={ props.levelSelected }/>*/ }
+            <div>{ children }</div>
         </MessageContainer>
     );
 }
 
-function Messages(props) {
+/*function Messages(props) {
     if ( !props.levelSelected ) {
         return (
             <ul>
@@ -64,7 +65,6 @@ function Messages(props) {
             </ul>
         )
     }
-
-}
+}*/
 
 export default InfoMessages;

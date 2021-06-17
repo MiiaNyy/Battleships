@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
-import { Cell, GameboardGrid, GameContent, Sidebar, Flex } from "./Styles/general";
+import { Cell, GameboardGrid, GameContent, Sidebar, Flex, InfoBtnContainer } from "./Styles/general";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
 import isTouchScreen from "../game_helpers/isTouchScreen";
@@ -17,6 +17,7 @@ import {
 } from "./helpers/selectingShipsHelpers";
 
 import Gameboard from "../factories/GameboardFactory";
+import InfoMessages from "./InfoMessages";
 
 
 let clickedShip = []; // touch screens uses this, when position ships on board
@@ -41,8 +42,10 @@ function PositionShips(props) {
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
 
     const [shipPlacingInvalid, setShipPlacingInvalid] = useState(false);
+    const [infoOpen, setInfoOpen] = useState(false);
 
     const animation = shipPlacingInvalid ? "invalid_position_animation" : "hidden";
+
 
     function dropShipOnBoard(e) {
         e.preventDefault();
@@ -81,59 +84,76 @@ function PositionShips(props) {
 
 
     return (
-        <GameContent blurOn={ props.blurOn } positionShips>
-            <Flex blurOn={ shipPlacingInvalid }>
-                <Flex className="container">
-                    <Sidebar>
-                        <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
-                            ' and drop to position your ships' }</h3>
-                        <BtnContainer axel>
-                            <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
-                            <Button small onClick={ ()=>setShipsAxelVertical((prev)=>!prev) }>
-                                Change rotation
-                            </Button>
-                        </BtnContainer>
-                        <div className="wrap">
-                            { ships.map((ship)=>{
-                                return <ShipContainer size={ gridSize } key={ ship.id } id={ ship.id }
-                                                      setDraggedShip={ setDraggedShip }
-                                                      ship={ ship } setShips={ setShips }
-                                                      shipsAxelVertical={ shipsAxelVertical }/>
-                            }) }
+        <>
+            <InfoBtnContainer blurOn={ infoOpen }>
+                <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoOpen(()=>true) }/>
+            </InfoBtnContainer>
+            <GameContent blurOn={ props.blurOn } positionShips>
+                <Flex blurOn={ shipPlacingInvalid }>
+                    <Flex className="container">
+                        <Sidebar>
+                            <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
+                                ' and drop to position your ships' }</h3>
+                            <BtnContainer axel>
+                                <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
+                                <Button small onClick={ ()=>setShipsAxelVertical((prev)=>!prev) }>
+                                    Change rotation
+                                </Button>
+                            </BtnContainer>
+                            <div className="wrap">
+                                { ships.map((ship)=>{
+                                    return <ShipContainer size={ gridSize } key={ ship.id } id={ ship.id }
+                                                          setDraggedShip={ setDraggedShip }
+                                                          ship={ ship } setShips={ setShips }
+                                                          shipsAxelVertical={ shipsAxelVertical }/>
+                                }) }
+                            </div>
+                        </Sidebar>
+
+                        <div style={ {alignSelf: "center"} }>
+                            <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
+                            <GameboardGrid size={ gridSize }>
+                                { cellIds.map((cell)=>{
+                                    const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
+                                    return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
+                                                 onDrop={ (e)=>dropShipOnBoard(e) }
+                                                 onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
+                                                 onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
+                                                 onDragLeave={ (e)=>handleDragLeave(e) }
+                                                 onClick={ (e)=>placeShipOnTouchScreens(e) }/>
+                                }) }
+                            </GameboardGrid>
                         </div>
-                    </Sidebar>
 
-                    <div style={ {alignSelf: "center"} }>
-                        <h2>{ isTouchScreen() ? '2. Click here to place your ship' : 'Drag your ships here' } </h2>
-                        <GameboardGrid size={ gridSize }>
-                            { cellIds.map((cell)=>{
-                                const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
-                                return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
-                                             onDrop={ (e)=>dropShipOnBoard(e) }
-                                             onDragOver={ (e)=>checkIfDropIsAllowed(e, shipPosition) }
-                                             onDragEnter={ (e)=>handleDragEnter(e, shipPosition) }
-                                             onDragLeave={ (e)=>handleDragLeave(e) }
-                                             onClick={ (e)=>placeShipOnTouchScreens(e) }/>
-                            }) }
-                        </GameboardGrid>
-                    </div>
-
+                    </Flex>
                 </Flex>
-            </Flex>
 
-            <BtnContainer>
-                <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length > 1 }>
-                    Start Game <i className="fas fa-arrow-right"/>
-                </Button>
-            </BtnContainer>
+                <BtnContainer>
+                    <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length > 1 }>
+                        Start Game <i className="fas fa-arrow-right"/>
+                    </Button>
+                </BtnContainer>
 
-            <PopUpMessage className={ animation }>
-                <p>Invalid position!</p>
-                <p>Please try again</p>
-            </PopUpMessage>
+                <PopUpMessage className={ animation }>
+                    <p>Invalid position!</p>
+                    <p>Please try again</p>
+                </PopUpMessage>
 
-        </GameContent>
-
+            </GameContent>
+            { infoOpen ?
+                <InfoMessages setInfoMessageOpen={ setInfoOpen }>
+                    <ul>
+                        <li>You can place the ships on the board by clicking the ship, and dragging it over the
+                            gameboard and
+                            dropping it to the desired location.
+                        </li>
+                        <li>Change ships rotation by clicking 'change rotation' button and start dragging ships on the
+                            board
+                        </li>
+                        <li>After you have positioned your ships, start button appears and you can start the game.</li>
+                    </ul>
+                </InfoMessages> : <></> }
+        </>
     );
 }
 

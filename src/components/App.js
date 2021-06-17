@@ -12,19 +12,17 @@ import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
-let playersGameboard = new Gameboard('Friendly');
-//let playersGameboard;
+//let playersGameboard = new Gameboard('Friendly');
+let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(true);
+    const [gameHasStarted, setGameHasStarted] = useState(false);
     const [infoMessageOpen, setInfoMessageOpen] = useState(false);
 
-    const [levelSelected, setLevelSelected] = useState(true);
-    const [gameLevelIs, setGameLevelTo] = useState('mediterranean');
-
-
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
 
     useEffect(()=>{
         if ( levelSelected ) {
@@ -46,12 +44,11 @@ function App() {
                                     setGameLevelTo={ setGameLevelTo }/>
         } else if ( levelSelected && !gameHasStarted ) {
             return <PositionShips blurOn={ infoMessageOpen } setGameboard={ setPlayersGameBoard }
-                                  gameLevel={ gameLevelIs }
-                                  setGameHasStarted={ setGameHasStarted }/>
+                                  gameLevel={ gameLevelIs } setGameHasStarted={ setGameHasStarted }/>
         } else if ( levelSelected && gameHasStarted ) {
             return <GameContainer blurOn={ infoMessageOpen } player={ [player, playersGameboard] }
-                                  enemy={ [computer, computerGameboard] }
-                                  gameHasStarted={ gameHasStarted } gameLevel={ gameLevelIs }/>
+                                  enemy={ [computer, computerGameboard] } setGameHasStarted={ setGameHasStarted }
+                                  gameHasStarted={ gameHasStarted } gameLevel={ gameLevelIs } />
         }
     }
 
@@ -70,13 +67,7 @@ function App() {
                     <h1>Battleships</h1>
                     <p>Place your own ships on the map and try to sink your opponents ships to win</p>
                 </Header>
-                <InfoBtnContainer blurOn={ infoMessageOpen }>
-                    <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoMessageOpen(()=>true) }/>
-                </InfoBtnContainer>
                 <Content/>
-                { infoMessageOpen ?
-                    <InfoMessages levelSelected={ levelSelected } gameHasStarted={ gameHasStarted }
-                                  setInfoMessageOpen={ setInfoMessageOpen }/> : <></> }
             </div>
         )
     }

@@ -14,7 +14,6 @@ function GameboardItem(props) {
     const cellIds = getGridCellIds(props.gameLevel);
     const gridSize = getGridSize(props.gameLevel);
 
-
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
@@ -34,7 +33,6 @@ function GameboardItem(props) {
         </FlexSecondary>
     )
 }
-
 
 function GridCell(props) {
     const gameboard = props.playerGrid;

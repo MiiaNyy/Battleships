@@ -51,7 +51,7 @@ class Player {
         let coordinate = getCoordinateFromOlderHit(this.foundShips);
 
         if ( coordinate === undefined ) {
-            coordinate = getRandomCoordinate();
+            coordinate = getRandomCoordinate(this.gameLevel);
         }
 
         if ( this.shotIsValid(coordinate) ) {
