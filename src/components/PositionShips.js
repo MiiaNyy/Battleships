@@ -18,7 +18,7 @@ import {
 
 import Gameboard from "../factories/GameboardFactory";
 import InfoMessages from "./InfoMessages";
-
+import InfoButton from "./InfoButton";
 
 let clickedShip = []; // touch screens uses this, when position ships on board
 let draggedItem; // normal mouse screens uses this when ships are draggable
@@ -63,7 +63,9 @@ function PositionShips(props) {
             });
         } else {
             setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
+            document.querySelector('header').style.filter = "blur(2px) grayscale(20%)"
             setTimeout(()=>{
+                document.querySelector('header').style.filter = "none"
                 setShipPlacingInvalid(false);
             }, 2500)
             // remove drag hover classname from the document
@@ -85,10 +87,8 @@ function PositionShips(props) {
 
     return (
         <>
-            <InfoBtnContainer blurOn={ infoOpen }>
-                <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoOpen(()=>true) }/>
-            </InfoBtnContainer>
-            <GameContent blurOn={ props.blurOn } positionShips>
+            <InfoButton setInfoOpen={setInfoOpen} infoOpen={infoOpen}/>
+            <GameContent blurOn={ infoOpen } positionShips>
                 <Flex blurOn={ shipPlacingInvalid }>
                     <Flex className="container">
                         <Sidebar>

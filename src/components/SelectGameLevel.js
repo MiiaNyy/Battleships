@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GameContent, InfoBtnContainer } from "./Styles/general";
 import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
 import InfoMessages from "./InfoMessages";
+import InfoButton from "./InfoButton";
 
 
 function SelectGameLevel(props) {
@@ -15,10 +16,8 @@ function SelectGameLevel(props) {
 
     return (
         <>
-            <InfoBtnContainer blurOn={ infoOpen }>
-                <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoOpen(()=>true) }/>
-            </InfoBtnContainer>
-            <GameContent blurOn={ props.blurOn }>
+            <InfoButton setInfoOpen={setInfoOpen} infoOpen={infoOpen}/>
+            <GameContent blurOn={ infoOpen }>
                 <div className="blur">
                     <h2 className="subtitle">Select battle you want to play</h2>
                     <Container>
@@ -79,16 +78,16 @@ function SelectGameLevel(props) {
                         </div>
                     </Container>
                 </div>
-                { infoOpen ?
-                    <InfoMessages setInfoMessageOpen={ setInfoOpen }>
-                        <ul>
-                            <li>Clicking the select button, you can select different game levels/ battles you want to
-                                play
-                            </li>
-                            <li>Levels differ in the number of ships and the size of the game board</li>
-                        </ul>
-                    </InfoMessages> : <></> }
             </GameContent>
+            { infoOpen ?
+                <InfoMessages setInfoMessageOpen={ setInfoOpen }>
+                    <ul>
+                        <li>Clicking the select button, you can select different game levels/ battles you want to
+                            play
+                        </li>
+                        <li>Levels differ in the number of ships and the size of the game board</li>
+                    </ul>
+                </InfoMessages> : <></> }
         </>
     );
 }

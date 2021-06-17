@@ -9,13 +9,12 @@ import { GameContent, Flex, InfoBtnContainer } from "./Styles/general";
 import { Console, Divider } from "./Styles/gameArea"
 import { getGridSize } from "../game_helpers/gridSize";
 import InfoMessages from "./InfoMessages";
-
-const testi = [' ', ' ', ' ', 'Welcome to the battleship game'];
+import InfoButton from "./InfoButton";
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
 
-    const [gameDescription, setGameDescription] = useState(testi);
+    const [gameDescription, setGameDescription] = useState([' ', ' ', ' ', 'Welcome to the battleship game']);
     const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
@@ -27,31 +26,28 @@ function GameContainer(props) {
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
-        if ( !props.blurOn ) {
-            const changeGameMessage = setTimeout(()=>{
-                const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
-                if ( newMessageIsNeeded ) {
-                    const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
-                    setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
-                }
-            }, 1800);
-            return ()=>clearTimeout(changeGameMessage);
-        }
+        const changeGameMessage = setTimeout(()=>{
+            const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
+            if ( newMessageIsNeeded ) {
+                const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
+                setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
+            }
+        }, 1800);
+        return ()=>clearTimeout(changeGameMessage);
+
 
     }, [gameDescription]);
 
     useEffect(()=>{
         if ( computer.turn && humanPlayer.firstShotFired && !gameOver ) {
-            // Take 3 seconds before attacking human board
-            const computerTurn = setTimeout(()=>{
+            if ( !infoOpen ) {
                 computerShootsEnemy();
                 computer.turnOver();
                 humanPlayer.startTurn();
                 setComputersTurnAttack(false);
-            }, 3000);
-            return ()=>clearTimeout(computerTurn);
+            }
         }
-    }, [computersTurnAttack])
+    }, [computersTurnAttack, infoOpen])
 
     function computerShootsEnemy() {
         computer.shootTheEnemy();
@@ -61,17 +57,15 @@ function GameContainer(props) {
 
     return (
         <>
-            <InfoBtnContainer blurOn={ infoOpen }>
-                <i className="info-btn far fa-question-circle" onClick={ ()=>setInfoOpen(()=>true) }/>
-            </InfoBtnContainer>
-            <GameContent gameIsOver={ gameOver } blurOn={ props.blurOn }>
+            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
+            <GameContent gameIsOver={ gameOver } blurOn={ infoOpen }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
                 <Flex gridSize={ getGridSize(props.gameLevel) }>
-                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
+                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
                                    playerGrid={ humanBoard } gameLevel={ props.gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
                     <Divider/>
-                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] }
+                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
                                    playerGrid={ computerBoard } gameLevel={ props.gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
@@ -85,8 +79,7 @@ function GameContainer(props) {
                         <li>Try to find all of enemy's ships and sunk them before enemy finds yours.</li>
                         <li>In the console, above gameboards, you find latest developments in the game</li>
                         <li>Specs tells you how many shots you have fired to the enemy board, how many shot has hit or
-                            missed
-                            and how many have you received.
+                            missed and how many have you received.
                         </li>
                     </ul>
                 </InfoMessages> : <></> }
@@ -95,7 +88,6 @@ function GameContainer(props) {
 }
 
 function ConsoleMessages(props) {
-    console.log('console re render')
     return (
         <Console>
             { props.gameDescription.map((item, index)=>{

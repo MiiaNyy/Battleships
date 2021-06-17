@@ -76,10 +76,26 @@ function getGridSize(props, media) {
 
 }
 
+function getRightCursor(props) {
+    if ( props.infoOpen ) {
+        return 'default'
+    }
+    if ( (props.hitPosition && props.enemy) || (props.shipSunk && props.enemy) ) {
+        return "not-allowed"
+    } else if ( props.enemy ) {
+        return "crosshair"
+    } else if ( props.dragAndDrop ) {
+        return 'default';
+    } else {
+        return "not-allowed"
+    }
+
+}
+
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
   background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "#cad9e5" };
-  cursor: ${ props=>(props.hitPosition && props.enemy) || (props.shipSunk && props.enemy) ? "not-allowed" : props.enemy ? "crosshair" : props.dragAndDrop ? 'default' : "not-allowed" };
+  cursor: ${ props=>getRightCursor(props) };
   text-align: center;
 
   & > p {

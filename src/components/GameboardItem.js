@@ -20,13 +20,13 @@ function GameboardItem(props) {
     return (
         <FlexSecondary size={ gridSize }>
             <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
-            <div style={{width: '100%'}}>
+            <div style={ {width: '100%'} }>
                 <h2>{ playerGrid.name } waters</h2>
                 <GameboardGrid size={ gridSize }>
                     { cellIds.map((cell)=>{
                         return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
                                          players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         gameOver={ props.gameOver }/>
+                                         gameOver={ props.gameOver } infoOpen={ props.infoOpen }/>
                     }) }
                 </GameboardGrid>
             </div>
@@ -62,7 +62,10 @@ function GridCell(props) {
             if ( !gameIsOver ) {
                 human.turnOver();
                 computer.startTurn()
-                switchTurns(true);
+                setTimeout(()=>{
+                    switchTurns(true);
+                }, 3000);
+
             }
         } else if ( thisIsEnemyCell && !shotIsValid ) {
             setGameDescription((prev)=>addNewMessageToDescription(prev, 'Invalid shot, try again!'));
@@ -70,9 +73,9 @@ function GridCell(props) {
     }
 
     return (
-        <Cell onClick={ ()=>attackEnemy() }
+        <Cell onClick={ ()=>!props.infoOpen ? attackEnemy() : console.log('game paused, try again') }
               enemy={ thisIsEnemyCell } hitPosition={ hitPosition } shipPosition={ shipPosition }
-              shipSunk={ sunkShipPosition } id={ cellId }>
+              shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
             <p>{ hitMarker }</p>
         </Cell>
     )
@@ -96,7 +99,7 @@ function isThereSunkShipInThisPosition(gameboard, coordinate) {
 function isThisPositionHit(gameboard, coordinate) {
     for (let i = 0; i < gameboard.missedShots.length; i++) {
         if ( gameboard.missedShots[i] === coordinate ) {
-            return [true, '🌊']
+            return [true, 'x']
         }
     }
     for (let i = 0; i < gameboard.hitShots.length; i++) {
