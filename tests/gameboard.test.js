@@ -1,22 +1,80 @@
 import Gameboard from "../src/factories/GameboardFactory";
-import shipTypes from "../src/game_helpers/shipTypes"
+import { pacific, atlantic, mediterranean } from "../src/game_helpers/shipTypes"
 
 
 describe('GameBoard', ()=>{
-    let userGameboard = new Gameboard('player')
+    let x = new Gameboard('player')
 
     test('returned empty array when none ships on gameboard', ()=>{
-        expect(userGameboard.shipsCoordinates).toEqual(
+        expect(x.shipsCoordinates).toEqual(
             expect.arrayContaining([])
         )
     })
 
-    test('returned ships on board array when one ship has called', ()=>{
-        userGameboard.placeShip(shipTypes[2], 'a1', true)
-        expect(userGameboard.shipsCoordinates).toEqual(
-            expect.arrayContaining([['a1', 'a2', 'a3']])
-        )
+
+});
+
+describe('Game levels', ()=>{
+    let x = new Gameboard('player');
+    test('returned empty string, when gamelevel has not been set yet', ()=>{
+        expect(x.gameLevel).toBe('')
     })
+
+    test('returned PACIFIC, when game level is pacific', ()=>{
+        x.setGameLevel = 'pacific'
+        expect(x.gameLevel).toBe('pacific')
+    })
+})
+
+describe('Computer places ships', ()=>{
+
+    test('On Mediterranean grid successful, there is 4 ships on board', ()=>{
+        let x = new Gameboard('player');
+        x.setGameLevel = 'mediterranean';
+        x.placeAllShipsOnBoard();
+        console.log('computer has placed ships in mediterranean' + x.shipsCoordinates);
+        expect(x.shipsCoordinates.length).toBe(4);
+        expect(x.placingShipSuccessful).toBeTruthy();
+    })
+
+    test('Atlantic grid successful, there is 5 ships on board', ()=>{
+        let x = new Gameboard('player');
+        x.setGameLevel = 'atlantic';
+        x.placeAllShipsOnBoard();
+        console.log('computer has placed ships in atlantic:  ' + x.shipsCoordinates);
+        expect(x.shipsCoordinates.length).toBe(5);
+        expect(x.placingShipSuccessful).toBeTruthy();
+    })
+
+    test('Not successful, because game level has not yet been declared', ()=>{
+        let x = new Gameboard('player');
+        x.placeAllShipsOnBoard();
+        expect(x.placingShipSuccessful).toBeFalsy();
+    })
+})
+
+describe('Human player places ships on Mediterranean grid', ()=>{
+    test('Placing ship successful', () => {
+        let y = new Gameboard('player')
+        y.placeShip(mediterranean[0], 'a1', true)
+        expect(y.placingShipSuccessful).toBeTruthy();
+    })
+
+    test('Placing ship not successful. Coordinate is not included in grid', () => {
+        let y = new Gameboard('player')
+        y.setGameLevel = 'mediterranean';
+        y.placeShip(mediterranean[0], 'a6', true)
+        expect(y.placingShipSuccessful).toBeFalsy();
+    })
+
+})
+
+
+/*
+    test('', () => {
+
+    })
+
 
     test('placed ship successfully on the board', ()=>{
         expect(userGameboard.placeShip(shipTypes[0], 'b1', true)).toEqual('placing ship was successful')
@@ -143,4 +201,4 @@ describe('Checking shots that have been shot at gameboard', ()=>{
         expect(enemy.sunkenShips.length).toBe(0);
 
     })
-})
+})*/

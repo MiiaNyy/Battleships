@@ -31,13 +31,12 @@ function checkIfPositionIsEmpty(ships, coordinates) {
 }
 
 function getShipsPosition(ship, gameLevel) {
-    const xPosition = ship.startPosition.slice(0, 1);
-    const yPosition = Number(ship.startPosition.slice(1));
+    const xPosition = ship.startPosition.slice(0, 1); // e.g 'a'
+    const yPosition = Number(ship.startPosition.slice(1)); // e.g '1'
 
     let shipPosition = [];
     for (let i = 0; i < ship.length; i++) {
-        let coordinate;
-        coordinate = ship.axelIsVertical ? getVerticalPosition(gameLevel, ship, xPosition, (yPosition + i)) : getHorizontalPosition(gameLevel, ship, xPosition, yPosition, i);
+        const coordinate = ship.axelIsVertical ? getVerticalPosition(gameLevel, ship, xPosition, (yPosition + i)) : getHorizontalPosition(gameLevel, ship, xPosition, yPosition, i);
         if ( coordinate ) {
             ship.positionIsValid();
             shipPosition.push(coordinate);
@@ -52,7 +51,6 @@ function getShipsPosition(ship, gameLevel) {
 
 function getVerticalPosition(gameLevel, ship, xPosition, yPosition) {
     const rowAmount = getRightAmountOfGridCells(gameLevel).length;
-    console.log('inside vertica position. game level is ' + gameLevel + ' and rowamount is ' + rowAmount)
     if ( yPosition > rowAmount ) { // depending on which level, row amount is different
         ship.positionIsInvalid()
     } else {

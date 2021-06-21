@@ -7,8 +7,6 @@ import {
 } from "./gameboardFactoryHelpers"
 import { getRandomCoordinate } from "./playerFactoryHelpers";
 
-import getRightAmountOfGridCells from "../game_helpers/gridSize";
-
 
 class Gameboard {
     constructor(name) {
@@ -86,7 +84,6 @@ class Gameboard {
 
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-
         const shipTypes = this.battlefield === 'mediterranean' ? mediterranean : this.battlefield === 'atlantic' ? atlantic : pacific;
 
         for (let i = 0; i < shipTypes.length; i++) {
