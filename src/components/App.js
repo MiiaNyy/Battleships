@@ -12,17 +12,16 @@ import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
-//let playersGameboard = new Gameboard('Friendly');
-let playersGameboard;
+let playersGameboard = new Gameboard('Friendly');
+//let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(false);
-    const [headerBlurOn, setHeaderBlurOn] = useState(false);
+    const [gameHasStarted, setGameHasStarted] = useState(true);
 
-    const [levelSelected, setLevelSelected] = useState(false);
-    const [gameLevelIs, setGameLevelTo] = useState('');
+    const [levelSelected, setLevelSelected] = useState(true);
+    const [gameLevelIs, setGameLevelTo] = useState('pacific');
 
     useEffect(()=>{
         if ( levelSelected ) {
@@ -40,8 +39,7 @@ function App() {
 
     function Content() {
         if ( !levelSelected ) {
-            return <SelectGameLevel setHeaderBlur={ setHeaderBlurOn } setLevelSelected={ setLevelSelected }
-                                    setGameLevelTo={ setGameLevelTo }/>
+            return <SelectGameLevel setLevelSelected={ setLevelSelected } setGameLevelTo={ setGameLevelTo }/>
         } else if ( levelSelected && !gameHasStarted ) {
             return <PositionShips setGameboard={ setPlayersGameBoard }
                                   gameLevel={ gameLevelIs } setGameHasStarted={ setGameHasStarted }/>
@@ -63,7 +61,7 @@ function App() {
     } else {
         return (
             <div>
-                <Header blurOn={ headerBlurOn } gameHasStarted={ gameHasStarted }>
+                <Header gameHasStarted={ gameHasStarted }>
                     <h1>Battleships</h1>
                     <p>Place your own ships on the map and try to sink your opponents ships to win</p>
                 </Header>

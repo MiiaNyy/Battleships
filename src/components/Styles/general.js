@@ -29,11 +29,11 @@ const Header = styled.header`
 const GameContent = styled.main`
   width: 90%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: -30px auto 0;
   transition: all 0.5s ease-in-out;
   filter: ${ props=>props.blurOn || props.gameIsOver ? 'blur(2px) grayscale(20%)' : 'none' };
   @media (min-width: 950px) {
-    margin: ${ props=>props.positionShips ? '2em auto' : '0 auto 5em' };
+    margin: ${ props=>props.positionShips ? '2em auto' : '-30px auto 0' };
   }
 `;
 
@@ -174,11 +174,15 @@ const Sidebar = styled.div`
   background-color: #a5a5a5;
   width: 90%;
   max-width: 250px;
-  padding: 1em;
+  padding: 0 1em;
   margin: 0 auto;
   @media (min-width: 800px) {
     margin: 0;
-    max-width: 350px;
+    max-width: 350px;    
+  }
+
+  @media(min-width: 900px) {
+    padding: 1em;
   }
 `;
 

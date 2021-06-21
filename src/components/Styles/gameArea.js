@@ -29,7 +29,7 @@ const Console = styled.div`
 
 const Divider = styled.hr`
   align-self: stretch;
-  margin-bottom: -50px;
+  /*margin-bottom: -50px;*/
   background-color: white;
 `;
 
@@ -61,15 +61,30 @@ const specsSlideDown = keyframes`
 
 const SideBarSpecs = styled(Sidebar)`
   position: absolute;
-  top: 80%;
+  display: ${ props=>props.showSpec ? 'block' : 'none' };;
   max-width: 200px;
   animation-name: ${ props=>props.slideDown ? specsSlideDown : specsSlideUp };
   animation-duration: 500ms;
   @media (min-width: 900px) {
-    animation: none;
-    max-width: 250px;
-    width: 90%;
+    display: block;
     position: static;
+    width: 90%;
+    max-width: 250px;
+    animation: none;
+  }
+`;
+/* smallest screens, show this button, instead of specs container */
+const SpecsButton = styled.button`
+  visibility: ${ props=>props.showSpecBtn ? 'hidden' : 'initial' };
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 1em;
+  border: 5px #585858 ridge;
+  background-color: #a5a5a5;
+  @media (min-width: 900px) {
+    display: none;
   }
 `;
 
@@ -77,5 +92,5 @@ export {
     SideBarSpecs,
     Console,
     Divider,
-
+    SpecsButton,
 }
