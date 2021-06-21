@@ -12,17 +12,17 @@ import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
-let playersGameboard = new Gameboard('Friendly');
-//let playersGameboard;
+//let playersGameboard = new Gameboard('Friendly');
+let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(true);
+    const [gameHasStarted, setGameHasStarted] = useState(false);
     const [headerBlurOn, setHeaderBlurOn] = useState(false);
 
-    const [levelSelected, setLevelSelected] = useState(true);
-    const [gameLevelIs, setGameLevelTo] = useState('pacific');
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
 
     useEffect(()=>{
         if ( levelSelected ) {

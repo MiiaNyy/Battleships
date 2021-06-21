@@ -74,8 +74,8 @@ function GridCell(props) {
 
     return (
         <Cell onClick={ ()=>!props.infoOpen ? attackEnemy() : console.log('game paused, try again') }
-              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } shipPosition={ shipPosition }
-              shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
+              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
+              shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
             <p>{ hitMarker }</p>
         </Cell>
     )

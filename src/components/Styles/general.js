@@ -76,7 +76,7 @@ function getGridSize(props, media) {
 
 }
 
-function getRightCursor(props) {
+function getGridCellCursor(props) {
     if ( props.infoOpen ) {
         return 'default'
     }
@@ -89,14 +89,30 @@ function getRightCursor(props) {
     } else {
         return "not-allowed"
     }
+}
 
+function getGridCellBackgroundColor(props) {
+    if ( props.shipSunk ) {
+        return '#ff4b4b';
+    } else if ( props.hitPosition && props.hitMarker === '💥' ) {
+        if ( props.enemy ) {
+            return "#929293";
+        } else {
+            return "#6d737d";
+        }
+    } else if ( !props.enemy && props.shipPosition ) {
+        return "#929293";
+    } else {
+        return "#cad9e5";
+    }
 }
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
-  background-color: ${ props=>props.shipPosition ? "#6d737d" : props.shipSunk ? "red" : "#cad9e5" };
-  cursor: ${ props=>getRightCursor(props) };
+  background-color: ${ props=>getGridCellBackgroundColor(props) };
+  cursor: ${ props=>getGridCellCursor(props) };
   text-align: center;
+  transition: all 0.3s ease-in-out;
 
   & > p {
     font-family: 'Raleway', sans-serif;
