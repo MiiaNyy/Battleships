@@ -26,7 +26,7 @@ function getRandomCoordinate(gameLevel) {
     const gridColumns = getRightAmountOfColumns(gameLevel);
     const gridRows = (gridColumns.length - 1);
 
-    const columnIndex = Math.floor(Math.random() * (gridColumns.length - 1));
+    const columnIndex = Math.floor(Math.random() * gridColumns.length);
     const rowIndex = (Math.floor(Math.random() * gridRows)) + 1;
     return gridColumns[columnIndex] + rowIndex;
 }

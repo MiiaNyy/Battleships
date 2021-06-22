@@ -49,6 +49,23 @@ function getShipsPosition(ship, gameLevel) {
     return shipPosition;
 }
 
+
+function getRightShipTypeArr(gameLevel, placingShipSuccessful) {
+    console.log('gamelevel is inside get right ship arr ' + gameLevel)
+    switch (gameLevel) {
+        case 'mediterranean':
+            return mediterranean;
+        case 'atlantic' :
+            return atlantic;
+        case 'pacific' :
+            return pacific;
+        default:
+            console.log('there is not set game level!')
+            placingShipSuccessful = false;
+            return [];
+    }
+}
+
 function getVerticalPosition(gameLevel, ship, xPosition, yPosition) {
     const rowAmount = getRightAmountOfGridCells(gameLevel).length;
     if ( yPosition > rowAmount ) { // depending on which level, row amount is different
@@ -69,13 +86,9 @@ function getHorizontalPosition(gameLevel, ship, xPosition, yPosition, index) {
     }
 }
 
-
-/*
-const x = new Ship('test', 3, 'j10', false);
-
-getShipsPosition(x);*/
 export {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
-    getShipsPosition
+    getShipsPosition,
+    getRightShipTypeArr,
 }

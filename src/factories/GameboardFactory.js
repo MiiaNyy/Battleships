@@ -1,12 +1,13 @@
 import Ship from "./ShipFactory.js";
-import { pacific, atlantic, mediterranean } from "../game_helpers/shipTypes";
+
 import {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
-    getShipsPosition
+    getShipsPosition,
+    getRightShipTypeArr,
 } from "./gameboardFactoryHelpers"
-import { getRandomCoordinate } from "./playerFactoryHelpers";
 
+import { getRandomCoordinate } from "./playerFactoryHelpers";
 
 class Gameboard {
     constructor(name) {
@@ -36,7 +37,6 @@ class Gameboard {
         return this.battlefield;
     }
 
-
     get gameOver() {
         return this.allShipHaveSunk;
     }
@@ -61,22 +61,19 @@ class Gameboard {
         } else {
             return {sunk: this.attackInfo.attackSunkAShip}
         }
-
     }
 
     placeShip(obj, coordinate, axelIsVertical) {
         const newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
         const coordinates = getShipsPosition(newShip, this.battlefield);
-        if ( newShip.validPosition ) {
-            // Checks if in that position is another ship
-            const positionIsEmpty = checkIfPositionIsEmpty(this.ships, coordinates)
-            if ( positionIsEmpty ) {
-                newShip.setPosition = coordinates;
-                this.shipsCoordinates.push(coordinates);
-                this.ships.push(newShip);
-                this.latestShipPlaced = coordinates;
-                this.placingShipSuccessful = true;
-            }
+        const positionIsEmpty = checkIfPositionIsEmpty(this.ships, coordinates);
+
+        if ( newShip.validPosition && positionIsEmpty ) {
+            newShip.setPosition = coordinates;
+            this.shipsCoordinates.push(coordinates);
+            this.ships.push(newShip);
+            this.latestShipPlaced = coordinates;
+            this.placingShipSuccessful = true;
         } else {
             this.placingShipSuccessful = false;
         }
@@ -84,7 +81,8 @@ class Gameboard {
 
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-        const shipTypes = this.battlefield === 'mediterranean' ? mediterranean : this.battlefield === 'atlantic' ? atlantic : pacific;
+        const gameLevel = this.gameLevel;
+        const shipTypes = getRightShipTypeArr(gameLevel, this.placingShipSuccessful);
 
         for (let i = 0; i < shipTypes.length; i++) {
             let shipCount = shipTypes[i].count;
@@ -149,13 +147,5 @@ class Gameboard {
         }
     }
 }
-
-/*let x = new Gameboard('x');
-x.setGameLevel = 'mediterranean';
-x.placeShip({
-    name: 'Submarine',
-    count: 2,
-    length: 2
-}, 'a1', true)*/
 
 export default Gameboard;

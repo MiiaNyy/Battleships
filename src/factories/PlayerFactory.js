@@ -57,7 +57,6 @@ class Player {
         if ( this.shotIsValid(coordinate) ) {
             this.latestShotCoordinate = coordinate;
         } else {
-            console.log('shot at coordinate ' + coordinate + ' was not valid')
             this.shootTheEnemy();
         }
     }
