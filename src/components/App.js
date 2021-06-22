@@ -14,28 +14,15 @@ import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
 //let playersGameboard = new Gameboard('Friendly');
 let playersGameboard;
-const computerGameboard = new Gameboard('Enemy');
-
+let computerGameboard;
+let player;
+let computer;
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(true);
+    const [gameHasStarted, setGameHasStarted] = useState(false);
 
-    const [levelSelected, setLevelSelected] = useState(true);
-    const [gameLevelIs, setGameLevelTo] = useState('pacific');
-
-    useEffect(()=>{
-        if ( levelSelected ) {
-            computerGameboard.setGameLevel = gameLevelIs;
-            computerGameboard.placeAllShipsOnBoard();
-
-            player.setGameLevel = gameLevelIs;
-            computer.setGameLevel = gameLevelIs;
-        }
-    }, [levelSelected])
-
-    const player = new Player('player');
-    const computer = new Player('computer');
-    player.startTurn();
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
 
     function Content() {
         if ( !levelSelected ) {
@@ -73,6 +60,19 @@ function App() {
 
 function setPlayersGameBoard(obj) {
     playersGameboard = obj;
+    const gameLevel = playersGameboard.gameLevel;
+
+    computerGameboard = new Gameboard('Enemy');
+    player = new Player('player');
+    computer = new Player('computer');
+    player.startTurn();
+
+    computerGameboard.setGameLevel = gameLevel;
+    computerGameboard.placeAllShipsOnBoard();
+
+    player.setGameLevel = gameLevel;
+    computer.setGameLevel = gameLevel;
+
 }
 
 export default App;

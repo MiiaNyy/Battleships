@@ -16,7 +16,7 @@ function SelectGameLevel(props) {
 
     return (
         <>
-            <InfoButton setInfoOpen={setInfoOpen} infoOpen={infoOpen}/>
+            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
             <GameContent blurOn={ infoOpen }>
                 <div className="blur">
                     <h2 className="subtitle">Select battle you want to play</h2>

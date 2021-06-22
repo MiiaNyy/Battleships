@@ -1,10 +1,22 @@
 //import {getRightAmountOfColumns} from "./gameboardFactoryHelpers";
+import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
+
 function getRightAmountOfColumns(level) {
     const columnsPacific = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     const columnsAtlantic = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
     const columnsMediterranean = ['a', 'b', 'c', 'd', 'e'];
 
-    return level === 'mediterranean' ? columnsMediterranean : level === 'atlantic' ? columnsAtlantic : columnsPacific;
+    switch (level) {
+        case 'mediterranean':
+            return columnsMediterranean;
+        case 'atlantic' :
+            return columnsAtlantic;
+        case 'pacific' :
+            return columnsPacific;
+        default:
+            console.log('there is not set game level!')
+            return [];
+    }
 }
 // If there is older hits, check that neighbor coordinate for new coordinate
 function getCoordinateFromOlderHit(foundShips) {

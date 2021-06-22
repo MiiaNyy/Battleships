@@ -24,6 +24,14 @@ function GameContainer(props) {
     const computer = props.enemy[0];
     const computerBoard = props.enemy[1];
 
+    useEffect(()=>{
+        console.log('game level in gameContainer for human player is ' + humanPlayer.gameLevel)
+        console.log('game level in gameContainer for computer player is ' + computer.gameLevel)
+
+        console.log('game level in gameContainer for human gameboard is ' + humanBoard.gameLevel)
+        console.log('game level in gameContainer for computer gameboard is ' + computerBoard.gameLevel)
+    }, [])
+
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
         const changeGameMessage = setTimeout(()=>{
