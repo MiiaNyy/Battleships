@@ -12,8 +12,8 @@ import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
-let playersGameboard = new Gameboard('Friendly');
-//let playersGameboard;
+//let playersGameboard = new Gameboard('Friendly');
+let playersGameboard;
 const computerGameboard = new Gameboard('Enemy');
 
 
