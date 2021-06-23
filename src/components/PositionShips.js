@@ -84,7 +84,6 @@ function PositionShips(props) {
         }
     }
 
-
     return (
         <>
             <InfoButton setInfoOpen={setInfoOpen} infoOpen={infoOpen}/>

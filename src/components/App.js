@@ -20,10 +20,10 @@ let player = new Player('player');
 let computer = new Player('computer');
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(true);
+    const [gameHasStarted, setGameHasStarted] = useState(false);
 
-    const [levelSelected, setLevelSelected] = useState(true);
-    const [gameLevelIs, setGameLevelTo] = useState('atlantic');
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
 
     function resetPlayersAndBoards() {
         computer.resetValues();
