@@ -36,6 +36,17 @@ class Player {
         return this.allFiredShots.length > 0;
     }
 
+    resetValues() {
+        this.gameLevel = '';
+        this.turn = false;
+        this.shotsReceived = 0;
+        this.allHitShots = 0;
+        this.foundShips = [];
+        this.allFiredShots = [];
+        this.allMissedShots = [];
+        this.latestShotCoordinate = '';
+    }
+
     // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
     shotIsValid(coordinate) {
         for (let i = 0; i < this.allFiredShots.length; i++) {

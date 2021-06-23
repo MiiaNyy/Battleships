@@ -29,6 +29,24 @@ class Gameboard {
         this.placingShipSuccessful = false;
     }
 
+    resetValues() {
+        this.battlefield = ''
+        this.shipsCoordinates = [];
+        this.latestShipPlaced = [];
+        this.ships = [];
+        this.missedShots = [];
+        this.hitShots = [];
+        this.sunkenShips = [];
+        this.allShipHaveSunk = false;
+        this.attackInfo = {
+            message: '',
+            shotHit: false,
+            shipThatGotHit: {},
+            attackSunkAShip: false,
+        };
+        this.placingShipSuccessful = false;
+    }
+
     set setGameLevel(level) {
         this.battlefield = level;
     }
@@ -81,9 +99,12 @@ class Gameboard {
 
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-        const gameLevel = this.gameLevel;
-        const shipTypes = getRightShipTypeArr(gameLevel, this.placingShipSuccessful);
-
+        //const shipTypes = getRightShipTypeArr(this.gameLevel, this.placingShipSuccessful);
+        const shipTypes = [{
+            name: 'Patrol Boat',
+            count: 1,
+            length: 1
+        }]
         for (let i = 0; i < shipTypes.length; i++) {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {
@@ -146,6 +167,7 @@ class Gameboard {
             return `${ gotHitMessage } ${ shipThatGotHit.name } got hit`;
         }
     }
+
 }
 
 export default Gameboard;

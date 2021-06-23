@@ -11,19 +11,40 @@ import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
 
 import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
+import { atlantic } from "../game_helpers/shipTypes";
 
-//let playersGameboard = new Gameboard('Friendly');
-let playersGameboard;
-const computerGameboard = new Gameboard('Enemy');
-const player = new Player('player');
-const computer = new Player('computer');
+let playersGameboard = new Gameboard('Friendly');
+//let playersGameboard;
+let computerGameboard = new Gameboard('Enemy');
+let player = new Player('player');
+let computer = new Player('computer');
 
 function App() {
-    const [gameHasStarted, setGameHasStarted] = useState(false);
+    const [gameHasStarted, setGameHasStarted] = useState(true);
 
-    const [levelSelected, setLevelSelected] = useState(false);
-    const [gameLevelIs, setGameLevelTo] = useState('');
+    const [levelSelected, setLevelSelected] = useState(true);
+    const [gameLevelIs, setGameLevelTo] = useState('atlantic');
 
+    function resetPlayersAndBoards() {
+        computer.resetValues();
+        player.resetValues();
+        computerGameboard.resetValues();
+        playersGameboard.resetValues();
+    }
+
+    function playNextLevel() {
+        const newGameLevel = gameLevelIs === 'mediterranean' ? 'atlantic' : gameLevelIs === 'atlantic' ? 'pacific' : '';
+        resetPlayersAndBoards();
+
+        setGameHasStarted(()=>false);
+        setGameLevelTo(()=>newGameLevel);
+    }
+
+    function restartGameWithCurrentLevel() {
+        console.log('restarting level')
+        resetPlayersAndBoards();
+        setGameHasStarted(()=>false);
+    }
 
     player.startTurn();
 
@@ -34,7 +55,8 @@ function App() {
             return <PositionShips setGameboard={ setPlayersGameBoard }
                                   gameLevel={ gameLevelIs } setGameHasStarted={ setGameHasStarted }/>
         } else if ( levelSelected && gameHasStarted ) {
-            return <GameContainer player={ [player, playersGameboard] }
+            return <GameContainer player={ [player, playersGameboard] } playNextLevel={ playNextLevel }
+                                  restartLevel={ restartGameWithCurrentLevel }
                                   enemy={ [computer, computerGameboard] } setGameHasStarted={ setGameHasStarted }
                                   gameHasStarted={ gameHasStarted } gameLevel={ gameLevelIs }/>
         }
@@ -63,7 +85,6 @@ function App() {
 
 function setPlayersGameBoard(obj) {
     playersGameboard = obj;
-
 
 
 }

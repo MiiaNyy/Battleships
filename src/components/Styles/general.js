@@ -1,4 +1,11 @@
 import styled from 'styled-components'
+import {
+    getGridCellFontSize,
+    getGridSize,
+    getGridCellCursor,
+    getGridCellBackgroundColor
+} from './stylingHelpers';
+
 
 const Header = styled.header`
   display: ${ props=>props.gameHasStarted ? 'flex' : 'block' };
@@ -53,60 +60,6 @@ const GameboardGrid = styled.div`
 
 `;
 
-function getGridSize(props, media) {
-    const size = props.size;
-    switch (size) {
-        case (5):
-            return `repeat(${ size }, 35px)`
-        case(7):
-            if ( media === 700 || media === 1000 ) {
-                return `repeat(${ size }, 35px)` // larger screens
-            } else {
-                return `repeat(${ size }, 30px)` // smaller screens
-            }
-        case(10):
-            if ( media === 1000 ) {
-                return `repeat(${ size }, 35px)`
-            } else if ( media === 700 ) {
-                return `repeat(${ size }, 30px)`
-            } else {
-                return `repeat(${ size }, 25px)`
-            }
-    }
-
-}
-
-function getGridCellCursor(props) {
-    if ( props.infoOpen ) {
-        return 'default'
-    }
-    if ( (props.hitPosition && props.enemy) || (props.shipSunk && props.enemy) ) {
-        return "not-allowed"
-    } else if ( props.enemy ) {
-        return "crosshair"
-    } else if ( props.dragAndDrop ) {
-        return 'default';
-    } else {
-        return "not-allowed"
-    }
-}
-
-function getGridCellBackgroundColor(props) {
-    if ( props.shipSunk ) {
-        return '#ff4b4b';
-    } else if ( props.hitPosition && props.hitMarker === '💥' ) {
-        if ( props.enemy ) {
-            return "#929293";
-        } else {
-            return "#6d737d";
-        }
-    } else if ( !props.enemy && props.shipPosition || props.enemy && props.shipPosition ) {
-        return "#929293";
-
-    } else {
-        return "#cad9e5";
-    }
-}
 
 const Cell = styled.div`
   border: 1px solid #3e3e3f;
@@ -118,13 +71,13 @@ const Cell = styled.div`
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;
-    font-size: 0.8rem;
+    font-size: ${ props=>getGridCellFontSize(props.gameLevel) }; //0.8rem;
     font-weight: bolder;
     @media (min-width: 700px) {
-      font-size: 1.1rem;
+      font-size: ${ props=>getGridCellFontSize(props.gameLevel, 700) }; //1.1rem;
     }
     @media (min-width: 1000px) {
-      font-size: 1.3rem;
+      font-size: ${ props=>getGridCellFontSize(props.gameLevel, 1000) }; //1.3rem;
     }
   }
 `;
@@ -162,11 +115,6 @@ const MessageContainer = styled.div`
     margin: 1em 0;
     font-family: 'Special Elite', cursive;
   }
-
-  & > button {
-    background-color: #6d7892;
-    margin: 1em 0;
-  }
 `;
 
 const Sidebar = styled.div`
@@ -179,10 +127,10 @@ const Sidebar = styled.div`
   margin: 0 auto;
   @media (min-width: 800px) {
     margin: 0;
-    max-width: 350px;    
+    max-width: 350px;
   }
 
-  @media(min-width: 900px) {
+  @media (min-width: 900px) {
     padding: 1em;
   }
 `;

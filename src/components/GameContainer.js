@@ -24,35 +24,31 @@ function GameContainer(props) {
 
     const currentGameLevel = useRef(props.gameLevel);
 
-    const humanBoard = props.player[1] ;
+    const humanBoard = props.player[1];
     const humanPlayer = props.player[0];
     const computer = props.enemy[0];
     const computerBoard = props.enemy[1];
 
-    console.log('computers game level inside game container: '+ computer.gameLevel)
     useEffect(()=>{
-
-
         humanPlayer.setGameLevel = currentGameLevel.current;
         computer.setGameLevel = currentGameLevel.current;
         computerBoard.setGameLevel = currentGameLevel.current;
         computerBoard.placeAllShipsOnBoard();
-
-        console.log('game level in gameContainer for human player is ' + humanPlayer.gameLevel)
-        console.log('game level in gameContainer for computer player is ' + computer.gameLevel)
-
-        console.log('game level in gameContainer for human gameboard is ' + humanBoard.gameLevel)
     }, [])
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
         const changeGameMessage = setTimeout(()=>{
+
             const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
             if ( newMessageIsNeeded ) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
                 setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
             }
+
         }, 1800);
+
+
         return ()=>clearTimeout(changeGameMessage);
 
 
@@ -91,13 +87,15 @@ function GameContainer(props) {
 
                 </Flex>
             </GameContent>
-            <GameEndedMessages gameIsOver={ gameOver } computer={ computer }/>
+            <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
+                               gameLevel={ props.gameLevel }
+                               gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>
             { infoOpen ?
                 <InfoMessages setInfoMessageOpen={ setInfoOpen }>
                     <ul>
                         <li>You can shoot the enemy by clicking enemy's board.</li>
                         <li>Try to find all of enemy's ships and sunk them before enemy finds yours.</li>
-                        <li>In the console, above gameboards, you find latest developments in the game</li>
+                        <li>In the console, above game boards, you find latest developments in the game</li>
                         <li>Specs tells you how many shots you have fired to the enemy board, how many shot has hit or
                             missed and how many have you received.
                         </li>

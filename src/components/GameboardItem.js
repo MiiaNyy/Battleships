@@ -49,10 +49,11 @@ function GridCell(props) {
     const [hitPosition, hitMarker] = isThisPositionHit(gameboard, cellId);
     const sunkShipPosition = isThereSunkShipInThisPosition(gameboard, cellId);
 
-
+    const human = props.players[0];
+    const computer = props.players[1];
+    
     function attackEnemy() {
-        const human = props.players[0];
-        const computer = props.players[1];
+
         // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
         const shotIsValid = human.shotIsValid(cellId);
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
@@ -72,7 +73,7 @@ function GridCell(props) {
     }
 
     return (
-        <Cell onClick={ ()=>!props.infoOpen ? attackEnemy() : console.log('game paused, try again') }
+        <Cell onClick={ ()=>!props.infoOpen ? attackEnemy() : console.log('game paused') } gameLevel={ human.gameLevel }
               enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
               shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
             <p>{ hitMarker }</p>
