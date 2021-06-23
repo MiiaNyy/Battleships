@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
@@ -10,6 +10,9 @@ import { Console, Divider } from "./Styles/gameArea"
 import { getGridSize } from "../game_helpers/gridSize";
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
+import Gameboard from "../factories/GameboardFactory";
+import Player from "../factories/PlayerFactory";
+
 
 // Third screen. Before this all of the objects are made
 function GameContainer(props) {
@@ -19,17 +22,26 @@ function GameContainer(props) {
     const [gameOver, setGameOver] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
 
-    const humanBoard = props.player[1];
+    const currentGameLevel = useRef(props.gameLevel);
+
+    const humanBoard = props.player[1] ;
     const humanPlayer = props.player[0];
     const computer = props.enemy[0];
     const computerBoard = props.enemy[1];
 
+    console.log('computers game level inside game container: '+ computer.gameLevel)
     useEffect(()=>{
+
+
+        humanPlayer.setGameLevel = currentGameLevel.current;
+        computer.setGameLevel = currentGameLevel.current;
+        computerBoard.setGameLevel = currentGameLevel.current;
+        computerBoard.placeAllShipsOnBoard();
+
         console.log('game level in gameContainer for human player is ' + humanPlayer.gameLevel)
         console.log('game level in gameContainer for computer player is ' + computer.gameLevel)
 
         console.log('game level in gameContainer for human gameboard is ' + humanBoard.gameLevel)
-        console.log('game level in gameContainer for computer gameboard is ' + computerBoard.gameLevel)
     }, [])
 
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it

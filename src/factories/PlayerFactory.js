@@ -50,6 +50,7 @@ class Player {
     shootTheEnemy() {
         let coordinate = getCoordinateFromOlderHit(this.foundShips);
 
+
         if ( coordinate === undefined ) {
             coordinate = getRandomCoordinate(this.gameLevel);
         }
@@ -78,13 +79,14 @@ class Player {
 
     // check if coordinate is neighbor to older hit coordinate. If false, create new foundShips item
     addCoordinateToFoundShipsArr(coordinate) {
+        console.log('after hit shot, game level is inside player ' + this.name + ': ' + this.gameLevel)
         const foundShipsNeighbor = checkIfCoordinateHitShipsNeighbor(coordinate, this.foundShips, this.gameLevel);
         if ( !foundShipsNeighbor ) {
             this.foundShips.push({
                 coordinates: [coordinate],
                 shipSunk: false,
                 sharedMark: undefined,
-                neighbors: getCoordinatesNeighbors(coordinate)
+                neighbors: getCoordinatesNeighbors(coordinate, this.gameLevel)
             });
         }
     }

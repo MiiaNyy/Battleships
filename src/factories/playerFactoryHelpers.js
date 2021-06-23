@@ -1,11 +1,9 @@
-//import {getRightAmountOfColumns} from "./gameboardFactoryHelpers";
 import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
 
 function getRightAmountOfColumns(level) {
     const columnsPacific = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     const columnsAtlantic = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
     const columnsMediterranean = ['a', 'b', 'c', 'd', 'e'];
-
     switch (level) {
         case 'mediterranean':
             return columnsMediterranean;
@@ -14,10 +12,10 @@ function getRightAmountOfColumns(level) {
         case 'pacific' :
             return columnsPacific;
         default:
-            console.log('there is not set game level!')
-            return [];
+            console.error('error! there is not gamelevel set!')
     }
 }
+
 // If there is older hits, check that neighbor coordinate for new coordinate
 function getCoordinateFromOlderHit(foundShips) {
     for (let i = 0; i < foundShips.length; i++) {
@@ -61,12 +59,12 @@ function checkIfCoordinateHitShipsNeighbor(coordinate, foundShips, gameLevel) {
     return false;
 }
 
-function getCoordinatesNeighbors(coordinate) {
+function getCoordinatesNeighbors(coordinate, gameLevel) {
     const [horizontalMark, verticalMark] = getHorizontalAndVerticalMark(coordinate);
     const neighbors = []; // Example neighbors: [{mark: 'b1', tried: false}]}]
 
-    const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark);
-    const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark);
+    const horizontalNeighbors = getHorizontalNeighbors(horizontalMark, verticalMark, gameLevel);
+    const verticalNeighbors = getVerticalNeighbors(horizontalMark, verticalMark, gameLevel);
 
     horizontalNeighbors.forEach((element)=>{
         neighbors.push({mark: element, tried: false})
@@ -82,7 +80,6 @@ function getCoordinatesNeighbors(coordinate) {
 function modifyShipsNeighborList(ship, coordinate, currentIndex, shipsNeighbors, gameLevel) {
     if ( ship.sharedMark === undefined ) { // check if ships direction has been found yet
         ship.sharedMark = getShipsDirection(ship.coordinates);
-        console.log('ships shared mark is ' + ship.sharedMark);
         removeRedundantNeighbors(shipsNeighbors, ship.sharedMark) // delete all the neighbors that don't have sharedMark
     }
     // add new possible neighbors to neighbors arr

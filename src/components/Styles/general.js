@@ -100,8 +100,9 @@ function getGridCellBackgroundColor(props) {
         } else {
             return "#6d737d";
         }
-    } else if ( !props.enemy && props.shipPosition ) {
+    } else if ( !props.enemy && props.shipPosition || props.enemy && props.shipPosition ) {
         return "#929293";
+
     } else {
         return "#cad9e5";
     }

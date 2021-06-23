@@ -55,7 +55,6 @@ function GridCell(props) {
         const computer = props.players[1];
         // loops already fired shots to check if shot is valid (cannot shot twice in the same coordinate)
         const shotIsValid = human.shotIsValid(cellId);
-
         if ( thisIsEnemyCell && human.turn && shotIsValid ) {
 
             attackIsValid(gameboard, human, cellId, setGameDescription, setGameOver);

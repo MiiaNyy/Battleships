@@ -14,15 +14,18 @@ import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
 
 //let playersGameboard = new Gameboard('Friendly');
 let playersGameboard;
-let computerGameboard;
-let player;
-let computer;
+const computerGameboard = new Gameboard('Enemy');
+const player = new Player('player');
+const computer = new Player('computer');
 
 function App() {
     const [gameHasStarted, setGameHasStarted] = useState(false);
 
     const [levelSelected, setLevelSelected] = useState(false);
     const [gameLevelIs, setGameLevelTo] = useState('');
+
+
+    player.startTurn();
 
     function Content() {
         if ( !levelSelected ) {
@@ -60,18 +63,8 @@ function App() {
 
 function setPlayersGameBoard(obj) {
     playersGameboard = obj;
-    const gameLevel = playersGameboard.gameLevel;
 
-    computerGameboard = new Gameboard('Enemy');
-    player = new Player('player');
-    computer = new Player('computer');
-    player.startTurn();
 
-    computerGameboard.setGameLevel = gameLevel;
-    computerGameboard.placeAllShipsOnBoard();
-
-    player.setGameLevel = gameLevel;
-    computer.setGameLevel = gameLevel;
 
 }
 
