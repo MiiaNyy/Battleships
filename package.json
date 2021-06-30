@@ -11,6 +11,8 @@
     "test": "jest",
     "watch": "jest --watchAll *.js"
   },
+  "homepage": "https://miianyy.github.io/Battleships2/",
+
   "keywords": [],
   "author": "",
   "license": "ISC",
