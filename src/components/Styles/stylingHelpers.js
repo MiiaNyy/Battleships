@@ -40,12 +40,8 @@ function getGridCellBackgroundColor(props) {
     if ( props.shipSunk ) {
         return '#ff4b4b';
     } else if ( props.hitPosition && props.hitMarker === '💥' ) {
-        if ( props.enemy ) {
-            return "#929293";
-        } else {
-            return "#6d737d";
-        }
-    } else if ( !props.enemy && props.shipPosition || props.enemy && props.shipPosition ) {
+        return "#6d737d";
+    } else if ( !props.enemy && props.shipPosition) {
         return "#929293";
     } else {
         return "#cad9e5";
