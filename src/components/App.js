@@ -1,30 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
 
 import GameContainer from "./GameContainer";
 import PositionShips from "./PositionShips";
 import SelectGameLevel from "./SelectGameLevel";
-import InfoMessages from "./InfoMessages";
-
-import useOutsideClick from "../game_helpers/useOutsideClick";
 
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
 
-import { Header, MessageContainer, InfoBtnContainer } from "./Styles/general";
-import { atlantic } from "../game_helpers/shipTypes";
+import { Header, MessageContainer} from "./Styles/general";
 
-let playersGameboard = new Gameboard('Friendly');
-//let playersGameboard;
+let playersGameboard;
 let computerGameboard = new Gameboard('Enemy');
 let player = new Player('player');
 let computer = new Player('computer');
 
 function App() {
     const [gameHasStarted, setGameHasStarted] = useState(false);
-
     const [levelSelected, setLevelSelected] = useState(false);
     const [gameLevelIs, setGameLevelTo] = useState('');
 
+    /* When player has played game to the end, game gives player choices to play another round with current level or
+     move to the next level */
     function resetPlayersAndBoards() {
         computer.resetValues();
         player.resetValues();
@@ -41,7 +37,6 @@ function App() {
     }
 
     function restartGameWithCurrentLevel() {
-        console.log('restarting level')
         resetPlayersAndBoards();
         setGameHasStarted(()=>false);
     }
@@ -85,8 +80,6 @@ function App() {
 
 function setPlayersGameBoard(obj) {
     playersGameboard = obj;
-
-
 }
 
 export default App;

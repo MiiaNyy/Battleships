@@ -12,7 +12,7 @@ import { getRandomCoordinate } from "./playerFactoryHelpers";
 class Gameboard {
     constructor(name) {
         this.name = name;
-        this.battlefield = ''
+        this.battlefield = '';
         this.shipsCoordinates = [];
         this.latestShipPlaced = [];
         this.ships = [];
@@ -99,12 +99,8 @@ class Gameboard {
 
 // computer uses this to place ships on its board
     placeAllShipsOnBoard() {
-        //const shipTypes = getRightShipTypeArr(this.gameLevel, this.placingShipSuccessful);
-        const shipTypes = [{
-            name: 'Patrol Boat',
-            count: 1,
-            length: 1
-        }]
+        const shipTypes = getRightShipTypeArr(this.gameLevel, this.placingShipSuccessful);
+
         for (let i = 0; i < shipTypes.length; i++) {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {

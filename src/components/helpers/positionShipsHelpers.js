@@ -1,6 +1,7 @@
 import { pacific, atlantic, mediterranean } from "../../game_helpers/shipTypes";
 import { v4 as uuidv4 } from "uuid";
 
+// When ship is dragged to grid area, decrease ships count
 function changeShipsCount(allShips, id) {
     const shipsIndex = allShips.findIndex((ship)=>ship.id === id);
     const targetShip = allShips.filter((currentShip)=>currentShip.id === id);
@@ -16,7 +17,7 @@ function changeShipsCount(allShips, id) {
     return newArr;
 }
 
-// make new array from shipTypes and add every ship obj a id
+// make new array from shipTypes and add every ship obj an id
 function getNewShipTypesArr(gameLevel) {
     const shipTypes = gameLevel === 'mediterranean' ? mediterranean : gameLevel === 'atlantic' ? atlantic : pacific;
     return shipTypes.map((ship)=>Object.assign({}, ship, {id: uuidv4()}));
@@ -63,11 +64,17 @@ function checkIfThisIsShipPosition(cell, shipsCoordinates) {
     return false;
 }
 
+function allTheShipsHasPositioned(gameLevel, humanBoard) {
+    const shipsCount = gameLevel === 'mediterranean' ? 4 : gameLevel === 'atlantic' ? 5 : 9;
+    return humanBoard.ships.length >= shipsCount
+}
+
 export {
     changeShipsCount,
     getNewShipTypesArr,
     createShipCells,
     checkIfDropIsAllowed,
     getClonesXPosition,
-    checkIfThisIsShipPosition
+    checkIfThisIsShipPosition,
+    allTheShipsHasPositioned,
 }

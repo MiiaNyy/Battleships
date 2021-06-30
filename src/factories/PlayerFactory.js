@@ -61,7 +61,6 @@ class Player {
     shootTheEnemy() {
         let coordinate = getCoordinateFromOlderHit(this.foundShips);
 
-
         if ( coordinate === undefined ) {
             coordinate = getRandomCoordinate(this.gameLevel);
         }
@@ -110,7 +109,6 @@ class Player {
                 sunkenShipsCoordinates.forEach((sunkCoordinate)=>{
                     if ( coordinate === sunkCoordinate ) {
                         ship.shipSunk = true;
-                        console.log('ship at coordinates: ' + ship.coordinates + ' status changed to sunk');
                     }
                 })
             })

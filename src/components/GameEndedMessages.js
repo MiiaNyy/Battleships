@@ -1,6 +1,5 @@
 import React from 'react';
-import { MessageContainer } from "./Styles/general";
-
+import { ButtonWrapper, MessageContainer } from "./Styles/general";
 
 function GameEndedMessages(props) {
     const computer = props.computer;
@@ -21,20 +20,20 @@ function GameEndedMessages(props) {
     }
 
     if ( props.gameIsOver ) {
-        /*document.querySelector('header').style.filter = 'blur(2px) grayscale(20%)';
-        document.querySelector('.info-btn').style.filter = 'blur(2px) grayscale(20%)';*/
+        document.querySelector('header').style.filter = 'blur(2px) grayscale(20%)';
+        document.querySelector('.info-btn').style.filter = 'blur(2px) grayscale(20%)';
 
         return (
             <MessageContainer className="toggle-in">
                 <h2>{ header }</h2>
                 <p>{ message }</p>
-                <div className="btn-cont">
+                <ButtonWrapper>
                     <button onClick={ ()=>location.reload() }><i className="fas fa-home"/> Home</button>
                     <button onClick={ ()=>playCurrentLevelAgain() }>Play again</button>
                     { gameLevel !== 'pacific' ?
-                        <button onClick={ ()=>playNextLevel() }>Next<i className="fas fa-arrow-right"/>
+                        <button onClick={ ()=>playNextLevel() }>Next <i className="fas fa-arrow-right"/>
                         </button> : <></> }
-                </div>
+                </ButtonWrapper>
             </MessageContainer>
         );
     } else {

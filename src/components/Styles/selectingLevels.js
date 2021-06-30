@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Button } from "./dragAndDrop"
 
-
 const Container = styled.div`
   padding: 1em;
   color: #9e9d9d;
@@ -11,7 +10,6 @@ const Container = styled.div`
     display: flex;
   }
 `;
-
 
 const ButtonSecondary = styled(Button)`
   background-color: ${ props=>props.easy ? 'rgba(210,210,210,0.89)' : props.medium ? 'rgba(69,123,157,0.8)' : props.hard ? '#656d4a' : 'initial' };

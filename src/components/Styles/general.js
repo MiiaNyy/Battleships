@@ -117,6 +117,13 @@ const MessageContainer = styled.div`
   }
 `;
 
+/* Game over messages btn container */
+const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 0;
+`;
+
 const Sidebar = styled.div`
   border: 10px #585858 ridge;
   font-size: 0.9rem;
@@ -185,5 +192,6 @@ export {
     MessageContainer,
     InfoBtnContainer,
     Flex,
-    FlexSecondary
+    FlexSecondary,
+    ButtonWrapper,
 }

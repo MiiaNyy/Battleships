@@ -1,51 +1,50 @@
 import React, { useState } from 'react';
 
-import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
-import { Cell, GameboardGrid, GameContent, Sidebar, Flex, InfoBtnContainer } from "./Styles/general";
+import Gameboard from "../factories/GameboardFactory";
+
+import InfoMessages from "./InfoMessages";
+import InfoButton from "./InfoButton";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
-import isTouchScreen from "../game_helpers/isTouchScreen";
-import { getGridSize } from "../game_helpers/gridSize";
-
 import {
     changeShipsCount,
     getNewShipTypesArr,
     createShipCells,
     checkIfDropIsAllowed,
     getClonesXPosition,
-    checkIfThisIsShipPosition
-} from "./helpers/selectingShipsHelpers";
+    checkIfThisIsShipPosition,
+    allTheShipsHasPositioned
+} from "./helpers/positionShipsHelpers";
 
-import Gameboard from "../factories/GameboardFactory";
-import InfoMessages from "./InfoMessages";
-import InfoButton from "./InfoButton";
+import isTouchScreen from "../game_helpers/isTouchScreen";
+import { getGridSize } from "../game_helpers/gridSize";
+
+import { BtnContainer, Button, ShipInfo, ShipCell, PopUpMessage } from "./Styles/dragAndDrop";
+import { Cell, GameboardGrid, GameContent, Sidebar, Flex } from "./Styles/general";
 
 let clickedShip = []; // touch screens uses this, when position ships on board
 let draggedItem; // normal mouse screens uses this when ships are draggable
 let newCloneNode;
+
 const humanBoard = new Gameboard('Friendly');
 
-
 function PositionShips(props) {
-
-    humanBoard.setGameLevel = props.gameLevel;
-
-    const gridSize = getGridSize(props.gameLevel);
-    const cellIds = getGridCellIds(props.gameLevel);
-
     const [ships, setShips] = useState(getNewShipTypesArr(props.gameLevel)); // arr of ship obj with ids on the
-    // drag/info container
     const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
 
     const [coordinatesWithShip, setCoordinatesWithShips] = useState([]); //coordinates that has ship in it
 
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
-
     const [shipPlacingInvalid, setShipPlacingInvalid] = useState(false);
+
     const [infoOpen, setInfoOpen] = useState(false);
+
+    const gridSize = getGridSize(props.gameLevel);
+    const cellIds = getGridCellIds(props.gameLevel);
 
     const animation = shipPlacingInvalid ? "invalid_position_animation" : "hidden";
 
+    humanBoard.setGameLevel = props.gameLevel;
 
     function dropShipOnBoard(e) {
         e.preventDefault();
@@ -73,6 +72,7 @@ function PositionShips(props) {
         }
     }
 
+    // Smaller screens, dragging elements doesn't work. Instead use click events
     function placeShipOnTouchScreens(e) {
         if ( clickedShip.length > 0 ) {
             const [clickedElement, ship] = clickedShip;
@@ -86,7 +86,7 @@ function PositionShips(props) {
 
     return (
         <>
-            <InfoButton setInfoOpen={setInfoOpen} infoOpen={infoOpen}/>
+            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
             <GameContent blurOn={ infoOpen } positionShips>
                 <Flex blurOn={ shipPlacingInvalid }>
                     <Flex className="container">
@@ -123,12 +123,12 @@ function PositionShips(props) {
                                 }) }
                             </GameboardGrid>
                         </div>
-
                     </Flex>
                 </Flex>
 
                 <BtnContainer>
-                    <Button onClick={ ()=>startTheGame(props) } large active={ humanBoard.ships.length > 1 }>
+                    <Button onClick={ ()=>startTheGame(props) } large
+                            active={ allTheShipsHasPositioned(props.gameLevel, humanBoard) }>
                         Start Game <i className="fas fa-arrow-right"/>
                     </Button>
                 </BtnContainer>
@@ -155,7 +155,6 @@ function PositionShips(props) {
         </>
     );
 }
-
 
 function ShipContainer(props) {
     const ship = props.ship;
@@ -197,6 +196,12 @@ function ShipContainer(props) {
     )
 }
 
+function startTheGame(props) {
+    if ( humanBoard.ships.length > 1 ) {
+        props.setGameboard(humanBoard);
+        props.setGameHasStarted(true);
+    }
+}
 
 function selectShipOnTouchScreens(e, ship) {
     if ( isTouchScreen() ) {
@@ -206,12 +211,10 @@ function selectShipOnTouchScreens(e, ship) {
             document.querySelectorAll(".ship-rotation").forEach(el=>el.style.border = '2px solid #a5a5a5');
             clickedElement.style.border = '2px solid yellow';
         }
-    } else {
-        console.log('normal screen')
     }
 }
 
-
+/* ---Handle drag event functions  */
 function stopDrag(ship) {
     newCloneNode.style.display = 'none';
     newCloneNode.remove();
@@ -229,13 +232,6 @@ function handleDragEnter(e, shipPosition) {
 
 function handleDragLeave(e) {
     e.target.classList.remove('drag-hover'); // remove hover effect
-}
-
-function startTheGame(props) {
-    if ( humanBoard.ships.length > 1 ) {
-        props.setGameboard(humanBoard);
-        props.setGameHasStarted(true);
-    }
 }
 
 export default PositionShips;

@@ -15,9 +15,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     font-family: 'Wallpoet', cursive;
-
 }
-
 
 img {
     display: block;
@@ -37,6 +35,29 @@ button:hover {
     opacity: 0.8;
     transform: scale(1.1);
 }
+/* ---SCROLLBAR--- */
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*---TYPOGRAPHY---*/
 
 h1, h2, h3, h4, h5, h6, p {
     margin-top: 0;
@@ -81,12 +102,27 @@ li {
     width: 90%;
 }
 
+/*---GENERAL STYLES---*/
 
-.subtitle {
-    font-size: 1.3rem;
+.wrap {
+    text-align: center;
 }
 
-/* WHEN SPECIFIC STATE, ADD ONE OF THESE CLASSES */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    transition: all 0.5s ease-in-out;
+}
+
+.row {
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+/* ---WHEN SPECIFIC STATE, ADD ONE OF THESE CLASSES--- */
 /* when user places ships on the board, invalid message is hidden, until user tries to position ships to invalid positions */
 .hidden {
     display: none;
@@ -107,29 +143,51 @@ li {
     transition: border 0.2s ease-in-out;
 }
 
+/* ---BUTTONS--- */
 
-
-/*GENERAL STYLES*/
-
-.wrap {
-    text-align: center;
+/* question mark buttons and pop up message cross buttons */
+.info-btn {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
-.container {
+.info-btn:hover {
+    color: #9e9d9d;
+}
+
+.close-info-btn {
+    font-size: 1.1rem;
+    color: #616161;
+    margin-top: 10px;
+}
+
+.close-info-btn:hover {
+    color: #fd3333;
+    transform: scale(1.2);
+}
+
+/* ---SELECTING LEVEL STYLES--- */
+.col {
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    transition: all 0.5s ease-in-out;
+    padding: 0 1em;
+    font-family: "Special Elite", cursive;
+    color: #9e9d9d;
 }
 
-.row {
-    display: flex;
-    gap: 1em;
-    justify-content: space-between;
-    font-size: 0.8rem;
+.col + .col {
+    margin-top: 2em;
+    padding: 0.5em 1em;
+    border-top: 2px solid #9e9d9d;
 }
 
-/* ANIMATIONS */
+.col__btn {
+    text-align: center;
+    align-self: stretch;
+}
+
+
+/* ---ANIMATIONS--- */
 @keyframes slideDownAndUp {
     0% {
         opacity: 0;
@@ -190,85 +248,6 @@ li {
     opacity: 0;
 }
 
-/* BUTTONS */
-
-/* question mark buttons and mpop up message cross buttons */
-.info-btn {
-    font-size: 2rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
-
-.info-btn:hover {
-    color: #9e9d9d;
-}
-
-.close-info-btn {
-    font-size: 1.1rem;
-    color: #616161;
-    margin-top: 10px;
-}
-
-.close-info-btn:hover {
-    color: #fd3333;
-    transform: scale(1.2);
-}
-
-
-/* SELECTING LEVEL */
-.col {
-    width: 100%;
-    padding: 0 1em;
-    font-family: "Special Elite", cursive;
-    color: #9e9d9d;
-}
-
-.col + .col {
-    margin-top: 2em;
-    padding: 0.5em 1em;
-    border-top: 2px solid #9e9d9d;
-}
-
-.col__btn {
-    text-align: center;
-    align-self: stretch;
-}
-
-.btn-cont {
-    display: flex;
-    justify-content: space-between;
-    margin: 1em 0;
-    border: 2px solid palevioletred;
-}
-
-.btn-cont button {
-    font-size: 0.9rem;
-    background-color: #6d7892;
-}
-
-/* SCROLLBAR */
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-
 
 @media (min-width: 800px) {
     h1 {
@@ -284,6 +263,8 @@ li {
         margin-bottom: 0.5em;
     }
 }
+
+/* ---MEDIA QUERIES--- */
 
 @media (min-width: 900px) {
 

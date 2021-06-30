@@ -4,6 +4,7 @@ import { SideBarSpecs, SpecsButton } from "./Styles/gameArea";
 function GameSpecs(props) {
     const player = props.humanPlayer;
     const playerGrid = props.playerGrid;
+
     const [specsIsOpen, setSpecsIsOpen] = useState(false);
     const [specsAnimationOn, setSpecsAnimationOn] = useState(false);
 
@@ -41,7 +42,6 @@ function GameSpecs(props) {
                         </p>
                         <p className="row">Sunk: <strong> { playerGrid.sunkenShips.length } </strong></p>
                     </div>
-
                 </SideBarSpecs>
             </>
         )

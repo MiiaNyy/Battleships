@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { GameContent, InfoBtnContainer } from "./Styles/general";
-import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
+
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
 
+import { GameContent } from "./Styles/general";
+import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
 
 function SelectGameLevel(props) {
-
     const [infoOpen, setInfoOpen] = useState(false);
 
     function setLevel(level) {
@@ -18,8 +18,8 @@ function SelectGameLevel(props) {
         <>
             <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
             <GameContent blurOn={ infoOpen }>
-                <div className="blur">
-                    <h2 className="subtitle">Select battle you want to play</h2>
+                <div>
+                    <h2 style={ {fontSize: '1.3rem'} }> Select battle you want to play</h2>
                     <Container>
                         <div className="col">
                             <div>

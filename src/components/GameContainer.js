@@ -5,18 +5,13 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent, Flex, InfoBtnContainer } from "./Styles/general";
+import { GameContent, Flex} from "./Styles/general";
 import { Console, Divider } from "./Styles/gameArea"
 import { getGridSize } from "../game_helpers/gridSize";
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
-import Gameboard from "../factories/GameboardFactory";
-import Player from "../factories/PlayerFactory";
 
-
-// Third screen. Before this all of the objects are made
 function GameContainer(props) {
-
     const [gameDescription, setGameDescription] = useState([' ', ' ', ' ', 'Welcome to the battleship game']);
     const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
@@ -39,20 +34,15 @@ function GameContainer(props) {
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
     useEffect(()=>{
         const changeGameMessage = setTimeout(()=>{
-
             const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
             if ( newMessageIsNeeded ) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
                 setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
             }
-
         }, 1800);
-
-
         return ()=>clearTimeout(changeGameMessage);
-
-
     }, [gameDescription]);
+
 
     useEffect(()=>{
         if ( computer.turn && humanPlayer.firstShotFired && !gameOver ) {

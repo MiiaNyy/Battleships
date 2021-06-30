@@ -23,4 +23,33 @@ function getGridCellIds(gameLevel) {
     return cellIds;
 }
 
-export { isShipInThisPosition, getGridCellIds }
+function isThereSunkShipInThisPosition(gameboard, coordinate) {
+    const sunkenShips = gameboard.sunkenShips;
+    for (let i = 0; i < sunkenShips.length; i++) {
+        for (let j = 0; j < sunkenShips[i].length; j++) {
+            let ship = sunkenShips[i];
+            for (let k = 0; k < ship.position.length; k++) {
+                if ( ship.position[k] === coordinate ) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
+function isThisPositionHit(gameboard, coordinate) {
+    for (let i = 0; i < gameboard.missedShots.length; i++) {
+        if ( gameboard.missedShots[i] === coordinate ) {
+            return [true, 'x']
+        }
+    }
+    for (let i = 0; i < gameboard.hitShots.length; i++) {
+        if ( gameboard.hitShots[i] === coordinate ) {
+            return [true, '💥']
+        }
+    }
+    return [false, ''];
+}
+
+export { isShipInThisPosition, getGridCellIds, isThereSunkShipInThisPosition, isThisPositionHit }

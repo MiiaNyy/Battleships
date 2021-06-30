@@ -73,6 +73,7 @@ const SideBarSpecs = styled(Sidebar)`
     animation: none;
   }
 `;
+
 /* smallest screens, show this button, instead of specs container */
 const SpecsButton = styled.button`
   visibility: ${ props=>props.showSpecBtn ? 'hidden' : 'initial' };

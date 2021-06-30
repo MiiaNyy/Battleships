@@ -19,7 +19,6 @@ function getGridSize(props, media) {
                 return `repeat(${ size }, 25px)`
             }
     }
-
 }
 
 function getGridCellCursor(props) {
@@ -48,7 +47,6 @@ function getGridCellBackgroundColor(props) {
         }
     } else if ( !props.enemy && props.shipPosition || props.enemy && props.shipPosition ) {
         return "#929293";
-
     } else {
         return "#cad9e5";
     }

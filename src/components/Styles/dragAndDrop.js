@@ -11,7 +11,6 @@ const BtnContainer = styled.div`
     @media(min-width: 800px) {
       font-size: 1rem;
     }
-
   }
 `;
 
