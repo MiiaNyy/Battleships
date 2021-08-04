@@ -39,7 +39,7 @@ function GameContainer(props) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
                 setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
             }
-        }, 1800);
+        }, 1500);
         return ()=>clearTimeout(changeGameMessage);
     }, [gameDescription]);
 

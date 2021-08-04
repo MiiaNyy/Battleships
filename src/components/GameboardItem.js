@@ -70,7 +70,7 @@ function GridCell(props) {
                 computer.startTurn()
                 setTimeout(()=>{
                     switchTurns(true);
-                }, 3000);
+                }, 2000);
             }
         } else if ( thisIsEnemyCell && !shotIsValid ) {
             setGameDescription((prev)=>addNewMessageToDescription(prev, 'Invalid shot, try again!'));
