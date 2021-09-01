@@ -17,9 +17,11 @@ function getRightAmountOfColumns(level) {
 }
 
 // If there is older hits, check that neighbor coordinate for new coordinate
+// [{coordinates: ['a1'], shipSunk: false, neighbors: [{mark: 'b1', tried: false}, {mark: 'a2', tried: false}]}]
 function getCoordinateFromOlderHit(foundShips) {
     for (let i = 0; i < foundShips.length; i++) {
         const neighborCoordinates = foundShips[i].neighbors; // Example:  neighbors:[{mark: 'b1', tried: false}]}
+
         if ( !foundShips[i].shipSunk ) { // if ship is not sunk
             for (let j = 0; j < neighborCoordinates.length; j++) {
                 const neighbor = neighborCoordinates[j];

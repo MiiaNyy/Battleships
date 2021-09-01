@@ -29,24 +29,6 @@ class Gameboard {
         this.placingShipSuccessful = false;
     }
 
-    resetValues() {
-        this.battlefield = ''
-        this.shipsCoordinates = [];
-        this.latestShipPlaced = [];
-        this.ships = [];
-        this.missedShots = [];
-        this.hitShots = [];
-        this.sunkenShips = [];
-        this.allShipHaveSunk = false;
-        this.attackInfo = {
-            message: '',
-            shotHit: false,
-            shipThatGotHit: {},
-            attackSunkAShip: false,
-        };
-        this.placingShipSuccessful = false;
-    }
-
     set setGameLevel(level) {
         this.battlefield = level;
     }
@@ -163,7 +145,23 @@ class Gameboard {
             return `${ gotHitMessage } ${ shipThatGotHit.name } got hit`;
         }
     }
-
+    resetValues() {
+        this.battlefield = ''
+        this.shipsCoordinates = [];
+        this.latestShipPlaced = [];
+        this.ships = [];
+        this.missedShots = [];
+        this.hitShots = [];
+        this.sunkenShips = [];
+        this.allShipHaveSunk = false;
+        this.attackInfo = {
+            message: '',
+            shotHit: false,
+            shipThatGotHit: {},
+            attackSunkAShip: false,
+        };
+        this.placingShipSuccessful = false;
+    }
 }
 
 export default Gameboard;

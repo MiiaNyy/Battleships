@@ -13,7 +13,8 @@ class Player {
         this.shotsReceived = 0;
         this.allHitShots = 0;
         // array of ship objects, that is created when hit happens in the enemy board. Includes coordinates that have
-        // been found and array of possible neighbors e.g: [{coordinates: ['a1'], shipSunk: false, neighbors: [{mark: 'b1', tried: false}, {mark: 'a1', tried: false}]}]
+        // been found and array of possible neighbors e.g: [{coordinates: ['a1'], shipSunk: false, neighbors:
+        // [{mark: 'b1', tried: false}, {mark: 'a2', tried: false}]}]
         this.foundShips = [];
         this.allFiredShots = []; // coordinates of all of the fired shots to enemy gameboard
         this.allMissedShots = [];
@@ -61,7 +62,7 @@ class Player {
     shootTheEnemy() {
         let coordinate = getCoordinateFromOlderHit(this.foundShips);
 
-        if ( coordinate === undefined ) {
+        if ( coordinate === undefined ) { // if foundShips arr is empty/there is not any found ships
             coordinate = getRandomCoordinate(this.gameLevel);
         }
 
@@ -72,6 +73,7 @@ class Player {
         }
     }
 
+    // after shooting enemy
     setShots(attackHit, shipThatGotHit, coordinate) {
         this.allFiredShots.push(coordinate);
         if ( attackHit ) {
@@ -79,7 +81,6 @@ class Player {
             // adds hit shot to already existing foundShips arr or creates its own found ship arr.
             this.addCoordinateToFoundShipsArr(coordinate);
             if ( shipThatGotHit.sunk ) {
-                console.log('ship sunk and now changing sunk status. ship.position is ' + shipThatGotHit.position);
                 this.changeShipsStatusToSunk(shipThatGotHit.position);
             }
         } else {
@@ -89,7 +90,6 @@ class Player {
 
     // check if coordinate is neighbor to older hit coordinate. If false, create new foundShips item
     addCoordinateToFoundShipsArr(coordinate) {
-        console.log('after hit shot, game level is inside player ' + this.name + ': ' + this.gameLevel)
         const foundShipsNeighbor = checkIfCoordinateHitShipsNeighbor(coordinate, this.foundShips, this.gameLevel);
         if ( !foundShipsNeighbor ) {
             this.foundShips.push({
