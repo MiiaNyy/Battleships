@@ -45,8 +45,15 @@ turn to shoot again.
 
 ### Example of game AI
 The computer shoots at random coordinate C3
- It is informed that the coordinate hit the ship
- It creates the first item in the foundShips list, which contains information about all the ships found: the coordinates that hit them, whether that ship sank, and uses the coordinates that hit to calculate the coordinates of the neighbor. These neighbor coordinates will be used later on the next turn.
+
+&#8594; It is informed that the coordinate hit the ship
+
+&#8594; It creates the first item in the foundShips list, which contains information about all the ships found: 
+- the coordinates that hit them, 
+- whether that ship sank,
+- and uses the coordinates that hit, to calculate the coordinates of the neighbor. These neighbor coordinates will be 
+used later on the next turn.
+
 This list looks like this when C3 is shot and hit:
 
 ```javascript
@@ -54,7 +61,7 @@ foundShips = [{
     coordinates: ['c3'], // hit coordinate
     shipSunk: false, // is the ship that is in this coordinate sunk
     neighbors: [ // neighbor coordinates of c3
-        {mark:'c2', tried: false}, // is this particular neighbor alreade tried
+        {mark:'c2', tried: false}, // is this particular neighbor already tried
         {mark:'c4', tried: false},
         {mark:'b3', tried: false},
         {mark:'d3', tried: false},        
@@ -62,8 +69,12 @@ foundShips = [{
 }]
 ```
 
- The next turn, from this particular list, takes the coordinate of the first neighbor that has not yet been tried (in this case C2) and shoots the enemy with it.
- If C2 hits, the computer can conclude that the ship is in the vertical c-pillar. In this case, it removes from the list all neighbor coordinates that are not in the c column and calculates new neighbors for the C2 coordinate. The list then looks like this:
+&#8594; The next turn, from this particular list, takes the coordinate of the first neighbor that has not yet been tried 
+ (in this case C2) and shoots the enemy with it.
+
+&#8594; If C2 hits, the computer can conclude that the ship is in the vertical c-pillar. In this case, it removes from 
+the list all neighbor coordinates that are not in the c column and calculates new neighbors for the C2 coordinate. 
+The list then looks like this:
 
 ```javascript
 foundShips = [{
@@ -77,7 +88,8 @@ foundShips = [{
 }]
 ```
 
-The computer continues this same loop until it is informed that the ship in question has sunk. It then shoots the random coordinate again until it finds the next ship and this same loop is repeated.
+&#8594; The computer continues this same loop until it is informed that the ship in question has sunk. It then 
+shoots the random coordinate again until it finds the next ship and this same loop is repeated.
 ```javascript
 foundShips = [{
     coordinates: ['c3', 'c2', 'c4'], 
@@ -89,6 +101,18 @@ foundShips = [{
     ],
 }]
 ```
+
+### What I learned
+
+- How to create game AI 
+- How to use Jest in basic level
+- What is TDD and how to implement using it.
+    - At first, I started testing too large sections of my code but quickly noticed that it is much easier to focus on
+      smaller methods and functions
+    - I need to improve this method a lot. Writing tests first and functions second was not as easy as I thought, and I
+      mainly wrote my functions first and after that the tests.
+- I Improved my knowledge of classes and objects a lot in this project. Especially methods, getters and setters. They
+  are not as scary as they used to be, and I found out why they are so useful.
 
 ### Technologies used
 
@@ -104,20 +128,6 @@ foundShips = [{
 - JEST
     - Building tests for Player-, Ship- and Gameboard classes methods
 - CSS
-- GIT, GitHub
-
-### What I learned
-
-- How to create game AI 
-- How to use Jest in basic level
-- What is TDD and how to implement using it.
-    - At first, I started testing too large sections of my code but quickly noticed that it is much easier to focus on
-      smaller methods and functions
-    - I need to improve this method a lot. Writing tests first and functions second was not as easy as I thought, and I
-      mainly wrote my functions first and after that the tests.
-- I Improved my knowledge of classes and objects a lot in this project. Especially methods, getters and setters. They
-  are not as scary as they used to be, and I found out why they are so useful.
-
 
 
 
