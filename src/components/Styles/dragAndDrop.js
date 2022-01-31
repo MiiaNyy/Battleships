@@ -59,7 +59,7 @@ const ShipCell = styled.div`
   margin: 0 auto;
   @media (min-width: 700px) {
     width: ${ props => getCellSize(props, 700)};
-    height: ${ props => getCellSize(props, 700)};   
+    height: ${ props => getCellSize(props, 700)};
   }
   @media (min-width: 1000px) {
     width: ${ props => getCellSize(props, 1000)};
@@ -106,7 +106,7 @@ const PopUpMessage = styled.div`
   -moz-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
   transition: all 0.8s ease-in-out;
-  opacity: 0;
+  opacity: 1;
   cursor: default;
 
   & > p {
