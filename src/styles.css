@@ -64,7 +64,6 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h1 {
-    font-size: 2rem;
     letter-spacing: 1.5px;
     margin-bottom: 0;
 }
@@ -76,7 +75,7 @@ h2, h3 {
 }
 
 h2 {
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: #a5a5a5;
 }
 
@@ -92,6 +91,10 @@ li {
     font-family: 'Special Elite', cursive;
 }
 
+.select-level__title {
+
+}
+
 /* Latest message on the game description console */
 .latest_msg {
     font-size: 0.9rem;
@@ -104,22 +107,12 @@ li {
 
 /*---GENERAL STYLES---*/
 
-.wrap {
-    text-align: center;
-}
-
-.container {
+/* Ships and info container before user has placed ships */
+.place-ships-info {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
     transition: all 0.5s ease-in-out;
-}
-
-.row {
-    display: flex;
-    gap: 1em;
-    justify-content: space-between;
-    font-size: 0.8rem;
 }
 
 /* ---WHEN SPECIFIC STATE, ADD ONE OF THESE CLASSES--- */
@@ -186,7 +179,6 @@ li {
     align-self: stretch;
 }
 
-
 /* ---ANIMATIONS--- */
 @keyframes slideDownAndUp {
     0% {
@@ -248,11 +240,8 @@ li {
     opacity: 0;
 }
 
-
+/* ---MEDIA QUERIES--- */
 @media (min-width: 800px) {
-    h1 {
-        font-size: 3.5rem;
-    }
 
     .latest_msg {
         font-size: 1.1rem;
@@ -263,8 +252,6 @@ li {
         margin-bottom: 0.5em;
     }
 }
-
-/* ---MEDIA QUERIES--- */
 
 @media (min-width: 900px) {
 
@@ -283,9 +270,6 @@ li {
 }
 
 @media (min-width: 1000px) {
-    h2 {
-        font-size: 1.1rem;
-    }
 
     h3 {
         font-size: 1rem;

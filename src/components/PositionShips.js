@@ -89,7 +89,7 @@ function PositionShips(props) {
             <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
             <GameContent blurOn={ infoOpen } positionShips>
                 <Flex blurOn={ shipPlacingInvalid }>
-                    <Flex className="container">
+                    <Flex className="place-ships-info">
                         <Sidebar>
                             <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
                                 ' and drop to position your ships' }</h3>
@@ -99,7 +99,7 @@ function PositionShips(props) {
                                     Change rotation
                                 </Button>
                             </BtnContainer>
-                            <div className="wrap">
+                            <div style={{textAlign: 'center'}}>
                                 { ships.map((ship)=>{
                                     return <ShipContainer size={ gridSize } key={ ship.id } id={ ship.id }
                                                           setDraggedShip={ setDraggedShip }

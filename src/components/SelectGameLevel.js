@@ -1,25 +1,19 @@
-import React, { useState } from 'react';
-
-import InfoMessages from "./InfoMessages";
-import InfoButton from "./InfoButton";
+import React from 'react';
 
 import { GameContent } from "./Styles/general";
 import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
 
 function SelectGameLevel(props) {
-    const [infoOpen, setInfoOpen] = useState(false);
 
     function setLevel(level) {
         props.setGameLevelTo(()=>level);
         props.setLevelSelected(()=>true);
     }
-
     return (
         <>
-            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
-            <GameContent blurOn={ infoOpen }>
-                <div>
-                    <h2 style={ {fontSize: '1.3rem'} }> Select battle you want to play</h2>
+            <GameContent>
+                <div className="mt-4">
+                    <h2 className="select-level__title"> Select battle you want to play</h2>
                     <Container>
                         <div className="col">
                             <div>
@@ -79,15 +73,6 @@ function SelectGameLevel(props) {
                     </Container>
                 </div>
             </GameContent>
-            { infoOpen ?
-                <InfoMessages setInfoMessageOpen={ setInfoOpen }>
-                    <ul>
-                        <li>Clicking the select button, you can select different game levels/ battles you want to
-                            play
-                        </li>
-                        <li>Levels differ in the number of ships and the size of the game board</li>
-                    </ul>
-                </InfoMessages> : <></> }
         </>
     );
 }

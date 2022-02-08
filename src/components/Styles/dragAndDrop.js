@@ -28,7 +28,6 @@ const Button = styled.button`
   }
 `;
 
-
 const ShipInfo = styled.div`
   margin: 0 0.5em 0.5em 0;
   & > p {
@@ -65,7 +64,6 @@ const ShipCell = styled.div`
     width: ${ props => getCellSize(props, 1000)};
     height: ${ props => getCellSize(props, 1000)};
   }
-
 `;
 
 function getCellSize(props, media) {
@@ -88,7 +86,6 @@ function getCellSize(props, media) {
                 return `25px`
             }
     }
-
 }
 
 const PopUpMessage = styled.div`
