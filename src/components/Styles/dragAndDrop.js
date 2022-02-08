@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 const BtnContainer = styled.div`
+  width: ${ props=>props.axel ? "30%" : "100%" };
   text-align: ${ props=>props.axel ? "center" : "right" };
-  margin: ${ props=>props.axel ? "1.5em 0 2em" : "2.5em 0" };
-
+  margin: ${ props=>props.axel ? "1.5em 0 2em" : "2.5em 0 1em" };
+  @media(min-width: 700px) {
+    width: 100%;
+  }
   & > p {
     font-size: 0.8rem;
     font-weight: bolder;
@@ -29,24 +32,20 @@ const Button = styled.button`
 `;
 
 const ShipInfo = styled.div`
-  margin: 0 0.5em 0.5em 0;
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 0.5em;
+  justify-content: space-between;
+  align-items: center;
   & > p {
     font-family: 'Special Elite', cursive;
     font-weight: bolder;
     letter-spacing: 0.7px;
     margin: 0;
-    align-self: center;
     font-size: 0.8rem;
-    @media (min-width: 800px) {
-      border-bottom: 1px solid black;
-    }
   }
-  @media (min-width: 800px) {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 0;
-  }
+
 `;
 
 const ShipCell = styled.div`

@@ -13,7 +13,7 @@ function SelectGameLevel(props) {
         <>
             <GameContent>
                 <div className="mt-4">
-                    <h2 className="select-level__title"> Select battle you want to play</h2>
+                    <h2 className="select-level__title"> Select battle</h2>
                     <Container>
                         <div className="col">
                             <div>
