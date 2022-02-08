@@ -3,7 +3,7 @@ import {
     getRandomCoordinate,
     checkIfCoordinateHitShipsNeighbor,
     getCoordinatesNeighbors,
-} from "./playerFactoryHelpers";
+} from "./factoryHelpers/playerFactoryHelpers";
 
 class Player {
     constructor(name) {
@@ -11,13 +11,11 @@ class Player {
         this.turn = false;
         this.gameLevel = '';
         this.shotsReceived = 0;
-        this.allHitShots = 0;
         // array of ship objects, that is created when hit happens in the enemy board. Includes coordinates that have
         // been found and array of possible neighbors e.g: [{coordinates: ['a1'], shipSunk: false, neighbors:
         // [{mark: 'b1', tried: false}, {mark: 'a2', tried: false}]}]
         this.foundShips = [];
         this.allFiredShots = []; // coordinates of all of the fired shots to enemy gameboard
-        this.allMissedShots = [];
         this.latestShotCoordinate = '';
     }
 
@@ -41,10 +39,8 @@ class Player {
         this.gameLevel = '';
         this.turn = false;
         this.shotsReceived = 0;
-        this.allHitShots = 0;
         this.foundShips = [];
         this.allFiredShots = [];
-        this.allMissedShots = [];
         this.latestShotCoordinate = '';
     }
 
@@ -77,14 +73,11 @@ class Player {
     setShots(attackHit, shipThatGotHit, coordinate) {
         this.allFiredShots.push(coordinate);
         if ( attackHit ) {
-            this.allHitShots++;
             // adds hit shot to already existing foundShips arr or creates its own found ship arr.
             this.addCoordinateToFoundShipsArr(coordinate);
             if ( shipThatGotHit.sunk ) {
                 this.changeShipsStatusToSunk(shipThatGotHit.position);
             }
-        } else {
-            this.allMissedShots.push(coordinate);
         }
     }
 

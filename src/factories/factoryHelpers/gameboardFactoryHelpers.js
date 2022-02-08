@@ -1,5 +1,5 @@
-import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
-import { getRightAmountOfGridCells } from "../game_helpers/gridSize";
+import { atlantic, mediterranean, pacific } from "../../game_helpers/shipTypes";
+import { getRightAmountOfGridCells } from "../../game_helpers/gridSize";
 
 
 function checkIfAnyShipGotHit(allShips, coordinate) {

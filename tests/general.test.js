@@ -1,4 +1,4 @@
-import { getRandomCoordinate } from "../src/factories/playerFactoryHelpers";
+import { getRandomCoordinate } from "../src/factories/factoryHelpers/playerFactoryHelpers";
 
 describe('Getting random coordinate', () => {
     test('when game level is ATLANTIC, coordinate does not contain  h, i, j, 8, 9 or 10 ', () => {

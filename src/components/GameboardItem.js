@@ -22,10 +22,10 @@ function GameboardItem(props) {
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
-
+    /*<GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>*/
     return (
         <FlexSecondary size={ gridSize }>
-            <GameSpecs playerGrid={ playerGrid } humanPlayer={ humanPlayer }/>
+            
             <div style={ {width: '100%'} }>
                 <h2>{ playerGrid.name } waters</h2>
                 <GameboardGrid size={ gridSize }>

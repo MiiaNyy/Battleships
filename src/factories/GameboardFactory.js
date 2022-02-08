@@ -5,9 +5,9 @@ import {
     checkIfPositionIsEmpty,
     getShipsPosition,
     getRightShipTypeArr,
-} from "./gameboardFactoryHelpers"
+} from "./factoryHelpers/gameboardFactoryHelpers"
 
-import { getRandomCoordinate } from "./playerFactoryHelpers";
+import { getRandomCoordinate } from "./factoryHelpers/playerFactoryHelpers";
 
 class Gameboard {
     constructor(name) {

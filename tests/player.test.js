@@ -1,5 +1,5 @@
 import Player from "../src/factories/PlayerFactory";
-import { getCoordinateFromOlderHit } from "../src/factories/playerFactoryHelpers";
+import { getCoordinateFromOlderHit } from "../src/factories/factoryHelpers/playerFactoryHelpers";
 
 describe('Players ', ()=>{
     const player = new Player('computer')
@@ -64,7 +64,7 @@ describe('Shooting enemy: ' , () => {
 })
 
 describe('Testing getting coordinate from older hit list', ()=>{
-    test('when there is one ship found in specific coordinate, function returns it neigbors mark', ()=>{
+    test('when there is one ship found in specific coordinate, function returns it neighbors mark', ()=>{
         const foundShips = [{coordinates: ['a1'], shipSunk: false, neighbors: [{mark: 'b1', tried: false}]}];
         expect(getCoordinateFromOlderHit(foundShips)).toBe('b1')
     })
@@ -78,18 +78,15 @@ describe('Setting shots: ', () => {
     const player = new Player('friendly')
     test('Shot did not hit, missed shots arr contains right coordinate', () => {
         player.setShots(false, {sunk: false}, 'a1');
-        expect(player.allMissedShots).toContain('a1');
         expect(player.allFiredShots).toContain('a1');
     })
     test('after one hit shot, all hit shots number is 1', () => {
         player.setShots(true, {sunk: true, position: ['a1', 'a2']}, 'a1');
-        expect(player.allHitShots).toBe(1);
         expect(player.allFiredShots).toContain('a1');
     })
     test('', () => {
         player.setShots(false, {sunk: false}, 'a1');
         player.setShots(true, {sunk: true, position: ['a1', 'a2']}, 'a2');
-        expect(player.allHitShots).toBe(2);
         expect(player.allFiredShots).toContain('a1');
         expect(player.allFiredShots).toContain('a2');
     })

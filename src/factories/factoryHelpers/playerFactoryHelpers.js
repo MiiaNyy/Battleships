@@ -1,4 +1,4 @@
-import { atlantic, mediterranean, pacific } from "../game_helpers/shipTypes";
+import { atlantic, mediterranean, pacific } from "../../game_helpers/shipTypes";
 
 function getRightAmountOfColumns(level) {
     const columnsPacific = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
