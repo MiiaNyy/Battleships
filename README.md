@@ -3,6 +3,8 @@
 This project is my version of the classic Battleships board game. The player's task is to place their own ships on the
 board and sink the opponent's ships before the opponent finds and sinks the player's ships.
 
+###[Live version](https://miianyy.github.io/Battleships/)
+
 ## General things
 
 The idea and goal of the project were to practice the use of JavaScript objects and classes and take the first touch on
