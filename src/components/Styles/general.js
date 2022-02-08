@@ -3,7 +3,6 @@ import { getGridCellBackgroundColor, getGridCellCursor, getGridCellFontSize, get
 
 
 const Header = styled.header`
-  display: ${ props => props.gameHasStarted ? 'flex' : 'block' };
   align-items: center;
   justify-content: center;
   gap: 3em;
@@ -19,11 +18,10 @@ const Header = styled.header`
   transition: all 0.5s ease-in-out;
 
   & > p {
-    width: ${ props => props.gameHasStarted ? '30%' : '100%' };
-    font-size: ${ props => props.gameHasStarted ? '0.5rem' : '0.8rem' };
+    font-size: 0.6rem;
     font-weight: bolder;
     @media (min-width: 800px) {
-      font-size: ${ props => props.gameHasStarted ? '0.8rem' : '1rem' };
+      font-size: 0.8rem;
     }
   }
 `;
@@ -40,18 +38,14 @@ const GameContent = styled.main`
 
 const GameboardGrid = styled.div`
   display: grid;
-  grid-template-columns: ${ props => getGridSize(props) };
-  grid-template-rows: ${ props => getGridSize(props) };
+  grid-template-columns:  ${ props => getGridSize(props, 700) };
+  grid-template-rows:  ${ props => getGridSize(props, 700) };
   justify-content: center;
-  @media (min-width: 700px) {
-    grid-template-columns:  ${ props => getGridSize(props, 700) };
-    grid-template-rows:  ${ props => getGridSize(props, 700) };
-  }
-  @media (min-width: 1000px) {
+
+  @media (min-width: 800px) {
     grid-template-columns:  ${ props => getGridSize(props, 1000) };
     grid-template-rows:  ${ props => getGridSize(props, 1000) };
   }
-
 `;
 
 
@@ -143,19 +137,15 @@ const InfoBtnContainer = styled.div`
 
 const Flex = styled.div`
   border: 1px solid pink;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: end;
-  gap: 1em;
   transition: all 0.3s ease-in-out;
   filter: ${ props => props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
-  @media (min-width: 800px) {
+  @media (min-width: 700px) {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1em;
   }
   @media (min-width: 900px) {
-    align-items: end;
     margin: ${ props => props.gridSize === 5 ? '0 auto' : 'initial' };
     width: ${ props => props.gridSize === 5 ? '80%' : '100%' };
   }

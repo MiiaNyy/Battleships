@@ -63,7 +63,6 @@ function GameContainer(props) {
 
     return (
         <>
-            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
             <GameContent gameIsOver={ gameOver } blurOn={ infoOpen }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
                 <Flex gridSize={ getGridSize(props.gameLevel) }>
@@ -80,6 +79,8 @@ function GameContainer(props) {
             <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
                                gameLevel={ props.gameLevel }
                                gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>
+            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
+    
             { infoOpen ?
                 <InfoMessages setInfoMessageOpen={ setInfoOpen }>
                     <ul>
