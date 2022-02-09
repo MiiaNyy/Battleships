@@ -28,6 +28,7 @@ let newCloneNode;
 
 const humanBoard = new Gameboard('Friendly');
 
+
 function PositionShips (props) {
     const [ships, setShips] = useState(getNewShipTypesArr(props.gameLevel)); // arr of ship obj with ids on the
     const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
@@ -85,6 +86,10 @@ function PositionShips (props) {
         }
     }
     
+    const emptyRowArr = [...Array(gridSize)].map((u, i) => i);
+    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    
+    
     return (
         <>
             <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
@@ -97,8 +102,13 @@ function PositionShips (props) {
                             <div className="sidebar__container">
                                 <div className="sidebar__btn-cont">
                                     <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
+                                    <div className="rotation-btn">
+                                        <span onClick={ () => setShipsAxelVertical((prev) => !prev) }>↻</span>
+                                    </div>
+                                </div>
+                                <div className="sidebar__btn-cont">
                                     <Button small onClick={ () => setShipsAxelVertical((prev) => !prev) }>
-                                        Change rotation
+                                        Random positions
                                     </Button>
                                 </div>
                                 <div className="text-center">
@@ -122,15 +132,40 @@ function PositionShips (props) {
                             <h2 style={ {fontSize: '1rem'} } className="mb-2">{ isTouchScreen() ? '2. Click here to' +
                                 ' place your ship' : 'Drag your ships here' } </h2>
                             <GameboardGrid size={ gridSize }>
-                                { cellIds.map((cell) => {
-                                    const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
-                                    return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
-                                                 onDrop={ (e) => dropShipOnBoard(e) }
-                                                 onDragOver={ (e) => checkIfDropIsAllowed(e, shipPosition) }
-                                                 onDragEnter={ (e) => handleDragEnter(e, shipPosition) }
-                                                 onDragLeave={ (e) => handleDragLeave(e) }
-                                                 onClick={ (e) => placeShipOnTouchScreens(e) }/>
+                                <div className="empty-cell"/>
+                                
+                                { emptyRowArr.map((cell, index) => {
+                                    return <div className="border-cell">{ gridColumns[index] }</div>
                                 }) }
+                                
+                                { cellIds.map((cell, index) => {
+                                    const shipPosition = checkIfThisIsShipPosition(cell, coordinatesWithShip);
+                                    if ( (index) % gridSize === 0 ) {
+                                        return (
+                                            <>
+                                                <div className="border-cell">
+                                                    <p>{ cell.substring(1) }</p>
+                                                </div>
+                                                <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
+                                                      onDrop={ (e) => dropShipOnBoard(e) }
+                                                      onDragOver={ (e) => checkIfDropIsAllowed(e, shipPosition) }
+                                                      onDragEnter={ (e) => handleDragEnter(e, shipPosition) }
+                                                      onDragLeave={ (e) => handleDragLeave(e) }
+                                                      onClick={ (e) => placeShipOnTouchScreens(e) }/>
+                                            </>
+                                        )
+                                        
+                                    } else {
+                                        return <Cell shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
+                                                     onDrop={ (e) => dropShipOnBoard(e) }
+                                                     onDragOver={ (e) => checkIfDropIsAllowed(e, shipPosition) }
+                                                     onDragEnter={ (e) => handleDragEnter(e, shipPosition) }
+                                                     onDragLeave={ (e) => handleDragLeave(e) }
+                                                     onClick={ (e) => placeShipOnTouchScreens(e) }/>
+                                    }
+                                    
+                                }) }
+                            
                             </GameboardGrid>
                         </div>
                     </div>
@@ -165,7 +200,6 @@ function PositionShips (props) {
         </>
     );
 }
-
 
 // Draggable or clickable item in a sidebar info container
 function ShipClone ({ship, size, setDraggedShip, shipsAxelVertical}) {

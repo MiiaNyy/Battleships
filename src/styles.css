@@ -24,7 +24,8 @@ img {
 
 button {
     font-family: 'Wallpoet', cursive;
-    font-size: 0.8rem;    text-transform: uppercase;
+    font-size: 0.8rem;
+    text-transform: uppercase;
     padding: 0.5em 1em;
     box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
     transition: all 0.2s ease-in-out;
@@ -46,12 +47,10 @@ button:hover {
 }
 
 .border-cell {
-    border: 1px solid #3e3e3f;
-    background-color: #e4a6ff;
-}
-
-.empty-cell {
-    background-color: #68c07a;
+    border: 1px solid #2a2a2a;
+    background-color: rgb(77 77 77 / 55%);
+    color: #cdcbcb;
+    padding: 0 0.5em;
 }
 
 /* ---SCROLLBAR--- */
@@ -239,6 +238,35 @@ li {
 }
 
 /* ---BUTTONS--- */
+
+.rotation-btn {
+    border: 1px solid palegreen;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    margin: 10px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+
+    transform: scale(1);
+    animation: pulse-black 2s infinite;
+}
+
+@keyframes pulse-black {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
 
 /* question mark buttons and pop up message cross buttons */
 .info-btn {

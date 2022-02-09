@@ -38,18 +38,18 @@ const GameContent = styled.main`
 
  const GameboardGrid = styled.div`
  display: grid;
- grid-template-columns: 20px ${ props => getGridSize(props) };
- grid-template-rows: 20px ${ props => getGridSize(props) };
+ grid-template-columns: 25px ${ props => getGridSize(props) };
+ grid-template-rows: 25px ${ props => getGridSize(props) };
  justify-content: center;
  
  @media (min-width: 400px) {
- grid-template-columns: 20px ${ props => getGridSize(props, 400) };
- grid-template-rows: 20px ${ props => getGridSize(props, 400) };
+ grid-template-columns: 25px ${ props => getGridSize(props, 400) };
+ grid-template-rows: 25px ${ props => getGridSize(props, 400) };
  }
  
  @media (min-width: 800px) {
- grid-template-columns: 20px ${ props => getGridSize(props, 800) };
- grid-template-rows: 20px ${ props => getGridSize(props, 800) };
+ grid-template-columns: 25px ${ props => getGridSize(props, 800) };
+ grid-template-rows: 25px ${ props => getGridSize(props, 800) };
  }
  `;
 

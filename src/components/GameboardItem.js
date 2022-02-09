@@ -42,7 +42,9 @@ function GameboardItem (props) {
                         if ( (index ) % gridSize === 0 ) {
                             return (
                                 <>
-                                    <div className="border-cell">{cell.substring(1)}</div>
+                                    <div className="border-cell">
+                                       <p>{cell.substring(1)}</p>
+                                    </div>
                                     <GridCell key={ cell } id={ cell } cellId={ cellIds } gameHandlers={ props.gameHandlers }
                                               players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
                                               gameOver={ props.gameOver } infoOpen={ props.infoOpen }/>
