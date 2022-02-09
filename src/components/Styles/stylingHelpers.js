@@ -1,22 +1,23 @@
 
+// Gets right grid size depending on game level and screen size
 function getGridSize(props, media) {
     const size = props.size;
     switch (size) {
-        case (5):
+        case (5): // Mediterranean grid
             return `repeat(${ size }, 35px)`
-        case(7):
-            if ( media === 700 || media === 1000 ) {
-                return `repeat(${ size }, 35px)` // larger screens
-            } else {
+        case(7): // Atlantic
+            if ( !media ) {
                 return `repeat(${ size }, 30px)` // smaller screens
-            }
-        case(10):
-            if ( media === 1000 ) {
-                return `repeat(${ size }, 35px)`
-            } else if ( media === 700 ) {
-                return `repeat(${ size }, 30px)`
             } else {
-                return `repeat(${ size }, 25px)`
+                return `repeat(${ size }, 35px)` // min-width 400px >
+            }
+        case(10): // Pacific
+            if ( media === 800 ) {
+                return `repeat(${ size }, 35px)` // min-width 800px
+            } else if ( media === 400 ) {
+                return `repeat(${ size }, 30px)` // min-width 400px
+            } else {
+                return `repeat(${ size }, 25px)` // smaller screens
             }
     }
 }

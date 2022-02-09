@@ -7,7 +7,7 @@ import SelectGameLevel from "./SelectGameLevel";
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
 
-import { Header, MessageContainer} from "./Styles/general";
+import { Header } from "./Styles/general";
 
 //let playersGameboard;
 let playersGameboard = new Gameboard('Friendly');
@@ -16,40 +16,40 @@ let computerGameboard = new Gameboard('Enemy');
 let player = new Player('player');
 let computer = new Player('computer');
 
-function App() {
+function App () {
     /*
-    const [gameHasStarted, setGameHasStarted] = useState(false);
-    const [levelSelected, setLevelSelected] = useState(false);
-    const [gameLevelIs, setGameLevelTo] = useState('');*/
+     const [gameHasStarted, setGameHasStarted] = useState(false);
+     const [levelSelected, setLevelSelected] = useState(false);
+     const [gameLevelIs, setGameLevelTo] = useState('');*/
     const [gameHasStarted, setGameHasStarted] = useState(true);
     const [levelSelected, setLevelSelected] = useState(true);
     const [gameLevelIs, setGameLevelTo] = useState('atlantic');
-
+    
     /* When player has played game to the end, game gives player choices to play another round with current level or
      move to the next level */
-    function resetPlayersAndBoards() {
+    function resetPlayersAndBoards () {
         computer.resetValues();
         player.resetValues();
         computerGameboard.resetValues();
         playersGameboard.resetValues();
     }
-
-    function playNextLevel() {
+    
+    function playNextLevel () {
         const newGameLevel = gameLevelIs === 'mediterranean' ? 'atlantic' : gameLevelIs === 'atlantic' ? 'pacific' : '';
         resetPlayersAndBoards();
-
-        setGameHasStarted(()=>false);
-        setGameLevelTo(()=>newGameLevel);
+        
+        setGameHasStarted(() => false);
+        setGameLevelTo(() => newGameLevel);
     }
-
-    function restartGameWithCurrentLevel() {
+    
+    function restartGameWithCurrentLevel () {
         resetPlayersAndBoards();
-        setGameHasStarted(()=>false);
+        setGameHasStarted(() => false);
     }
-
+    
     player.startTurn();
-
-    function Content() {
+    
+    function Content () {
         if ( !levelSelected ) {
             return <SelectGameLevel setLevelSelected={ setLevelSelected } setGameLevelTo={ setGameLevelTo }/>
         } else if ( levelSelected && !gameHasStarted ) {
@@ -63,30 +63,19 @@ function App() {
         }
     }
     
+    return (
+        <div>
+            <Header gameHasStarted={ gameHasStarted }>
+                <h1>Battleships</h1>
+                <p>Place your own ships on the map and try to sink your opponents ships to win</p>
+            </Header>
+            <Content/>
+        </div>
+    )
     
-    /*if ( screen.width < 450 ) {
-        
-        return (
-            <MessageContainer info>
-                <h3>Info</h3>
-                <p> Unfortunately, this app doesn't work on small screens.</p>
-                <p>Please rotate your device to horizontal view and refresh the page.</p>
-            </MessageContainer>
-        
-    } else {)*/
-        return (
-            <div>
-                <Header gameHasStarted={ gameHasStarted }>
-                    <h1>Battleships</h1>
-                    <p>Place your own ships on the map and try to sink your opponents ships to win</p>
-                </Header>
-                <Content/>
-            </div>
-        )
-    //}
 }
 
-function setPlayersGameBoard(obj) {
+function setPlayersGameBoard (obj) {
     playersGameboard = obj;
 }
 

@@ -27,7 +27,7 @@ function GameboardItem (props) {
         <FlexSecondary size={ gridSize }>
             
             <div style={ {width: '100%'} }>
-                <h2>{ playerGrid.name } waters</h2>
+                <h2 className="gameboard__title">{ playerGrid.name } waters</h2>
                 <GameboardGrid size={ gridSize }>
                     { cellIds.map((cell) => {
                         return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }

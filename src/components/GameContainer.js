@@ -5,9 +5,8 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent, Flex} from "./Styles/general";
+import { GameContent} from "./Styles/general";
 import { Console, Divider } from "./Styles/gameArea"
-import { getGridSize } from "../game_helpers/gridSize";
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
 
@@ -65,16 +64,16 @@ function GameContainer(props) {
         <>
             <GameContent gameIsOver={ gameOver } blurOn={ infoOpen }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
-                <Flex gridSize={ getGridSize(props.gameLevel) }>
-                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
-                                   playerGrid={ humanBoard } gameLevel={ props.gameLevel }
-                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-                    <Divider/>
+                <div className="gameboard-container">
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
                                    playerGrid={ computerBoard } gameLevel={ props.gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
+                    <Divider/>
+                    <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
+                                   playerGrid={ humanBoard } gameLevel={ props.gameLevel }
+                                   gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
-                </Flex>
+                </div>
             </GameContent>
             <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
                                gameLevel={ props.gameLevel }

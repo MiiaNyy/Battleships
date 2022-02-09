@@ -106,7 +106,7 @@ class Gameboard {
             this.hitShots.push(coordinate);
         } else {
             didShipGotHit = false;
-            attackMessage = `${ this.name === 'Friendly' ? 'Enemy' : 'You' } shot at ${ coordinate }. Didn't hit any ship`;
+            attackMessage = `${ this.name === 'Friendly' ? 'Enemy' : 'You' } shot ${ coordinate }. Didn't hit any ship`;
             this.missedShots.push(coordinate);
         }
         this.setInfoAboutTheAttack(attackMessage, didShipGotHit, shipThatGotHit, shipSunk)
@@ -134,10 +134,10 @@ class Gameboard {
 
     getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate) {
         const playerName = this.name === 'Friendly' ? 'Enemy' : 'You';
-        const gotHitMessage = `${ playerName } shot at ${ coordinate }.`;
+        const gotHitMessage = `${ playerName } shot ${ coordinate }.`;
         if ( shipSunk ) {
             if ( this.allShipHaveSunk ) {
-                return `Ship ${ shipThatGotHit.name } sunk. Now all the ships are sunk`;
+                return `Ship ${ shipThatGotHit.name } sunk. All the ships sank`;
             } else {
                 return `${ gotHitMessage } ${ shipThatGotHit.name } got hit and sunk`;
             }
