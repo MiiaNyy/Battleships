@@ -24,16 +24,34 @@ img {
 
 button {
     font-family: 'Wallpoet', cursive;
-    font-size: 1rem;
-    text-transform: uppercase;
+    font-size: 0.8rem;    text-transform: uppercase;
     padding: 0.5em 1em;
     box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
     transition: all 0.2s ease-in-out;
 }
 
+
 button:hover {
     opacity: 0.8;
-    transform: scale(1.1);
+    transform: scale(1.03);
+    box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
+
+}
+
+.cell {
+    border: 1px solid #3e3e3f;
+    background-color: #f1f1f1;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.border-cell {
+    border: 1px solid #3e3e3f;
+    background-color: #e4a6ff;
+}
+
+.empty-cell {
+    background-color: #68c07a;
 }
 
 /* ---SCROLLBAR--- */

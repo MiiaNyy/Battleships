@@ -14,26 +14,50 @@ import addNewMessageToDescription from "../game_helpers/addNewMessageToDescripti
 import { Cell, FlexSecondary, GameboardGrid } from "./Styles/general";
 import { getGridSize } from "../game_helpers/gridSize";
 
-
+/**/
 function GameboardItem (props) {
     const cellIds = getGridCellIds(props.gameLevel);
     const gridSize = getGridSize(props.gameLevel);
+    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     
     const humanPlayer = props.players[0];
     const computerPlayer = props.players[1];
     const playerGrid = props.playerGrid;
-
+    
+    const emptyRowArr = [...Array(gridSize)].map((u, i) => i);
+    
     return (
         <FlexSecondary size={ gridSize }>
             
             <div style={ {width: '100%'} }>
                 <h2 className="gameboard__title">{ playerGrid.name } waters</h2>
                 <GameboardGrid size={ gridSize }>
-                    { cellIds.map((cell) => {
-                        return <GridCell key={ cell } id={ cell } gameHandlers={ props.gameHandlers }
-                                         players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
-                                         gameOver={ props.gameOver } infoOpen={ props.infoOpen }/>
+                    <div className="empty-cell"/>
+                    
+                    {emptyRowArr.map((cell,index) => {
+                        return <div className="border-cell">{gridColumns[index]}</div>
+                    })}
+                    
+                    { cellIds.map((cell, index) => {
+                        if ( (index ) % gridSize === 0 ) {
+                            return (
+                                <>
+                                    <div className="border-cell">{cell.substring(1)}</div>
+                                    <GridCell key={ cell } id={ cell } cellId={ cellIds } gameHandlers={ props.gameHandlers }
+                                              players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
+                                              gameOver={ props.gameOver } infoOpen={ props.infoOpen }/>
+                                </>
+                                )
+                            
+                        } else {
+                            return <GridCell key={ cell } id={ cell } cellId={ cellIds } gameHandlers={ props.gameHandlers }
+                                             players={ [humanPlayer, computerPlayer] } playerGrid={ playerGrid }
+                                             gameOver={ props.gameOver } infoOpen={ props.infoOpen }/>
+                        }
+                        
                     }) }
+                
+                
                 </GameboardGrid>
             </div>
         </FlexSecondary>
@@ -78,13 +102,19 @@ function GridCell (props) {
     }
     
     return (
-        <Cell onClick={ () => !props.infoOpen ? attackEnemy() : console.log('game paused') }
-              gameLevel={ human.gameLevel }
-              enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
-              shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
-            <p>{ hitMarker }</p>
-        </Cell>
+        <>
+            
+            <Cell onClick={ () => !props.infoOpen ? attackEnemy() : console.log('game paused') }
+                  gameLevel={ human.gameLevel }
+                  enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
+                  shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
+                <p>{hitMarker}</p>
+            
+            </Cell>
+        </>
+    
     )
 }
+
 
 export default GameboardItem;

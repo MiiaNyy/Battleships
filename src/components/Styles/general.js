@@ -36,22 +36,22 @@ const GameContent = styled.main`
   }
 `;
 
-const GameboardGrid = styled.div`
-  display: grid;
-  grid-template-columns:  ${ props => getGridSize(props) };
-  grid-template-rows:  ${ props => getGridSize(props) };
-  justify-content: center;
-
-  @media (min-width: 400px) {
-    grid-template-columns:  ${ props => getGridSize(props, 400) };
-    grid-template-rows:  ${ props => getGridSize(props, 400) };
-  }
-
-  @media (min-width: 800px) {
-    grid-template-columns:  ${ props => getGridSize(props, 800) };
-    grid-template-rows:  ${ props => getGridSize(props, 800) };
-  }
-`;
+ const GameboardGrid = styled.div`
+ display: grid;
+ grid-template-columns: 20px ${ props => getGridSize(props) };
+ grid-template-rows: 20px ${ props => getGridSize(props) };
+ justify-content: center;
+ 
+ @media (min-width: 400px) {
+ grid-template-columns: 20px ${ props => getGridSize(props, 400) };
+ grid-template-rows: 20px ${ props => getGridSize(props, 400) };
+ }
+ 
+ @media (min-width: 800px) {
+ grid-template-columns: 20px ${ props => getGridSize(props, 800) };
+ grid-template-rows: 20px ${ props => getGridSize(props, 800) };
+ }
+ `;
 
 
 const Cell = styled.div`
@@ -61,9 +61,14 @@ const Cell = styled.div`
   text-align: center;
   transition: all 0.2s ease-in-out;
 
+  &:nth-child(-n+7) { // target first row of 7 column grid
+    background-color: pink;
+  }
+
   &:hover { // Only show hover effect on enemy board cells that are not hit
     background-color: ${ props => props.enemy && !props.shipSunk && !props.hitPosition ? "#a0c2fd" : '' };
   }
+
 
   & > p {
     font-family: 'Raleway', sans-serif;
@@ -112,9 +117,13 @@ const MessageContainer = styled.div`
 
 /* Game over messages btn container */
 const ButtonWrapper = styled.div`
+  width: 100%;
+  max-width: 400px;
   display: flex;
   justify-content: space-between;
-  margin: 1em 0;
+  gap: 1em;
+  margin: 1em auto;
+
 `;
 
 const Sidebar = styled.div`
