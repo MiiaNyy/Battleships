@@ -9,21 +9,21 @@ import Player from "../factories/PlayerFactory";
 
 import { Header } from "./Styles/general";
 
-//let playersGameboard;
-let playersGameboard = new Gameboard('Friendly');
+let playersGameboard;
+//let playersGameboard = new Gameboard('Friendly');
 
 let computerGameboard = new Gameboard('Enemy');
 let player = new Player('player');
 let computer = new Player('computer');
 
 function App () {
-    /*
-     const [gameHasStarted, setGameHasStarted] = useState(false);
-     const [levelSelected, setLevelSelected] = useState(false);
-     const [gameLevelIs, setGameLevelTo] = useState('');*/
-    const [gameHasStarted, setGameHasStarted] = useState(true);
-    const [levelSelected, setLevelSelected] = useState(true);
-    const [gameLevelIs, setGameLevelTo] = useState('atlantic');
+    
+    const [gameHasStarted, setGameHasStarted] = useState(false);
+    const [levelSelected, setLevelSelected] = useState(false);
+    const [gameLevelIs, setGameLevelTo] = useState('');
+    /*const [gameHasStarted, setGameHasStarted] = useState(true);
+     const [levelSelected, setLevelSelected] = useState(true);
+     const [gameLevelIs, setGameLevelTo] = useState('atlantic');*/
     
     /* When player has played game to the end, game gives player choices to play another round with current level or
      move to the next level */

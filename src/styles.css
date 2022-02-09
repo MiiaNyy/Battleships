@@ -92,6 +92,17 @@ li {
     font-family: 'Special Elite', cursive;
 }
 
+/* --- INFO BUTTON ---- */
+.info-btn__container {
+    position: fixed;
+    bottom: 5px;
+    width: 100%;
+    padding-right: 5px;
+    text-align: right;
+    color: #393939;
+    transition: all 0.5s ease-in-out;
+}
+
 /* --- GAME CONTENT --- */
 /* Gameboard Items title */
 .gameboard__title {
@@ -99,10 +110,9 @@ li {
 }
 
 .gameboard-container {
-    border: 1px solid pink;
     width: 100%;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 0 auto 2em;
     transition: all 0.3s ease-in-out;
 }
 
@@ -232,6 +242,13 @@ li {
 .close-info-btn:hover {
     color: #fd3333;
     transform: scale(1.2);
+}
+
+/* In info container, div that holds x */
+.close-info-btn__cont {
+    position: absolute;
+    right: 10px;
+    top: 0;
 }
 
 /* ---SELECTING LEVEL STYLES--- */

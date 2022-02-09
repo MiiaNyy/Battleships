@@ -59,18 +59,22 @@ const Cell = styled.div`
   background-color: ${ props => getGridCellBackgroundColor(props) };
   cursor: ${ props => getGridCellCursor(props) };
   text-align: center;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
+
+  &:hover { // Only show hover effect on enemy board cells that are not hit
+    background-color: ${ props => props.enemy && !props.shipSunk && !props.hitPosition ? "#a0c2fd" : '' };
+  }
 
   & > p {
     font-family: 'Raleway', sans-serif;
     margin: 0;
     font-size: ${ props => getGridCellFontSize(props.gameLevel) }; //0.8rem;
     font-weight: bolder;
-    @media (min-width: 700px) {
-      font-size: ${ props => getGridCellFontSize(props.gameLevel, 700) }; //1.1rem;
+    @media (min-width: 400px) {
+      font-size: ${ props => getGridCellFontSize(props.gameLevel, 400) }; //1.1rem;
     }
-    @media (min-width: 1000px) {
-      font-size: ${ props => getGridCellFontSize(props.gameLevel, 1000) }; //1.3rem;
+    @media (min-width: 800px) {
+      font-size: ${ props => getGridCellFontSize(props.gameLevel, 800) }; //1.3rem;
     }
   }
 `;
@@ -79,12 +83,12 @@ const MessageContainer = styled.div`
   position: fixed;
   width: 90%;
   max-width: 650px;
-  padding: ${ props => props.info ? '0 1em 0' : '1em 1em 0' };
+  padding: 1em 1em 0;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border: 10px ridge #3f4238;
-  background-color: ${ props => props.info ? 'rgba(33,33,33,0.93)' : 'rgba(255, 255, 255, 0.92)' };
+  background-color: ${ props => props.info ? 'rgba(33,33,33,0.96)' : 'rgba(255, 255, 255, 0.92)' };
   color: ${ props => props.info ? '#a5a5a5' : 'initial' };
   text-align: ${ props => props.info ? 'left' : 'center' };
 
@@ -98,10 +102,6 @@ const MessageContainer = styled.div`
     @media (min-width: 500px) {
       font-size: 3rem;
     }
-  }
-
-  & > h3 {
-    margin-top: -20px;
   }
 
   & > p {

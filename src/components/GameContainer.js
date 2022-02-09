@@ -78,7 +78,7 @@ function GameContainer(props) {
             <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
                                gameLevel={ props.gameLevel }
                                gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>
-            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
+            <InfoButton setInfoOpen={ setInfoOpen }/>
     
             { infoOpen ?
                 <InfoMessages setInfoMessageOpen={ setInfoOpen }>
@@ -86,9 +86,6 @@ function GameContainer(props) {
                         <li>You can shoot the enemy by clicking enemy's board.</li>
                         <li>Try to find all of enemy's ships and sunk them before enemy finds yours.</li>
                         <li>In the console, above game boards, you find latest developments in the game</li>
-                        <li>Specs tells you how many shots you have fired to the enemy board, how many shot has hit or
-                            missed and how many have you received.
-                        </li>
                     </ul>
                 </InfoMessages> : <></> }
         </>

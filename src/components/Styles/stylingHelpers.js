@@ -22,6 +22,27 @@ function getGridSize(props, media) {
     }
 }
 
+function getGridCellFontSize(gameLevel, screenSize) {
+    switch (gameLevel) {
+        case 'mediterranean':
+            return '1.3rem'
+        case 'atlantic':
+            if ( !screenSize ) {
+                return '1.2rem'// smaller screens
+            } else {
+                return '1.3rem' // larger screens
+            }
+        case 'pacific':
+            if ( screenSize === 800 ) {
+                return '1.3rem'
+            } else if ( screenSize === 400 ) {
+                return '1.2rem'
+            } else {
+                return '1rem'
+            }
+    }
+}
+
 function getGridCellCursor(props) {
     if ( props.infoOpen ) {
         return 'default'
@@ -49,30 +70,10 @@ function getGridCellBackgroundColor(props) {
     }
 }
 
-function getGridCellFontSize(gameLevel, screenSize) {
-    switch (gameLevel) {
-        case 'mediterranean':
-            return '1.3rem'
-        case 'atlantic':
-            if ( screenSize === 700 || screenSize === 1000 ) {
-                return '1.3rem' // larger screens
-            } else {
-                return '1.2rem'// smaller screens
-            }
-        case 'pacific':
-            if ( screenSize === 1000 ) {
-                return '1.3rem'
-            } else if ( screenSize === 700 ) {
-                return '1.1rem'
-            } else {
-                return '1rem'
-            }
-    }
-}
 
 export {
     getGridCellFontSize,
     getGridSize,
     getGridCellCursor,
-    getGridCellBackgroundColor
+    getGridCellBackgroundColor,
 }

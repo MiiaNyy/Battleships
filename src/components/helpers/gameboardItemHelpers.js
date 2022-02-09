@@ -41,7 +41,7 @@ function isThereSunkShipInThisPosition(gameboard, coordinate) {
 function isThisPositionHit(gameboard, coordinate) {
     for (let i = 0; i < gameboard.missedShots.length; i++) {
         if ( gameboard.missedShots[i] === coordinate ) {
-            return [true, 'x']
+            return [true, '✖']
         }
     }
     for (let i = 0; i < gameboard.hitShots.length; i++) {

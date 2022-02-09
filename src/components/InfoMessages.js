@@ -22,7 +22,7 @@ function InfoMessages({setInfoMessageOpen, children}) {
 
     return (
         <MessageContainer ref={ ref } info className={ classes }>
-            <div className="info-btn__container">
+            <div className="close-info-btn__cont">
                 <i onClick={ ()=>closeMessageContainer() } className="close-info-btn info-btn fas fa-times"/>
             </div>
             <h3>Info</h3>
