@@ -23,6 +23,15 @@ function getNewShipTypesArr(gameLevel) {
     return shipTypes.map((ship)=>Object.assign({}, ship, {id: uuidv4()}));
 }
 
+// When player wants random positions to ships, show ship in sidebar only ships names and count 0 so player cannot
+// position ships anymore
+function getShipTypesArrayForEmptySidebar(gameLevel) {
+    const shipTypes = gameLevel === 'mediterranean' ? mediterranean : gameLevel === 'atlantic' ? atlantic : pacific;
+    return shipTypes.map((ship)=>Object.assign({}, {name: ship.name, count: 0}, {id: uuidv4()}));
+    
+}
+
+
 function createShipCells(ship) {
     let cells = [];
     for (let i = 0; i < ship.length; i++) {
@@ -69,6 +78,26 @@ function allTheShipsHasPositioned(gameLevel, humanBoard) {
     return humanBoard.ships.length >= shipsCount
 }
 
+function placeShipsOnRandomCoordinates (setShipsOnBoard, arrShipsCoordinates, humanGameboard, gameLevel) {
+    humanGameboard.emptyGameBoard();
+    humanGameboard.placeAllShipsOnBoard();
+    setShipsOnBoard(() => getShipTypesArrayForEmptySidebar(gameLevel));
+    arrShipsCoordinates(() => {
+        return humanGameboard.shipsCoordinates
+    })
+    console.log('human board ships coordinates: ', humanGameboard.shipsCoordinates);
+}
+
+function handleDragEnter (e, shipPosition) {
+    if ( !shipPosition ) { // add hover effect if this is not ship position
+        e.target.classList.add('drag-hover');
+    }
+}
+
+function handleDragLeave (e) {
+    e.target.classList.remove('drag-hover'); // remove hover effect
+}
+
 export {
     changeShipsCount,
     getNewShipTypesArr,
@@ -77,4 +106,7 @@ export {
     getClonesXPosition,
     checkIfThisIsShipPosition,
     allTheShipsHasPositioned,
+    placeShipsOnRandomCoordinates,
+    handleDragEnter,
+    handleDragLeave,
 }

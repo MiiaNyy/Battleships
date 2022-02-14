@@ -11,7 +11,7 @@ import {
 
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { Cell, FlexSecondary, GameboardGrid } from "./Styles/general";
+import { CellStyled, FlexSecondary, Grid } from "./Styles/general";
 import { getGridSize } from "../game_helpers/gridSize";
 
 /**/
@@ -31,7 +31,7 @@ function GameboardItem (props) {
             
             <div style={ {width: '100%'} }>
                 <h2 className="gameboard__title">{ playerGrid.name } waters</h2>
-                <GameboardGrid size={ gridSize }>
+                <Grid size={ gridSize }>
                     <div className="empty-cell"/>
                     
                     {emptyRowArr.map((cell,index) => {
@@ -60,7 +60,7 @@ function GameboardItem (props) {
                     }) }
                 
                 
-                </GameboardGrid>
+                </Grid>
             </div>
         </FlexSecondary>
     )
@@ -106,13 +106,13 @@ function GridCell (props) {
     return (
         <>
             
-            <Cell onClick={ () => !props.infoOpen ? attackEnemy() : console.log('game paused') }
-                  gameLevel={ human.gameLevel }
-                  enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
-                  shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
+            <CellStyled onClick={ () => !props.infoOpen ? attackEnemy() : console.log('game paused') }
+                      gameLevel={ human.gameLevel }
+                      enemy={ thisIsEnemyCell } hitPosition={ hitPosition } hitMarker={ hitMarker }
+                      shipPosition={ shipPosition } shipSunk={ sunkShipPosition } id={ cellId } infoOpen={ props.infoOpen }>
                 <p>{hitMarker}</p>
             
-            </Cell>
+            </CellStyled>
         </>
     
     )

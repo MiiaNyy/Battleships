@@ -26,7 +26,7 @@ const Header = styled.header`
   }
 `;
 
-const GameContent = styled.main`
+const Main = styled.main`
   width: 95%;
   max-width: 1200px;
   margin: 0 auto;
@@ -36,25 +36,25 @@ const GameContent = styled.main`
   }
 `;
 
- const GameboardGrid = styled.div`
- display: grid;
- grid-template-columns: 25px ${ props => getGridSize(props) };
- grid-template-rows: 25px ${ props => getGridSize(props) };
- justify-content: center;
- 
- @media (min-width: 400px) {
- grid-template-columns: 25px ${ props => getGridSize(props, 400) };
- grid-template-rows: 25px ${ props => getGridSize(props, 400) };
- }
- 
- @media (min-width: 800px) {
- grid-template-columns: 25px ${ props => getGridSize(props, 800) };
- grid-template-rows: 25px ${ props => getGridSize(props, 800) };
- }
- `;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 25px ${ props => getGridSize(props) };
+  grid-template-rows: 25px ${ props => getGridSize(props) };
+  justify-content: center;
+
+  @media (min-width: 400px) {
+    grid-template-columns: 25px ${ props => getGridSize(props, 400) };
+    grid-template-rows: 25px ${ props => getGridSize(props, 400) };
+  }
+
+  @media (min-width: 800px) {
+    grid-template-columns: 25px ${ props => getGridSize(props, 800) };
+    grid-template-rows: 25px ${ props => getGridSize(props, 800) };
+  }
+`;
 
 
-const Cell = styled.div`
+const CellStyled = styled.div`
   border: 1px solid #3e3e3f;
   background-color: ${ props => getGridCellBackgroundColor(props) };
   cursor: ${ props => getGridCellCursor(props) };
@@ -126,7 +126,7 @@ const ButtonWrapper = styled.div`
 
 `;
 
-const Sidebar = styled.div`
+const SidebarContainer = styled.div`
   border: 10px #585858 ridge;
   font-size: 0.9rem;
   background-color: #a5a5a5;
@@ -176,13 +176,12 @@ const FlexSecondary = styled.div`
     justify-content: space-between;
   }
 `;
-
 export {
     Header,
-    GameboardGrid,
-    GameContent,
-    Cell,
-    Sidebar,
+    Grid,
+    Main,
+    CellStyled,
+    SidebarContainer,
     MessageContainer,
     InfoBtnContainer,
     Flex,

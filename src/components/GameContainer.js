@@ -5,7 +5,7 @@ import GameEndedMessages from "./GameEndedMessages";
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
 
-import { GameContent} from "./Styles/general";
+import { Main} from "./Styles/general";
 import { Console, Divider } from "./Styles/gameArea"
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
@@ -62,7 +62,7 @@ function GameContainer(props) {
 
     return (
         <>
-            <GameContent gameIsOver={ gameOver } blurOn={ infoOpen }>
+            <Main gameIsOver={ gameOver } blurOn={ infoOpen }>
                 <ConsoleMessages gameDescription={ gameDescription }/>
                 <div className="gameboard-container">
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
@@ -74,7 +74,7 @@ function GameContainer(props) {
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
                 </div>
-            </GameContent>
+            </Main>
             <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
                                gameLevel={ props.gameLevel }
                                gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>

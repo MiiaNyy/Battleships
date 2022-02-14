@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GameContent } from "./Styles/general";
+import { Main } from "./Styles/general";
 import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
 
 function SelectGameLevel(props) {
@@ -11,7 +11,7 @@ function SelectGameLevel(props) {
     }
     return (
         <>
-            <GameContent>
+            <Main>
                 <div className="mt-4">
                     <h2 className="select-level__title"> Select battle</h2>
                     <Container>
@@ -72,7 +72,7 @@ function SelectGameLevel(props) {
                         </div>
                     </Container>
                 </div>
-            </GameContent>
+            </Main>
         </>
     );
 }
