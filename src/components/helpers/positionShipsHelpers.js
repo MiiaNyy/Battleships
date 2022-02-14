@@ -98,6 +98,20 @@ function handleDragLeave (e) {
     e.target.classList.remove('drag-hover'); // remove hover effect
 }
 
+function showInvalidPositionMessage () {
+    const popUpMsg = document.querySelector('.pop-up-message');
+    popUpMsg.classList.remove("hidden");
+    popUpMsg.classList.add("invalid_position_animation");
+    
+    setTimeout(() => {
+        document.querySelector('header').style.filter = "none";
+        popUpMsg.classList.remove("invalid_position_animation");
+        popUpMsg.classList.add("hidden");
+    }, 2500)
+    // remove drag hover classname from the document
+    document.querySelectorAll(".drag-hover").forEach(el => el.classList.remove('drag-hover'));
+}
+
 export {
     changeShipsCount,
     getNewShipTypesArr,
@@ -109,4 +123,5 @@ export {
     placeShipsOnRandomCoordinates,
     handleDragEnter,
     handleDragLeave,
+    showInvalidPositionMessage
 }

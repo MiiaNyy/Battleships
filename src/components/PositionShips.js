@@ -18,6 +18,7 @@ import {
     handleDragEnter,
     handleDragLeave,
     placeShipsOnRandomCoordinates,
+    showInvalidPositionMessage,
 } from "./helpers/positionShipsHelpers";
 
 import isTouchScreen from "../game_helpers/isTouchScreen";
@@ -56,7 +57,7 @@ function PositionShips (props) {
                     </Button>
                 </div>
                 
-                <PopUpMessage className="hidden">
+                <PopUpMessage className="hidden pop-up-message">
                     <p>Invalid position!</p>
                     <p>Please try again</p>
                 </PopUpMessage>
@@ -88,13 +89,10 @@ function GameContent ({gameLevel, setAllShipsInPosition}) {
     
     // arr of ship obj with ids, that show in the sidebar
     const [ships, setShips] = useState(getNewShipTypesArr(gameLevel));
-    
     // current ship obj that is being dragged
     const [draggedShip, setDraggedShip] = useState();
-    
     // all coordinates that has ships in them
     const [coordinatesWithShip, setCoordinatesWithShips] = useState([]);
-    
     // ships rotation
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
     
@@ -107,7 +105,7 @@ function GameContent ({gameLevel, setAllShipsInPosition}) {
                 
                 <Sidebar gameLevel={ gameLevel } shipsRotation={ [shipsAxelVertical, setShipsAxelVertical] }
                          setDraggedShip={ setDraggedShip } shipsOnSidebar={ [ships, setShips] }
-                         setCoordinatesWithShips={ setCoordinatesWithShips } />
+                         setCoordinatesWithShips={ setCoordinatesWithShips }/>
                 <div>
                     <h2 style={ {fontSize: '1rem'} } className="mb-2">{ isTouchScreen() ? '2. Click here to' +
                         ' place your ship' : 'Drag your ships here' } </h2>
@@ -123,12 +121,11 @@ function GameContent ({gameLevel, setAllShipsInPosition}) {
 function GameboardGrid (props) {
     const gameLevel = props.gameLevel;
     const setShips = props.setShips;
-    const [coordinatesWithShip, setCoordinatesWithShips] = props.shipsCoordinates; //coordinates that has ship in it
-    
+    // Array of coordinates that has ship in it and setter for it
+    const [coordinatesWithShip, setCoordinatesWithShips] = props.shipsCoordinates;
     
     const shipsAxelVertical = props.shipsAxelVertical;
     const draggedShip = props.draggedShip
-    
     
     const gridSize = getGridSize(gameLevel);
     const cellIds = getGridCellIds(gameLevel);
@@ -143,6 +140,15 @@ function GameboardGrid (props) {
         placeShipOnBoard(draggedShip, e, targetShipId);
     }
     
+    /*
+     Maybe this could be own function and add blur to all elements at the same function. No need for useState
+     setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
+     document.querySelector('header').style.filter = "blur(2px) grayscale(20%)"
+     setTimeout(() => {
+     document.querySelector('header').style.filter = "none"
+     setShipPlacingInvalid(false);
+     }, 2500)*/
+    
     function placeShipOnBoard (currentShip, e, shipId) {
         humanBoard.placeShip(currentShip, e.target.id, shipsAxelVertical);
         
@@ -151,18 +157,12 @@ function GameboardGrid (props) {
             setCoordinatesWithShips((prev) => {
                 return [...prev, humanBoard.latestShipPlaced]
             });
-        } else {/*
-         Maybe this could be own function and add blur to all elements at the same function. No need for useState
-         setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
-         document.querySelector('header').style.filter = "blur(2px) grayscale(20%)"
-         setTimeout(() => {
-         document.querySelector('header').style.filter = "none"
-         setShipPlacingInvalid(false);
-         }, 2500)*/
-            // remove drag hover classname from the document
-            document.querySelectorAll(".drag-hover").forEach(el => el.classList.remove('drag-hover'));
+        } else { // Invalid position
+            showInvalidPositionMessage();
         }
     }
+    
+   
     
     function Cell ({cell, shipPosition}) {
         
@@ -201,12 +201,12 @@ function GameboardGrid (props) {
     )
 }
 
+
+
 function Sidebar (props) {
     const gameLevel = props.gameLevel;
-    
     // ships rotation and setter for ships rotation
     const [shipsAxelVertical, setShipsAxelVertical] = props.shipsRotation;
-    
     // Setter for array that has all ships coordinates in them
     const setCoordinatesWithShips = props.setCoordinatesWithShips;
     const setDraggedShip = props.setDraggedShip; // Setter for draggedShip
