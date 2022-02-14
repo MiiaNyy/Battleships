@@ -7,19 +7,24 @@ import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
 
 import { getGridCellIds } from "./helpers/gameboardItemHelpers";
+
 import {
     allTheShipsHasPositioned,
     changeShipsCount,
-    checkIfDropIsAllowed,
     checkIfThisIsShipPosition,
     createShipCells,
-    getClonesXPosition,
     getNewShipTypesArr,
+    placeShipsOnRandomCoordinates,
+    invalidShipPositionMessage,
+} from "./helpers/positionShipsHelpers";
+
+import {
+    checkIfDropIsAllowed,
     handleDragEnter,
     handleDragLeave,
-    placeShipsOnRandomCoordinates,
-    showInvalidPositionMessage,
-} from "./helpers/positionShipsHelpers";
+    getClonesXPosition,
+    
+} from "./helpers/dragAndDropHelpers";
 
 import isTouchScreen from "../game_helpers/isTouchScreen";
 import { getGridSize } from "../game_helpers/gridSize";
@@ -140,15 +145,6 @@ function GameboardGrid (props) {
         placeShipOnBoard(draggedShip, e, targetShipId);
     }
     
-    /*
-     Maybe this could be own function and add blur to all elements at the same function. No need for useState
-     setShipPlacingInvalid(true);// Set animation on and remove animation after 2500ms
-     document.querySelector('header').style.filter = "blur(2px) grayscale(20%)"
-     setTimeout(() => {
-     document.querySelector('header').style.filter = "none"
-     setShipPlacingInvalid(false);
-     }, 2500)*/
-    
     function placeShipOnBoard (currentShip, e, shipId) {
         humanBoard.placeShip(currentShip, e.target.id, shipsAxelVertical);
         
@@ -158,11 +154,9 @@ function GameboardGrid (props) {
                 return [...prev, humanBoard.latestShipPlaced]
             });
         } else { // Invalid position
-            showInvalidPositionMessage();
+            invalidShipPositionMessage();
         }
     }
-    
-   
     
     function Cell ({cell, shipPosition}) {
         
@@ -200,8 +194,6 @@ function GameboardGrid (props) {
         </Grid>
     )
 }
-
-
 
 function Sidebar (props) {
     const gameLevel = props.gameLevel;

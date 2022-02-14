@@ -23,43 +23,13 @@ function getNewShipTypesArr(gameLevel) {
     return shipTypes.map((ship)=>Object.assign({}, ship, {id: uuidv4()}));
 }
 
-// When player wants random positions to ships, show ship in sidebar only ships names and count 0 so player cannot
-// position ships anymore
-function getShipTypesArrayForEmptySidebar(gameLevel) {
-    const shipTypes = gameLevel === 'mediterranean' ? mediterranean : gameLevel === 'atlantic' ? atlantic : pacific;
-    return shipTypes.map((ship)=>Object.assign({}, {name: ship.name, count: 0}, {id: uuidv4()}));
-    
-}
-
-
+// Empty grid cells
 function createShipCells(ship) {
     let cells = [];
     for (let i = 0; i < ship.length; i++) {
         cells.push(i);
     }
     return cells;
-}
-
-// allow drop if this is not ship position
-function checkIfDropIsAllowed(e, shipPosition) {
-    if ( !shipPosition ) {
-        e.preventDefault();
-    }
-}
-
-function getClonesXPosition(length) {
-    switch (length) {
-        case 1:
-            return 15;
-        case 2:
-            return 35;
-        case 3:
-            return 50;
-        case 4:
-            return 65;
-        case 5:
-            return 85;
-    }
 }
 
 function checkIfThisIsShipPosition(cell, shipsCoordinates) {
@@ -88,17 +58,15 @@ function placeShipsOnRandomCoordinates (setShipsOnBoard, arrShipsCoordinates, hu
     console.log('human board ships coordinates: ', humanGameboard.shipsCoordinates);
 }
 
-function handleDragEnter (e, shipPosition) {
-    if ( !shipPosition ) { // add hover effect if this is not ship position
-        e.target.classList.add('drag-hover');
-    }
+// When player wants random positions to ships, show ship in sidebar only ships names and count 0 so player cannot
+// position ships anymore
+function getShipTypesArrayForEmptySidebar(gameLevel) {
+    const shipTypes = gameLevel === 'mediterranean' ? mediterranean : gameLevel === 'atlantic' ? atlantic : pacific;
+    return shipTypes.map((ship)=>Object.assign({}, {name: ship.name, count: 0}, {id: uuidv4()}));
+    
 }
 
-function handleDragLeave (e) {
-    e.target.classList.remove('drag-hover'); // remove hover effect
-}
-
-function showInvalidPositionMessage () {
+function invalidShipPositionMessage () {
     const popUpMsg = document.querySelector('.pop-up-message');
     popUpMsg.classList.remove("hidden");
     popUpMsg.classList.add("invalid_position_animation");
@@ -116,12 +84,8 @@ export {
     changeShipsCount,
     getNewShipTypesArr,
     createShipCells,
-    checkIfDropIsAllowed,
-    getClonesXPosition,
     checkIfThisIsShipPosition,
     allTheShipsHasPositioned,
     placeShipsOnRandomCoordinates,
-    handleDragEnter,
-    handleDragLeave,
-    showInvalidPositionMessage
+    invalidShipPositionMessage
 }

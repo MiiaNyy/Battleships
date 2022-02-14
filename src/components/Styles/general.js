@@ -164,17 +164,6 @@ const Flex = styled.div`
   }
 `;
 
-const FlexSecondary = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 1em;
-  @media (min-width: 900px) {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 2em;
-    justify-content: space-between;
-  }
-`;
 export {
     Header,
     Grid,
@@ -184,6 +173,5 @@ export {
     MessageContainer,
     InfoBtnContainer,
     Flex,
-    FlexSecondary,
     ButtonWrapper,
 }

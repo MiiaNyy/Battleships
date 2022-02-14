@@ -53,6 +53,35 @@ button:hover {
     padding: 0 0.5em;
 }
 
+/* CONSOLE */
+
+.console {
+    position: sticky;
+    top: 10px;
+    width: 100%;
+    max-width: 600px;
+    min-height: 90px;
+    margin: 1em auto;
+    padding: 0.5em 0;
+    font-size: 0.8rem;
+    font-family: 'Special Elite', cursive;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #9e9d9d;
+    background-color: rgba(45, 45, 45, 0.9);
+    border: 10px ridge #292b27;
+}
+
+.console p {
+    margin-bottom: 0.5px;
+}
+
+.divider {
+    align-self: stretch;
+    background-color: white;
+}
+
+
 /* ---SCROLLBAR--- */
 
 /* width */

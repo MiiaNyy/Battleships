@@ -4,24 +4,29 @@ import GameEndedMessages from "./GameEndedMessages";
 
 import attackIsValid from "../game_helpers/attackIsValid";
 import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
+import checkIfNewMessageIsNeeded from "./helpers/checkIfNewMessageIsNeeded";
 
 import { Main} from "./Styles/general";
-import { Console, Divider } from "./Styles/gameArea"
+
 import InfoMessages from "./InfoMessages";
 import InfoButton from "./InfoButton";
+import Console from "./Console";
 
 function GameContainer(props) {
+    const gameLevel = props.gameLevel;
+    
+    const humanBoard = props.player[1];
+    const humanPlayer = props.player[0];
+    const computer = props.enemy[0];
+    const computerBoard = props.enemy[1];
+    
+    // Info that shows in the console
     const [gameDescription, setGameDescription] = useState([' ', ' ', ' ', 'Welcome to the battleship game']);
     const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
 
-    const currentGameLevel = useRef(props.gameLevel);
-
-    const humanBoard = props.player[1];
-    const humanPlayer = props.player[0];
-    const computer = props.enemy[0];
-    const computerBoard = props.enemy[1];
+    const currentGameLevel = useRef(gameLevel);
 
     useEffect(()=>{
         humanPlayer.setGameLevel = currentGameLevel.current;
@@ -63,20 +68,20 @@ function GameContainer(props) {
     return (
         <>
             <Main gameIsOver={ gameOver } blurOn={ infoOpen }>
-                <ConsoleMessages gameDescription={ gameDescription }/>
+                <Console gameDescription={ gameDescription }/>
                 <div className="gameboard-container">
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
-                                   playerGrid={ computerBoard } gameLevel={ props.gameLevel }
+                                   playerGrid={ computerBoard } gameLevel={ gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-                    <Divider/>
+                    <hr className="divider"/>
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
-                                   playerGrid={ humanBoard } gameLevel={ props.gameLevel }
+                                   playerGrid={ humanBoard } gameLevel={ gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
 
                 </div>
             </Main>
             <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
-                               gameLevel={ props.gameLevel }
+                               gameLevel={ gameLevel }
                                gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>
             <InfoButton setInfoOpen={ setInfoOpen }/>
     
@@ -90,26 +95,6 @@ function GameContainer(props) {
                 </InfoMessages> : <></> }
         </>
     )
-}
-
-function ConsoleMessages(props) {
-    return (
-        <Console>
-            { props.gameDescription.map((item, index)=>{
-                const messageClass = index === 3 ? 'latest_msg' : '';
-                return item === ' ' ? <br key={ index }/> :
-                    <p key={ index } className={ messageClass }>{ item }</p>;
-            }) }
-        </Console>
-    )
-}
-
-function checkIfNewMessageIsNeeded(gameDescription, gameOver) {
-    const latestMessage = gameDescription[gameDescription.length - 1];
-    const secondLatestMsg = gameDescription[gameDescription.length - 2];
-    if ( gameOver || latestMessage === "It's players turn" || latestMessage === "It's enemy's turn" || latestMessage === 'Human player starts' ) {
-        return false
-    } else return !(latestMessage === 'Invalid shot, try again!' && secondLatestMsg === "It's players turn");
 }
 
 export default GameContainer;
