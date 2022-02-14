@@ -3,14 +3,14 @@ import Ship from "./ShipFactory.js";
 import {
     checkIfAnyShipGotHit,
     checkIfPositionIsEmpty,
-    getShipsPosition,
     getRightShipTypeArr,
+    getShipsPosition,
 } from "./factoryHelpers/gameboardFactoryHelpers"
 
 import { getRandomCoordinate } from "./factoryHelpers/playerFactoryHelpers";
 
 class Gameboard {
-    constructor(name) {
+    constructor (name) {
         this.name = name;
         this.battlefield = '';
         this.shipsCoordinates = [];
@@ -28,32 +28,34 @@ class Gameboard {
         };
         this.placingShipSuccessful = false;
     }
-
-    set setGameLevel(level) {
+    
+ 
+    
+    set setGameLevel (level) {
         this.battlefield = level;
     }
-
-    get gameLevel() {
+    
+    get gameLevel () {
         return this.battlefield;
     }
-
-    get gameOver() {
+    
+    get gameOver () {
         return this.allShipHaveSunk;
     }
-
-    get latestHitShipName() {
+    
+    get latestHitShipName () {
         return this.attackInfo.shipThatGotHit.name;
     }
-
-    get latestAttackInfoMsg() {
+    
+    get latestAttackInfoMsg () {
         return this.attackInfo.message;
     }
-
-    get didLatestShotHit() {
+    
+    get didLatestShotHit () {
         return this.attackInfo.shotHit;
     }
-
-    get infoAboutShipThatGotHit() {
+    
+    get infoAboutShipThatGotHit () {
         // return coordinates from last sunkenShip
         if ( this.attackInfo.attackSunkAShip ) {
             const sunkenShipsCoordinates = this.sunkenShips[this.sunkenShips.length - 1].position;
@@ -62,12 +64,18 @@ class Gameboard {
             return {sunk: this.attackInfo.attackSunkAShip}
         }
     }
-
-    placeShip(obj, coordinate, axelIsVertical) {
+    
+    emptyGameBoard () {
+        this.shipsCoordinates = [];
+        this.latestShipPlaced = [];
+        this.ships = [];
+    }
+    
+    placeShip (obj, coordinate, axelIsVertical) {
         const newShip = new Ship(obj.name, obj.length, coordinate, axelIsVertical);
         const coordinates = getShipsPosition(newShip, this.battlefield);
         const positionIsEmpty = checkIfPositionIsEmpty(this.ships, coordinates);
-
+        
         if ( newShip.validPosition && positionIsEmpty ) {
             newShip.setPosition = coordinates;
             this.shipsCoordinates.push(coordinates);
@@ -80,9 +88,9 @@ class Gameboard {
     }
 
 // computer uses this to place ships on its board
-    placeAllShipsOnBoard() {
+    placeAllShipsOnBoard () {
         const shipTypes = getRightShipTypeArr(this.gameLevel, this.placingShipSuccessful);
-
+        
         for (let i = 0; i < shipTypes.length; i++) {
             let shipCount = shipTypes[i].count;
             for (let j = 0; j < shipCount; j++) {
@@ -93,12 +101,12 @@ class Gameboard {
             }
         }
     }
-
-    receiveAttack(coordinate) {
+    
+    receiveAttack (coordinate) {
         let shipSunk = false;
         let attackMessage;
         let [didShipGotHit, shipThatGotHit] = checkIfAnyShipGotHit(this.ships, coordinate);
-
+        
         if ( didShipGotHit ) {
             shipSunk = this.checkIfShipsSunk(shipThatGotHit);
             attackMessage = this.getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate);
@@ -111,8 +119,8 @@ class Gameboard {
         }
         this.setInfoAboutTheAttack(attackMessage, didShipGotHit, shipThatGotHit, shipSunk)
     }
-
-    setInfoAboutTheAttack(message, shotDidHit, shipThatGotHit, shipSunk) {
+    
+    setInfoAboutTheAttack (message, shotDidHit, shipThatGotHit, shipSunk) {
         this.attackInfo.message = message;
         this.attackInfo.shotHit = shotDidHit;
         this.attackInfo.attackSunkAShip = shipSunk;
@@ -120,8 +128,8 @@ class Gameboard {
             this.attackInfo.shipThatGotHit = {name: shipThatGotHit.name}
         }
     }
-
-    checkIfShipsSunk(currentShip) {
+    
+    checkIfShipsSunk (currentShip) {
         if ( currentShip.isSunk() ) {
             this.sunkenShips.push(currentShip);
             if ( this.sunkenShips.length === this.ships.length ) {
@@ -131,8 +139,8 @@ class Gameboard {
         }
         return false;
     }
-
-    getShipGotHitMessage(shipSunk, shipThatGotHit, coordinate) {
+    
+    getShipGotHitMessage (shipSunk, shipThatGotHit, coordinate) {
         const playerName = this.name === 'Friendly' ? 'Enemy' : 'You';
         const gotHitMessage = `${ playerName } shot ${ coordinate }.`;
         if ( shipSunk ) {
@@ -145,7 +153,8 @@ class Gameboard {
             return `${ gotHitMessage } ${ shipThatGotHit.name } got hit`;
         }
     }
-    resetValues() {
+    
+    resetValues () {
         this.battlefield = ''
         this.shipsCoordinates = [];
         this.latestShipPlaced = [];

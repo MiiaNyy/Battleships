@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import refreshIcon from "../assets/refresh.png";
 
 import Gameboard from "../factories/GameboardFactory";
 
@@ -100,17 +101,21 @@ function PositionShips (props) {
                             <h3> { isTouchScreen() ? '1. Select ships rotation and ship that you want to place' : 'Drag' +
                                 ' and drop to position your ships' }</h3>
                             <div className="sidebar__container">
-                                <div className="sidebar__btn-cont">
-                                    <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
-                                    <div className="rotation-btn">
-                                        <span onClick={ () => setShipsAxelVertical((prev) => !prev) }>↻</span>
+                                <div>
+                                    <div className="sidebar__btn-cont ">
+                                        <p>Rotation: { shipsAxelVertical ? 'Vertical' : 'Horizontal' } </p>
+                                        <div className="rotation-btn">
+                                            <img src={ refreshIcon } alt="refresh icon"
+                                                 onClick={ () => setShipsAxelVertical((prev) => !prev) }/>
+                                        </div>
+                                    </div>
+                                    <div className="sidebar__btn-cont">
+                                        <Button onClick={ () => placeShipsOnRandomCoordinates(setShips, setCoordinatesWithShips, humanBoard) }>
+                                            Random positions
+                                        </Button>
                                     </div>
                                 </div>
-                                <div className="sidebar__btn-cont">
-                                    <Button small onClick={ () => setShipsAxelVertical((prev) => !prev) }>
-                                        Random positions
-                                    </Button>
-                                </div>
+                                
                                 <div className="text-center">
                                     { ships.map((ship) => {
                                         return (
@@ -184,21 +189,36 @@ function PositionShips (props) {
                 </PopUpMessage>
             
             </GameContent>
-            { infoOpen ?
-                <InfoMessages setInfoMessageOpen={ setInfoOpen }>
-                    <ul>
-                        <li>You can place the ships on the board by clicking the ship, and dragging it over the
-                            gameboard and
-                            dropping it to the desired location.
-                        </li>
-                        <li>Change ships rotation by clicking 'change rotation' button and start dragging ships on the
-                            board
-                        </li>
-                        <li>After you have positioned your ships, start button appears and you can start the game.</li>
-                    </ul>
-                </InfoMessages> : <></> }
+            {
+                infoOpen ?
+                    <InfoMessages setInfoMessageOpen={ setInfoOpen }>
+                        <ul>
+                            <li>You can place the ships on the board by clicking the ship, and dragging it over the
+                                gameboard and
+                                dropping it to the desired location.
+                            </li>
+                            <li>Change ships rotation by clicking 'change rotation' button and start dragging ships on
+                                the
+                                board
+                            </li>
+                            <li>After you have positioned your ships, start button appears and you can start the game.
+                            </li>
+                        </ul>
+                    </InfoMessages> : <></>
+            }
         </>
-    );
+    )
+        ;
+}
+
+function placeShipsOnRandomCoordinates (setShipsOnBoard, arrShipsCoordinates, humanGameboard) {
+    humanGameboard.emptyGameBoard();
+    humanGameboard.placeAllShipsOnBoard();
+    setShipsOnBoard(() => humanGameboard.shipsCoordinates);
+    arrShipsCoordinates(() => {
+        return humanGameboard.shipsCoordinates
+    })
+    console.log('humanboard ships coordinates: ', humanGameboard.shipsCoordinates);
 }
 
 // Draggable or clickable item in a sidebar info container

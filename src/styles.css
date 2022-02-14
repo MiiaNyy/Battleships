@@ -34,7 +34,7 @@ button {
 
 button:hover {
     opacity: 0.8;
-    transform: scale(1.03);
+    transform: scale(1.01);
     box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
 
 }
@@ -166,6 +166,9 @@ li {
 }
 
 .sidebar__btn-cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     margin-bottom: 1em;
 }
@@ -179,7 +182,6 @@ li {
     }
 
     .sidebar__btn-cont {
-        width: 30%;
         margin: 1.5em 0 2em;
     }
 }
@@ -189,6 +191,7 @@ li {
     font-size: 0.8rem;
     font-weight: bolder;
     letter-spacing: 1px;
+    margin: 0;
 }
 
 .place-ships__btn-cont {
@@ -240,32 +243,78 @@ li {
 /* ---BUTTONS--- */
 
 .rotation-btn {
-    border: 1px solid palegreen;
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
     margin: 10px;
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
     border-radius: 50%;
-
-    transform: scale(1);
-    animation: pulse-black 2s infinite;
+    cursor: pointer;
+    transform: rotate(45deg);
+    animation: pulse-black 1.5s linear infinite;
+    transition: all 0.2s ease-in-out;
 }
+
+.rotation-btn:hover {
+    animation: paused;
+    transform: rotate(45deg);
+    box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
+
+
+}
+
 
 @keyframes pulse-black {
     0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    5% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg);
+    }
+    15% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(10deg);
+    }
+    25% {
+        -webkit-transform: rotate(20deg);
+        transform: rotate(20deg);
+    }
+    35% {
+        -webkit-transform: rotate(30deg);
+        transform: rotate(30deg);
+    }
+    45% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    55% {
+        -webkit-transform: rotate(50deg);
+        transform: rotate(50deg);
     }
 
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    60% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    75% {
+        -webkit-transform: rotate(35deg);
+        transform: rotate(35deg);
+    }
+    85% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(20deg);
+    }
+    95% {
+        -webkit-transform: rotate(20deg);
+        transform: rotate(10deg);
     }
 
     100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
 }
 
 /* question mark buttons and pop up message cross buttons */
