@@ -32,17 +32,17 @@ function GameboardItem (props) {
             <div style={ {width: '100%'} }>
                 <h2 className="gameboard__title">{ playerGrid.name } waters</h2>
                 <Grid size={ gridSize }>
-                    <div className="empty-cell"/>
+                    <div className="coordinate-label-empty"/>
                     
                     {emptyRowArr.map((cell,index) => {
-                        return <div className="border-cell">{gridColumns[index]}</div>
+                        return <div className="coordinate-label">{gridColumns[index]}</div>
                     })}
                     
                     { cellIds.map((cell, index) => {
                         if ( (index ) % gridSize === 0 ) {
                             return (
                                 <>
-                                    <div className="border-cell">
+                                    <div className="coordinate-label">
                                        <p>{cell.substring(1)}</p>
                                     </div>
                                     <GridCell key={ cell } id={ cell } cellId={ cellIds } gameHandlers={ props.gameHandlers }

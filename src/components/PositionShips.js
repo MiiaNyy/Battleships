@@ -15,25 +15,29 @@ import {
     createShipCells,
     getClonesXPosition,
     getNewShipTypesArr,
-    placeShipsOnRandomCoordinates,
     handleDragEnter,
     handleDragLeave,
+    placeShipsOnRandomCoordinates,
 } from "./helpers/positionShipsHelpers";
 
 import isTouchScreen from "../game_helpers/isTouchScreen";
 import { getGridSize } from "../game_helpers/gridSize";
 
 import { Button, PopUpMessage, ShipCell, ShipInfo } from "./Styles/dragAndDrop";
-import { Flex, Grid, CellStyled, Main } from "./Styles/general";
+import { CellStyled, Flex, Grid, Main } from "./Styles/general";
 
-let clickedShip = []; // touch screens uses this, when position ships on board
-let draggedItem; // normal mouse screens uses this when ships are draggable
+// On touch screens, drag and drop doesn't work. To position ships player clicks ship clone
+// and then gameboard to position ships
+let clickedShip = [];
+
+let draggedItem;
 let newCloneNode;
 
 const humanBoard = new Gameboard('Friendly');
 
 function PositionShips (props) {
     const gameLevel = props.gameLevel;
+    
     const [infoOpen, setInfoOpen] = useState(false);
     const [allShipsInPosition, setAllShipsInPosition] = useState(false);
     
@@ -56,7 +60,6 @@ function PositionShips (props) {
                     <p>Invalid position!</p>
                     <p>Please try again</p>
                 </PopUpMessage>
-            
             </Main>
             {
                 infoOpen ?
@@ -83,9 +86,16 @@ function PositionShips (props) {
 function GameContent ({gameLevel, setAllShipsInPosition}) {
     setAllShipsInPosition(() => allTheShipsHasPositioned(gameLevel, humanBoard));
     
-    const [ships, setShips] = useState(getNewShipTypesArr(gameLevel)); // arr of ship obj with ids on the
-    const [draggedShip, setDraggedShip] = useState(); // current ship obj that is being dragged
-    const [coordinatesWithShip, setCoordinatesWithShips] = useState([]); //coordinates that has ship in it
+    // arr of ship obj with ids, that show in the sidebar
+    const [ships, setShips] = useState(getNewShipTypesArr(gameLevel));
+    
+    // current ship obj that is being dragged
+    const [draggedShip, setDraggedShip] = useState();
+    
+    // all coordinates that has ships in them
+    const [coordinatesWithShip, setCoordinatesWithShips] = useState([]);
+    
+    // ships rotation
     const [shipsAxelVertical, setShipsAxelVertical] = useState(false);
     
     humanBoard.setGameLevel = gameLevel;
@@ -95,9 +105,9 @@ function GameContent ({gameLevel, setAllShipsInPosition}) {
         <Flex>
             <div className="place-ships-info">
                 
-                <Sidebar gameLevel={ gameLevel } shipsAxelVertical={ shipsAxelVertical }
-                         setDraggedShip={ setDraggedShip } setShipsAxelVertical={ setShipsAxelVertical }
-                         setCoordinatesWithShips={ setCoordinatesWithShips } shipsOnSidebar={ [ships, setShips] }/>
+                <Sidebar gameLevel={ gameLevel } shipsRotation={ [shipsAxelVertical, setShipsAxelVertical] }
+                         setDraggedShip={ setDraggedShip } shipsOnSidebar={ [ships, setShips] }
+                         setCoordinatesWithShips={ setCoordinatesWithShips } />
                 <div>
                     <h2 style={ {fontSize: '1rem'} } className="mb-2">{ isTouchScreen() ? '2. Click here to' +
                         ' place your ship' : 'Drag your ships here' } </h2>
@@ -123,8 +133,8 @@ function GameboardGrid (props) {
     const gridSize = getGridSize(gameLevel);
     const cellIds = getGridCellIds(gameLevel);
     
-    const emptyRowArr = [...Array(gridSize)].map((u, i) => i);
-    const gridColumns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    const coordinateLabelRowY = [...Array(gridSize)].map((u, i) => i);
+    const coordinateLabelRowX = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     
     
     function dropShipOnBoard (e) {
@@ -153,23 +163,22 @@ function GameboardGrid (props) {
             document.querySelectorAll(".drag-hover").forEach(el => el.classList.remove('drag-hover'));
         }
     }
+    
     function Cell ({cell, shipPosition}) {
         
         return <CellStyled shipPosition={ shipPosition } key={ cell } id={ cell } dragAndDrop
-                         onDrop={ (e) => dropShipOnBoard(e) }
-                         onDragOver={ (e) => checkIfDropIsAllowed(e, shipPosition) }
-                         onDragEnter={ (e) => handleDragEnter(e, shipPosition) }
-                         onDragLeave={ (e) => handleDragLeave(e) }
-                         onClick={ (e) => placeShipOnTouchScreens(e, placeShipOnBoard) }/>
+                           onDrop={ (e) => dropShipOnBoard(e) }
+                           onDragOver={ (e) => checkIfDropIsAllowed(e, shipPosition) }
+                           onDragEnter={ (e) => handleDragEnter(e, shipPosition) }
+                           onDragLeave={ (e) => handleDragLeave(e) }
+                           onClick={ (e) => placeShipOnTouchScreens(e, placeShipOnBoard) }/>
     }
-   
     
     return (
         <Grid size={ gridSize }>
-            <div className="empty-cell"/>
-            
-            { emptyRowArr.map((cell, index) => {
-                return <div className="border-cell">{ gridColumns[index] }</div>
+            <div className="coordinate-label-empty"/>
+            { coordinateLabelRowY.map((cell, index) => {
+                return <div className="coordinate-label">{ coordinateLabelRowX[index] }</div>
             }) }
             
             { cellIds.map((cell, index) => {
@@ -177,16 +186,14 @@ function GameboardGrid (props) {
                 if ( (index) % gridSize === 0 ) {
                     return (
                         <>
-                            <div className="border-cell">
+                            <div className="coordinate-label">
                                 <p>{ cell.substring(1) }</p>
                             </div>
-                            <Cell cell={cell} shipPosition={shipPosition}/>
-                        
+                            <Cell cell={ cell } shipPosition={ shipPosition }/>
                         </>
                     )
-                    
                 } else {
-                    return <Cell cell={cell} shipPosition={shipPosition}/>
+                    return <Cell cell={ cell } shipPosition={ shipPosition }/>
                 }
                 
             }) }
@@ -196,14 +203,17 @@ function GameboardGrid (props) {
 
 function Sidebar (props) {
     const gameLevel = props.gameLevel;
-    const shipsAxelVertical = props.shipsAxelVertical;
-    const setCoordinatesWithShips = props.setCoordinatesWithShips; //coordinates that has ship in it
-    const setShipsAxelVertical = props.setShipsAxelVertical;
-    const setDraggedShip = props.setDraggedShip;
+    
+    // ships rotation and setter for ships rotation
+    const [shipsAxelVertical, setShipsAxelVertical] = props.shipsRotation;
+    
+    // Setter for array that has all ships coordinates in them
+    const setCoordinatesWithShips = props.setCoordinatesWithShips;
+    const setDraggedShip = props.setDraggedShip; // Setter for draggedShip
+    // Shows all available ships depending on level. Is used to show ships on sidebar
     const [ships, setShips] = props.shipsOnSidebar;
     
     const gridSize = getGridSize(gameLevel);
-    
     
     return (
         <div className="sidebar">
@@ -328,8 +338,6 @@ function selectShipOnTouchScreens (e, ship) {
             clickedElement.style.border = '2px solid yellow';
         }
     }
-    
-    
 }
 
 /* ---Handle drag event functions */

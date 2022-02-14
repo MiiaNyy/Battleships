@@ -150,7 +150,6 @@ const InfoBtnContainer = styled.div`
 `;
 
 const Flex = styled.div`
-  border: 1px solid pink;
   transition: all 0.3s ease-in-out;
   filter: ${ props => props.blurOn ? 'blur(2px) grayscale(20%)' : 'none' };
   @media (min-width: 700px) {
