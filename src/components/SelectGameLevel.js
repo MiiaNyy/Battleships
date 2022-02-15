@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Main } from "./Styles/general";
-import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./Styles/selectingLevels";
+import { Main } from "./styled_components/general";
+import { ButtonSecondary, Container, ColumnHeader, ColumnText } from "./styled_components/selectingLevels";
 
 function SelectGameLevel(props) {
 

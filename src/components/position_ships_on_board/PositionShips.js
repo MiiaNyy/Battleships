@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import refreshIcon from "../assets/refresh.png";
+import refreshIcon from "../../assets/refresh.png";
 
-import Gameboard from "../factories/GameboardFactory";
+import Gameboard from "../../factories/GameboardFactory";
 
-import InfoMessages from "./InfoMessages";
-import InfoButton from "./InfoButton";
+import InfoButton from "../general/InfoButton";
+import ShipPositionInfoMessages from "./ShipPositionInfoMessages";
 
-import { getGridCellIds } from "./helpers/gameboardItemHelpers";
+import { getGridCellIds } from "../component_helpers/gameboardItemHelpers";
 
 import {
     allTheShipsHasPositioned,
@@ -14,23 +14,22 @@ import {
     checkIfThisIsShipPosition,
     createShipCells,
     getNewShipTypesArr,
-    placeShipsOnRandomCoordinates,
     invalidShipPositionMessage,
-} from "./helpers/positionShipsHelpers";
+    placeShipsOnRandomCoordinates,
+} from "../component_helpers/positionShipsHelpers";
 
 import {
     checkIfDropIsAllowed,
+    getClonesXPosition,
     handleDragEnter,
     handleDragLeave,
-    getClonesXPosition,
-    
-} from "./helpers/dragAndDropHelpers";
+} from "../component_helpers/dragAndDropHelpers";
 
-import isTouchScreen from "../game_helpers/isTouchScreen";
-import { getGridSize } from "../game_helpers/gridSize";
+import isTouchScreen from "../../game_helpers/isTouchScreen";
+import { getGridSize } from "../../game_helpers/gridSize";
 
-import { Button, PopUpMessage, ShipCell, ShipInfo } from "./Styles/dragAndDrop";
-import { CellStyled, Flex, Grid, Main } from "./Styles/general";
+import { Button, PopUpMessage, ShipCell, ShipInfo } from "../styled_components/dragAndDrop";
+import { CellStyled, Flex, Grid, Main } from "../styled_components/general";
 
 // On touch screens, drag and drop doesn't work. To position ships player clicks ship clone
 // and then gameboard to position ships
@@ -47,7 +46,6 @@ function PositionShips (props) {
     const [infoOpen, setInfoOpen] = useState(false);
     const [allShipsInPosition, setAllShipsInPosition] = useState(false);
     
-    // animationOn ? "invalid_position_animation" : "hidden
     return (
         <>
             <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
@@ -67,26 +65,9 @@ function PositionShips (props) {
                     <p>Please try again</p>
                 </PopUpMessage>
             </Main>
-            {
-                infoOpen ?
-                    <InfoMessages setInfoMessageOpen={ setInfoOpen }>
-                        <ul>
-                            <li>You can place the ships on the board by clicking the ship, and dragging it over the
-                                gameboard and
-                                dropping it to the desired location.
-                            </li>
-                            <li>Change ships rotation by clicking 'change rotation' button and start dragging ships on
-                                the
-                                board
-                            </li>
-                            <li>After you have positioned your ships, start button appears and you can start the game.
-                            </li>
-                        </ul>
-                    </InfoMessages> : <></>
-            }
+            <ShipPositionInfoMessages infoOpen={ infoOpen } setInfoOpen={ setInfoOpen }/>
         </>
     )
-        ;
 }
 
 function GameContent ({gameLevel, setAllShipsInPosition}) {

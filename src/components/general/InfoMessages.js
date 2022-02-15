@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { MessageContainer } from "./Styles/general";
-import useOutsideClick from "../game_helpers/useOutsideClick";
+import { MessageContainer } from "../styled_components/general";
+import useOutsideClick from "../../game_helpers/useOutsideClick";
 
 
 function InfoMessages({setInfoMessageOpen, children}) {

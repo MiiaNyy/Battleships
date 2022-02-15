@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-import GameContainer from "./GameContainer";
-import PositionShips from "./PositionShips";
+import GameContainer from "./game_play/GameContainer";
+import PositionShips from "./position_ships_on_board/PositionShips";
 import SelectGameLevel from "./SelectGameLevel";
 
 import Gameboard from "../factories/GameboardFactory";
 import Player from "../factories/PlayerFactory";
 
-import { Header } from "./Styles/general";
+import { Header } from "./styled_components/general";
 
 let playersGameboard;
 //let playersGameboard = new Gameboard('Friendly');
@@ -17,12 +17,13 @@ let player = new Player('player');
 let computer = new Player('computer');
 
 function App () {
+    
     const [gameHasStarted, setGameHasStarted] = useState(false);
     const [levelSelected, setLevelSelected] = useState(false);
     const [gameLevelIs, setGameLevelTo] = useState('');
     
-    /*
     
+    /*
     const [gameHasStarted, setGameHasStarted] = useState(true);
     const [levelSelected, setLevelSelected] = useState(true);
     const [gameLevelIs, setGameLevelTo] = useState('pacific');*/
@@ -39,7 +40,6 @@ function App () {
     function playNextLevel () {
         const newGameLevel = gameLevelIs === 'mediterranean' ? 'atlantic' : gameLevelIs === 'atlantic' ? 'pacific' : '';
         resetPlayersAndBoards();
-        
         setGameHasStarted(() => false);
         setGameLevelTo(() => newGameLevel);
     }
@@ -67,7 +67,7 @@ function App () {
     
     return (
         <div>
-            <Header gameHasStarted={ gameHasStarted }>
+            <Header className="header" gameHasStarted={ gameHasStarted }>
                 <h1>Battleships</h1>
                 <p>Place your own ships on the map and try to sink your opponents ships to win</p>
             </Header>

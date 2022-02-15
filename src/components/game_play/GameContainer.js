@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
-import attackIsValid from "../game_helpers/attackIsValid";
-import addNewMessageToDescription from "../game_helpers/addNewMessageToDescription";
-import checkIfNewMessageIsNeeded from "./helpers/checkIfNewMessageIsNeeded";
+import attackIsValid from "../../game_helpers/attackIsValid";
+import addNewMessageToDescription from "../../game_helpers/addNewMessageToDescription";
+import checkIfNewMessageIsNeeded from "../component_helpers/checkIfNewMessageIsNeeded";
 
-import { Main} from "./Styles/general";
+import { Main } from "../styled_components/general";
 
-import InfoMessages from "./InfoMessages";
-import InfoButton from "./InfoButton";
+import InfoMessages from "../general/InfoMessages";
+import InfoButton from "../general/InfoButton";
 import Console from "./Console";
 
-function GameContainer(props) {
+function GameContainer (props) {
     const gameLevel = props.gameLevel;
     
     const humanBoard = props.player[1];
@@ -25,30 +25,30 @@ function GameContainer(props) {
     const [computersTurnAttack, setComputersTurnAttack] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
-
+    
     const currentGameLevel = useRef(gameLevel);
-
-    useEffect(()=>{
+    
+    useEffect(() => {
         humanPlayer.setGameLevel = currentGameLevel.current;
         computer.setGameLevel = currentGameLevel.current;
         computerBoard.setGameLevel = currentGameLevel.current;
         computerBoard.placeAllShipsOnBoard();
     }, [])
-
+    
     // Whenever gameDescription changes, after 2 seconds change message to show whose turn is it
-    useEffect(()=>{
-        const changeGameMessage = setTimeout(()=>{
+    useEffect(() => {
+        const changeGameMessage = setTimeout(() => {
             const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
             if ( newMessageIsNeeded ) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
-                setGameDescription((prev)=>addNewMessageToDescription(prev, newMessage))
+                setGameDescription((prev) => addNewMessageToDescription(prev, newMessage))
             }
         }, 1500);
-        return ()=>clearTimeout(changeGameMessage);
+        return () => clearTimeout(changeGameMessage);
     }, [gameDescription]);
-
-
-    useEffect(()=>{
+    
+    
+    useEffect(() => {
         if ( computer.turn && humanPlayer.firstShotFired && !gameOver ) {
             if ( !infoOpen ) {
                 computerShootsEnemy();
@@ -58,13 +58,23 @@ function GameContainer(props) {
             }
         }
     }, [computersTurnAttack, infoOpen])
-
-    function computerShootsEnemy() {
+    
+    function computerShootsEnemy () {
         computer.shootTheEnemy();
         const coordinate = computer.latestShotCoordinate;
         attackIsValid(humanBoard, computer, coordinate, setGameDescription, setGameOver);
     }
-
+    
+    function playNextLevel () {
+        props.playNextLevel();
+        setGameOver(() => false);
+    }
+    
+    function playCurrentLevelAgain () {
+        props.restartLevel();
+        setGameOver(() => false);
+    }
+    
     return (
         <>
             <Main gameIsOver={ gameOver } blurOn={ infoOpen }>
@@ -77,14 +87,12 @@ function GameContainer(props) {
                     <GameboardItem gameHandlers={ [setComputersTurnAttack, setGameDescription] } infoOpen={ infoOpen }
                                    playerGrid={ humanBoard } gameLevel={ gameLevel }
                                    gameOver={ [gameOver, setGameOver] } players={ [humanPlayer, computer] }/>
-
                 </div>
             </Main>
-            <GameEndedMessages restartLevel={ props.restartLevel } playNextLevel={ props.playNextLevel }
-                               gameLevel={ gameLevel }
-                               gameIsOver={ gameOver } setGameOver={ setGameOver } computer={ computer }/>
+            <GameEndedMessages playCurrentLevelAgain={ playCurrentLevelAgain } playNextLevel={ playNextLevel }
+                               gameLevel={ gameLevel } gameIsOver={ gameOver } computer={ computer }/>
             <InfoButton setInfoOpen={ setInfoOpen }/>
-    
+            
             { infoOpen ?
                 <InfoMessages setInfoMessageOpen={ setInfoOpen }>
                     <ul>

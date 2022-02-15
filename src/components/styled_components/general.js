@@ -53,6 +53,13 @@ const Grid = styled.div`
   }
 `;
 
+function getHoverEffect(props) {
+    if ( props.enemy && !props.shipSunk && !props.hitPosition && !props.infoOpen ) {
+        return "#a0c2fd"
+    } else {
+        return "none";
+    }
+}
 
 const CellStyled = styled.div`
   border: 1px solid #3e3e3f;
@@ -66,9 +73,9 @@ const CellStyled = styled.div`
   }
 
   &:hover { // Only show hover effect on enemy board cells that are not hit
-    background-color: ${ props => props.enemy && !props.shipSunk && !props.hitPosition ? "#a0c2fd" : '' };
+    background-color: ${ props => getHoverEffect(props) };
   }
-
+  
 
   & > p {
     font-family: 'Raleway', sans-serif;
