@@ -1,0 +1,117 @@
+/* ---ANIMATIONS--- */
+@keyframes slideDownAndUp {
+    0% {
+        opacity: 0;
+        top: -10%;
+    }
+    25% {
+        opacity: 1;
+        top: 30%;
+    }
+    60% {
+        opacity: 1;
+        top: 30%;
+    }
+    100% {
+        opacity: 0;
+        top: -10%;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate(-50%, 50%);
+        transform: translate(-50%, 50%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: translate(-50%, 50%);
+        transform: translate(-50%, 50%);
+    }
+}
+
+
+@keyframes pulse-black {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    5% {
+        -webkit-transform: rotate(-10deg);
+        transform: rotate(-10deg);
+    }
+    15% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(10deg);
+    }
+    25% {
+        -webkit-transform: rotate(20deg);
+        transform: rotate(20deg);
+    }
+    35% {
+        -webkit-transform: rotate(30deg);
+        transform: rotate(30deg);
+    }
+    45% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    55% {
+        -webkit-transform: rotate(50deg);
+        transform: rotate(50deg);
+    }
+
+    60% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    75% {
+        -webkit-transform: rotate(35deg);
+        transform: rotate(35deg);
+    }
+    85% {
+        -webkit-transform: rotate(10deg);
+        transform: rotate(20deg);
+    }
+    95% {
+        -webkit-transform: rotate(20deg);
+        transform: rotate(10deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+}
+
+
+.invalid_position_animation {
+    animation: slideDownAndUp 2500ms;
+    opacity: 0;
+}
+
+.toggle-in {
+    animation: slideUp 500ms;
+    opacity: 1;
+}
+
+.toggle-off {
+    animation: slideDown 500ms;
+    opacity: 0;
+}

@@ -1,7 +1,8 @@
 import { pacific, atlantic, mediterranean } from "../../game_helpers/shipTypes";
 import { v4 as uuidv4 } from "uuid";
 
-// When ship is dragged to grid area, decrease ships count
+// When ship is dragged to grid area, decrease ships count. This will show in the sidebar. When ship count 0, no
+// ships can be positioned to grid
 function changeShipsCount(allShips, id) {
     const shipsIndex = allShips.findIndex((ship)=>ship.id === id);
     const targetShip = allShips.filter((currentShip)=>currentShip.id === id);

@@ -1,0 +1,75 @@
+/* ---BUTTONS--- */
+
+button {
+    font-family: 'Wallpoet', cursive;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    padding: 0.5em 1em;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+button:hover {
+    opacity: 0.8;
+    transform: scale(1.01);
+    box-shadow: rgb(38, 57, 77) 0 20px 30px -10px;
+}
+/* In position ships, changes ships rotation (vertical/horizontal) */
+.rotation-btn {
+    margin: 10px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    transform: rotate(45deg);
+    animation: pulse-black 1.5s linear infinite;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.rotation-btn:hover {
+    animation: paused;
+    transform: rotate(45deg);
+}
+
+/* --- INFO BUTTON ---- */
+/* question mark buttons and pop up message cross buttons */
+.info-btn {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.info-btn:hover {
+    color: #9e9d9d;
+}
+
+.info-btn__container {
+    position: fixed;
+    bottom: 5px;
+    width: 100%;
+    padding-right: 5px;
+    text-align: right;
+    color: #393939;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Little cross icon on info messages */
+.close-info-btn {
+    font-size: 1.1rem;
+    color: #616161;
+    margin-top: 10px;
+}
+
+.close-info-btn:hover {
+    color: #fd3333;
+    transform: scale(1.2);
+}
+
+/* In info container, div that holds x */
+.close-info-btn__cont {
+    position: absolute;
+    right: 10px;
+    top: 0;
+}

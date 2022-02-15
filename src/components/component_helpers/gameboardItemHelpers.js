@@ -1,5 +1,6 @@
 import { getRightAmountOfGridCells } from "../../game_helpers/gridSize";
 
+// Checks if in this coordinate/cell is already ship in position
 function isShipInThisPosition(playerShips, cellId) {
     for (let i = 0; i < playerShips.length; i++) {
         for (let j = 0; j < playerShips[i].length; j++) {

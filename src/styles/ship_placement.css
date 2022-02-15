@@ -1,0 +1,86 @@
+/*--- PLACE SHIPS ON BOARD ---*/
+
+/* Ships and info container before user has placed ships */
+.place-ships-info {
+    border: 1px solid cornflowerblue;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    transition: all 0.5s ease-in-out;
+}
+
+.place-ships__btn-cont {
+    width: 100%;
+    text-align: right;
+    margin: 2em 0 1em;
+}
+
+.ship-rotation {
+    display: flex;
+    justify-content: center;
+    border: 2px solid #a5a5a5;
+    transition: border 0.2s ease-in-out;
+}
+/* --- SIDEBAR --- */
+.sidebar {
+    border: 10px #585858 ridge;
+    font-size: 0.9rem;
+    background-color: #a5a5a5;
+    width: 100%;
+    padding: 1em;
+    margin: 0 auto 2em;
+}
+
+@media (min-width: 700px) {
+    .sidebar {
+        margin: 0;
+        max-width: 350px;
+    }
+}
+
+.sidebar__btn-cont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.sidebar__btn-cont p {
+    font-size: 0.8rem;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+@media (min-width: 420px) {
+    .sidebar__container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .sidebar__btn-cont {
+        margin: 1.5em 0 2em;
+    }
+}
+
+@media (min-width: 700px) {
+    .place-ships-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1em;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .sidebar__container {
+        display: block;
+    }
+
+    .sidebar__btn-cont {
+        width: 100%;
+    }
+}
