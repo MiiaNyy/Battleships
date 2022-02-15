@@ -3,7 +3,7 @@ import GameboardItem from "./GameboardItem";
 import GameEndedMessages from "./GameEndedMessages";
 
 import attackIsValid from "../../game_helpers/attackIsValid";
-import addNewMessageToDescription from "../../game_helpers/addNewMessageToDescription";
+import addNewMessageToConsole from "../../game_helpers/addNewMessageToConsole";
 import checkIfNewMessageIsNeeded from "../component_helpers/checkIfNewMessageIsNeeded";
 
 import { Main } from "../styled_components/general";
@@ -41,7 +41,7 @@ function GameContainer (props) {
             const newMessageIsNeeded = checkIfNewMessageIsNeeded(gameDescription, gameOver);
             if ( newMessageIsNeeded ) {
                 const newMessage = humanPlayer.allFiredShots.length <= 0 ? 'Human player starts' : humanPlayer.turn ? "It's players turn" : "It's enemy's turn";
-                setGameDescription((prev) => addNewMessageToDescription(prev, newMessage))
+                setGameDescription((prev) => addNewMessageToConsole(prev, newMessage))
             }
         }, 1500);
         return () => clearTimeout(changeGameMessage);

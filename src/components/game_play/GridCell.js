@@ -1,6 +1,6 @@
 import { isShipInThisPosition, isThereSunkShipInThisPosition, isThisPositionHit } from "../component_helpers/gameboardItemHelpers";
 import attackIsValid from "../../game_helpers/attackIsValid";
-import addNewMessageToDescription from "../../game_helpers/addNewMessageToDescription";
+import addNewMessageToConsole from "../../game_helpers/addNewMessageToConsole";
 import { CellStyled } from "../styled_components/general";
 import React from "react";
 
@@ -37,7 +37,7 @@ function GridCell (props) {
                 }, 2000);
             }
         } else if ( thisIsEnemyCell && !shotIsValid ) {
-            setGameDescription((prev) => addNewMessageToDescription(prev, 'Invalid shot, try again!'));
+            setGameDescription((prev) => addNewMessageToConsole(prev, 'Invalid shot, try again!'));
         }
     }
     

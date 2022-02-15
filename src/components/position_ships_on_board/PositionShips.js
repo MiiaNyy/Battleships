@@ -4,7 +4,6 @@ import refreshIcon from "../../assets/refresh.png";
 import Gameboard from "../../factories/GameboardFactory";
 
 import InfoButton from "../general/InfoButton";
-import ShipPositionInfoMessages from "./ShipPositionInfoMessages";
 
 import { getGridCellIds } from "../component_helpers/gameboardItemHelpers";
 
@@ -30,6 +29,8 @@ import { getGridSize } from "../../game_helpers/gridSize";
 
 import { Button, PopUpMessage, ShipCell, ShipInfo } from "../styled_components/dragAndDrop";
 import { CellStyled, Flex, Grid, Main } from "../styled_components/general";
+import InfoMessages from "../general/InfoMessages";
+import ShipPositionInfoMessages from "./ShipPositionInfoMessages";
 
 // On touch screens, drag and drop doesn't work. To position ships player clicks ship clone
 // and then gameboard to position ships
@@ -48,7 +49,7 @@ function PositionShips (props) {
     
     return (
         <>
-            <InfoButton setInfoOpen={ setInfoOpen } infoOpen={ infoOpen }/>
+            <InfoButton setInfoOpen={ setInfoOpen }/>
             <Main blurOn={ infoOpen } positionShips>
                 
                 <GameContent gameLevel={ gameLevel } setAllShipsInPosition={ setAllShipsInPosition }/>
@@ -84,7 +85,6 @@ function GameContent ({gameLevel, setAllShipsInPosition}) {
     
     humanBoard.setGameLevel = gameLevel;
     
-    // <Flex blurOn={ shipPlacingInvalid }>
     return (
         <Flex>
             <div className="place-ships-info">
