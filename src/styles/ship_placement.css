@@ -2,7 +2,6 @@
 
 /* Ships and info container before user has placed ships */
 .place-ships-info {
-    border: 1px solid cornflowerblue;
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
